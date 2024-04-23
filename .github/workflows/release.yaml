@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - '.vscode/**'
+      - '.idea/**'
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  orakle-nft-marketplace-app-contracts-validate:
+    name: Run orakle-nft-marketplace-app-contracts release
+    secrets: inherit
+    uses: ./.github/workflows/orakle-nft-marketplace-app-contracts-ci.yaml
+
+  orakle-nft-marketplace-app-contracts-release:
+    name: Run orakle-nft-marketplace-app-contracts release
+    secrets: inherit
+    uses: ./.github/workflows/orakle-nft-marketplace-app-contracts-cd.yaml
+    needs: orakle-nft-marketplace-app-contracts-validate
+
+  orakle-nft-marketplace-app-frontend-validate:
+    name: Run orakle-nft-marketplace-app-frontend release
+    secrets: inherit
+    uses: ./.github/workflows/orakle-nft-marketplace-app-frontend-ci.yaml
+
+  orakle-nft-marketplace-app-frontend-release:
+    name: Run orakle-nft-marketplace-app-frontend release
+    secrets: inherit
+    uses: ./.github/workflows/orakle-nft-marketplace-app-frontend-cd.yaml
+    needs: orakle-nft-marketplace-app-frontend-validate

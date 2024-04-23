@@ -1,0 +1,9 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: 1.0.4
+_src_path: gh:algorandfoundation/algokit-react-frontend-template
+author_email: iskysun96@gmail.com
+author_name: iskysun96
+cloud_provider: vercel
+preset_name: production
+project_name: orakle-nft-marketplace-app-frontend
+

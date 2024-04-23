@@ -1,0 +1,14 @@
+name: Pull Request validation
+
+on: [pull_request]
+
+
+jobs:
+  orakle-nft-marketplace-app-contracts-ci:
+    name: Run orakle-nft-marketplace-app-contracts validation
+    uses: ./.github/workflows/orakle-nft-marketplace-app-contracts-ci.yaml
+
+  orakle-nft-marketplace-app-frontend-ci:
+    name: Run orakle-nft-marketplace-app-frontend validation
+    uses: ./.github/workflows/orakle-nft-marketplace-app-frontend-ci.yaml
+

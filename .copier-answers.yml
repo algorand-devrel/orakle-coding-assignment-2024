@@ -1,0 +1,11 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: 2.0.5
+_src_path: gh:algorandfoundation/algokit-fullstack-template
+author_email: iskysun96@gmail.com
+author_name: iskysun96
+cloud_provider: vercel
+contract_name: nft_marketplace
+deployment_language: typescript
+preset_name: production
+project_name: orakle-nft-marketplace-app
+

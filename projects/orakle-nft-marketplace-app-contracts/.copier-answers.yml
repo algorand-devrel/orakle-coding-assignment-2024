@@ -1,0 +1,10 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: 1.0.6
+_src_path: gh:algorandfoundation/algokit-python-template
+author_email: iskysun96@gmail.com
+author_name: iskysun96
+contract_name: nft_marketplace
+deployment_language: typescript
+preset_name: production
+project_name: orakle-nft-marketplace-app-contracts
+
