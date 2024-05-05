@@ -14,7 +14,7 @@
     "npm": ">=9.0"
   },
   "dependencies": {
-    "@algorandfoundation/algokit-utils": "^5.1.0",
+    "@algorandfoundation/algokit-utils": "^6.0.2",
     "algosdk": "^2.5.0"
   },
   "devDependencies": {
