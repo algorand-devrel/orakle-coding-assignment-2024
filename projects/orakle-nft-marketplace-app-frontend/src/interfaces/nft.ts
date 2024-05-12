@@ -1,5 +1,7 @@
-export interface NftMetadata {
+export interface NftData {
   name: string
-  description: string
   imageUrl: string
+  remainingQty: number
+  totalQty: number
+  price: number
 }

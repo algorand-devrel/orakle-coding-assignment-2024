@@ -1,13 +1,37 @@
-import { NftMetadata } from '../interfaces/nft'
+import { useState } from 'react'
+import { NftData } from '../interfaces/nft'
+import Buy from './Buy'
 
-export function NftCard({ metadata }: { metadata: NftMetadata }) {
-  const { name, description, imageUrl } = metadata
+export function NftCard({ name, imageUrl, remainingQty, totalQty, price }: NftData) {
+  const [openModal, setOpenModal] = useState(false)
+  const toggleModal = () => {
+    setOpenModal((prev) => !prev)
+  }
 
   return (
-    <div className="w-[300px] flex flex-col items-center gap-6 p-4 bg-white rounded-xl">
-      <h1 className="font-bold text-lg">{name}</h1>
-      <img className="w-[200px]" src={imageUrl} alt="nft image" />
-      <span className="w-full line-clamp-2">{description}</span>
-    </div>
+    <>
+      <button
+        onClick={toggleModal}
+        className="w-[300px] overflow-hidden flex flex-col items-start gap-2 bg-white rounded-xl group"
+        disabled={remainingQty === 0}
+      >
+        <img className="w-full aspect-square" src={imageUrl} alt="nft image" />
+        <div className=" w-full flex flex-col gap-2">
+          <div className="w-full px-2 flex flex-col gap-2 items-start">
+            <div className="w-full flex flex-row gap-2 items-center">
+              <span className="font-bold whitespace-nowrap overflow-hidden text-ellipsis">{name}</span>
+              <span>
+                {remainingQty}/{totalQty}
+              </span>
+            </div>
+            <span className="font-bold">
+              {price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ALGO
+            </span>
+          </div>
+          <div className="w-full p-2 text-white bg-teal-900 group-hover:bg-teal-100 group-disabled:bg-gray-300">Buy</div>
+        </div>
+      </button>
+      <Buy openModal={openModal} setModalState={setOpenModal} />
+    </>
   )
 }
