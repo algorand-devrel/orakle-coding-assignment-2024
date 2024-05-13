@@ -15,6 +15,19 @@ class NftMarketplaceList(ARC4Contract):
         self.marketplace_list.append(arc4.UInt64(app_id))
         return self.marketplace_list
 
+    @arc4.abimethod()
+    def remove_marketplace_from_list(self, app_id: UInt64) -> app_id_list:
+        new_list = app_id_list()
+        for i in urange(self.marketplace_list.length):
+            current_app_id = self.marketplace_list[i]
+
+            if current_app_id != app_id:
+                new_list.append(current_app_id)
+
+        self.marketplace_list = new_list.copy()
+
+        return self.marketplace_list
+
     @arc4.abimethod(readonly=True)
     def read_marketplace_list(self) -> app_id_list:
         return self.marketplace_list

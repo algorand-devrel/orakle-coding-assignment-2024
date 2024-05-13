@@ -41,7 +41,7 @@ const Sell = ({ algorandObject, setAppId, openModal, setModalState }: SellInterf
         algorandObject.nftmClient,
         algorandObject.listClient,
         activeAddress,
-        BigInt(unitaryPrice!),
+        BigInt(unitaryPrice!) * BigInt(1e6),
         10n,
         BigInt(assetIdToSell!),
         setAppId,

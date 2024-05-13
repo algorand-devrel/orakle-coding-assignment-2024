@@ -56,6 +56,9 @@ export async function deploy() {
   // result = await appClient.addMarketplaceToList({ appId: 344 })
   // console.log(result.return)
 
+  // result = await appClient.removeMarketplaceFromList({ appId: 344 })
+  // console.log(result.return)
+
   // const read_result = await appClient.readMarketplaceList({})
   // console.log(read_result.return)
 }

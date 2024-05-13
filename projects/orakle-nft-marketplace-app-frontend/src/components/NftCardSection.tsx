@@ -1,81 +1,33 @@
-import { AlgorandClient } from '@algorandfoundation/algokit-utils'
 import { useWallet } from '@txnlab/use-wallet'
-import algosdk from 'algosdk'
-import { useEffect, useState } from 'react'
-import { NftMarketplaceClient } from '../contracts/NftMarketplace'
-import { NftMarketplaceListClient } from '../contracts/NftMarketplaceList'
+import { useEffect } from 'react'
+import { algorandObject } from '../interfaces/algorandObject'
+import { appDetails } from '../interfaces/appDetails'
 import { NftData } from '../interfaces/nft'
+import { getAppList } from '../utils/getAppList'
 import { NftCard } from './NftCard'
 
-interface appDetails {
-  appId: bigint
-  unitaryPrice: bigint
-  assetId: bigint
-  assetName: string
-  imageUrl: string
-  remainingQty: bigint
-  totalQty: bigint
-}
-
 interface NftCardSectionProps {
-  algorandObject: {
-    algorand: AlgorandClient
-    nftmClient: NftMarketplaceClient
-    listClient: NftMarketplaceListClient
-  }
+  algorandObject: algorandObject
+  appDetailsList: appDetails[]
+  setIsSelling: (isSelling: boolean) => void
+  setAppDetailsList: (appDetailsList: appDetails[]) => void
 }
 
-export function NftCardSection({ algorandObject }: NftCardSectionProps) {
-  const [appList, setAppList] = useState<bigint[]>([])
-  const [appDetailsList, setAppDetailsList] = useState<appDetails[]>([])
+export function NftCardSection({ algorandObject, appDetailsList, setAppDetailsList, setIsSelling }: NftCardSectionProps) {
+  // const [appDetailsList, setAppDetailsList] = useState<appDetails[]>([])
   const { activeAddress, signer } = useWallet()
 
   useEffect(() => {
-    let appList: bigint[] = []
-    algorandObject.listClient.readMarketplaceList({}).then((list) => {
-      appList = list.return!
-      // setAppList(list.return!)
-      console.log('appList', list.return!)
-    })
-
-    for (const appId of appList) {
-      console.log('test1')
-      const nftmClient = new NftMarketplaceClient(
-        {
-          resolveBy: 'id',
-          id: Number(appId),
-          sender: { addr: activeAddress!, signer },
-        },
-        algorandObject.algorand.client.algod,
-      )
-
-      const appDetails: appDetails = {
-        appId: appId,
-        unitaryPrice: 0n,
-        assetId: 0n,
-        assetName: '',
-        imageUrl: '',
-        remainingQty: 0n,
-        totalQty: 0n,
+    getAppList(algorandObject, activeAddress!, signer).then((appList) => {
+      for (const appDetails of appList) {
+        if (appDetails.creator == activeAddress) {
+          setIsSelling(true)
+          break
+        }
       }
-      nftmClient.getGlobalState().then((globalState) => {
-        appDetails.unitaryPrice = globalState.unitaryPrice?.asBigInt() || 0n
-        console.log('test1')
-        const assetId = globalState.assetId?.asBigInt() || 0n
-        appDetails.assetId = assetId
-        algorandObject.algorand.account.getAssetInformation(algosdk.getApplicationAddress(appId), assetId).then((info) => {
-          appDetails.remainingQty = info.balance
-          algorandObject.algorand.client.algod
-            .getAssetByID(Number(assetId))
-            .do()
-            .then((asset) => {
-              console.log('asset', asset)
-            })
-        })
-      })
-      setAppDetailsList((prev) => [...prev, appDetails])
-    }
-  })
+      setAppDetailsList(appList)
+    })
+  }, [activeAddress])
 
   const metadataList: NftData[] = [
     {
@@ -118,7 +70,7 @@ export function NftCardSection({ algorandObject }: NftCardSectionProps) {
   return (
     <section className="grid grid-cols-3 gap-2">
       {appDetailsList.map((data) => (
-        <NftCard {...data} />
+        <NftCard {...data} algorandObject={algorandObject} />
       ))}
     </section>
   )

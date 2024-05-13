@@ -1,8 +1,7 @@
-import { AlgorandClient } from '@algorandfoundation/algokit-utils'
 import { useWallet } from '@txnlab/use-wallet'
 import { useState } from 'react'
-import { NftMarketplaceClient } from '../contracts/NftMarketplace'
-import { NftMarketplaceListClient } from '../contracts/NftMarketplaceList'
+import { algorandObject } from '../interfaces/algorandObject'
+import { appDetails } from '../interfaces/appDetails'
 import { ellipseAddress } from '../utils/ellipseAddress'
 import ConnectWallet from './ConnectWallet'
 import MintNft from './MintNft'
@@ -10,21 +9,20 @@ import Sell from './Sell'
 import Withdraw from './Withdraw'
 
 interface HeaderProps {
-  algorandObject: {
-    algorand: AlgorandClient
-    nftmClient: NftMarketplaceClient
-    listClient: NftMarketplaceListClient
-  }
+  algorandObject: algorandObject
   setAppId: (id: number) => void
+  appDetailsList: appDetails[]
+  isSelling: boolean
 }
 
-export function Header({ algorandObject, setAppId }: HeaderProps) {
+export function Header({ algorandObject, setAppId, appDetailsList, isSelling }: HeaderProps) {
   const { activeAddress } = useWallet()
 
   const [openWalletModal, setOpenWalletModal] = useState(false)
   const [openSellModal, setOpenSellModal] = useState(false)
   const [openWithdrawModal, setOpenWithdrawModal] = useState(false)
   const [openMintModal, setOpenMintModal] = useState(false)
+  const [totalProfit, setTotalProfit] = useState<bigint>(0n)
 
   const toggleWalletModal = () => {
     setOpenWalletModal((prev) => !prev)
@@ -38,8 +36,6 @@ export function Header({ algorandObject, setAppId }: HeaderProps) {
   const toggleMintModal = () => {
     setOpenMintModal((prev) => !prev)
   }
-
-  const isSelling = false // TODO: Implement
 
   return (
     <div className="w-full px-8 py-4 top-0 flex flex-row justify-between items-center border-b border-b-teal-200">
@@ -55,13 +51,22 @@ export function Header({ algorandObject, setAppId }: HeaderProps) {
         <button className="font-bold disabled:text-gray-200" onClick={toggleMintModal} disabled={!activeAddress}>
           Mint NFT
         </button>
+        <span className="font-bold">Total Profit: {Number(totalProfit) / 1e6} ALGOs</span>
       </div>
       <button className="rounded-lg px-4 py-2 border border-teal-200 text-white" onClick={toggleWalletModal}>
         {activeAddress ? ellipseAddress(activeAddress) : 'Connect Wallet'}
       </button>
       <ConnectWallet openModal={openWalletModal} closeModal={toggleWalletModal} />
       <Sell algorandObject={algorandObject} setAppId={setAppId} openModal={openSellModal} setModalState={setOpenSellModal} />
-      <Withdraw openModal={openWithdrawModal} setModalState={setOpenWithdrawModal} />
+      <Withdraw
+        algorandObject={algorandObject}
+        setAppId={setAppId}
+        setTotalProfit={setTotalProfit}
+        appDetailsList={appDetailsList}
+        openModal={openWithdrawModal}
+        setModalState={setOpenWithdrawModal}
+        listClient={algorandObject.listClient}
+      />
       <MintNft algorandObject={algorandObject} openModal={openMintModal} setModalState={setOpenMintModal} />
     </div>
   )

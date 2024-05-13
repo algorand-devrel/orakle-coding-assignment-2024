@@ -54,7 +54,6 @@ export function buy(
   appAddress: string,
   quantity: bigint,
   unitaryPrice: bigint,
-  setUnitsLeft: React.Dispatch<React.SetStateAction<bigint>>,
 ) {
   return async () => {
     const buyerTxn = await algorand.transactions.payment({
@@ -63,21 +62,29 @@ export function buy(
       amount: algokit.microAlgos(Number(quantity * unitaryPrice)),
       extraFee: algokit.algos(0.001),
     })
+    console.log('buyerTxn', buyerTxn)
 
     await nftmClient.buy({
       buyerTxn,
       quantity,
     })
-
-    const state = await nftmClient.getGlobalState()
-    const info = await algorand.account.getAssetInformation(appAddress, state.assetId!.asBigInt())
-    setUnitsLeft(info.balance)
+    console.log('buy done')
   }
 }
 
-export function deleteApp(nftmClient: NftMarketplaceClient, setAppId: (id: number) => void, setTotalProfit: (profit: bigint) => void) {
+export function deleteApp(
+  nftmClient: NftMarketplaceClient,
+  listClient: NftMarketplaceListClient,
+  appId: number,
+  setAppId: (id: number) => void,
+  setTotalProfit: (profit: bigint) => void,
+) {
   return async () => {
+    console.log('deleting app')
     const totalProfit = await nftmClient.delete.withdrawAndDelete({}, { sendParams: { fee: algokit.algos(0.003) } })
+    console.log('Total Profit: ', totalProfit.return)
+
+    listClient.removeMarketplaceFromList({ appId: appId })
     setAppId(0)
     setTotalProfit(totalProfit.return!)
   }

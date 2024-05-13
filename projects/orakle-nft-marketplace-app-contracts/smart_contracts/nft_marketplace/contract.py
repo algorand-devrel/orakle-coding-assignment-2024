@@ -122,8 +122,6 @@ class NftMarketplace(arc4.ARC4Contract):
         quantity: UInt64,
     ) -> None:
         assert self.unitary_price != UInt64(0)
-        assert buyer_txn.sender != Global.creator_address
-
         assert buyer_txn.sender == Txn.sender
         assert buyer_txn.receiver == Global.current_application_address
         assert buyer_txn.amount == self.unitary_price * quantity

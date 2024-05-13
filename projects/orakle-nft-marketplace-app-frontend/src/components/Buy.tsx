@@ -1,62 +1,53 @@
-import * as algokit from '@algorandfoundation/algokit-utils'
 import { useWallet } from '@txnlab/use-wallet'
 import algosdk from 'algosdk'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
-import { getAlgodConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
+import { NftMarketplaceClient } from '../contracts/NftMarketplace'
+import { algorandObject } from '../interfaces/algorandObject'
+import * as methods from '../methods'
 
 interface BuyInterface {
   openModal: boolean
   setModalState: (value: boolean) => void
+  currentAppId: bigint
+  unitaryPrice: bigint
+  algorandObject: algorandObject
 }
 
 // TODO: Implement buy tx call
-const Buy = ({ openModal, setModalState }: BuyInterface) => {
+const Buy = ({ openModal, setModalState, currentAppId, unitaryPrice, algorandObject }: BuyInterface) => {
   const [loading, setLoading] = useState<boolean>(false)
-  const [receiverAddress, setReceiverAddress] = useState<string>('')
-
-  const algodConfig = getAlgodConfigFromViteEnvironment()
-  const algodClient = algokit.getAlgoClient({
-    server: algodConfig.server,
-    port: algodConfig.port,
-    token: algodConfig.token,
-  })
+  const [quantity, setQuantity] = useState<string>('')
 
   const { enqueueSnackbar } = useSnackbar()
 
-  const { signer, activeAddress, signTransactions, sendTransactions } = useWallet()
+  const { signer, activeAddress } = useWallet()
 
-  const handleSubmitAlgo = async () => {
+  const handleBuyNft = async () => {
     setLoading(true)
 
     if (!signer || !activeAddress) {
       enqueueSnackbar('Please connect wallet first', { variant: 'warning' })
       return
     }
+    const nftmClient = new NftMarketplaceClient(
+      {
+        resolveBy: 'id',
+        id: currentAppId,
+        sender: { addr: activeAddress!, signer },
+      },
+      algorandObject.algorand.client.algod,
+    )
 
-    const suggestedParams = await algodClient.getTransactionParams().do()
-
-    const transaction = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
-      from: activeAddress,
-      to: receiverAddress,
-      amount: 1e6,
-      suggestedParams,
-    })
-
-    const encodedTransaction = algosdk.encodeUnsignedTransaction(transaction)
-
-    const signedTransactions = await signTransactions([encodedTransaction])
-
-    const waitRoundsToConfirm = 4
-
+    const appAddress = await algosdk.getApplicationAddress(currentAppId)
     try {
-      enqueueSnackbar('Sending transaction...', { variant: 'info' })
-      const { id } = await sendTransactions(signedTransactions, waitRoundsToConfirm)
-      enqueueSnackbar(`Transaction sent: ${id}`, { variant: 'success' })
-      setReceiverAddress('')
-    } catch (e) {
-      enqueueSnackbar('Failed to send transaction', { variant: 'error' })
+      await methods.buy(algorandObject.algorand, nftmClient, activeAddress, appAddress, BigInt(quantity), unitaryPrice)()
+    } catch (error) {
+      enqueueSnackbar('Error while buying the NFT', { variant: 'error' })
+      setLoading(false)
+      return
     }
+    enqueueSnackbar('NFT purchased successfully', { variant: 'success' })
 
     setLoading(false)
   }
@@ -67,25 +58,21 @@ const Buy = ({ openModal, setModalState }: BuyInterface) => {
         <h3 className="font-bold text-lg">Buy NFT</h3>
         <br />
         <input
-          type="text"
+          type="number"
           data-test-id="amount"
-          placeholder="Provide amount"
+          placeholder="How many do you want to buy?"
           className="input input-bordered w-full"
-          value={receiverAddress}
+          value={quantity}
           onChange={(e) => {
-            setReceiverAddress(e.target.value)
+            setQuantity(e.target.value)
           }}
         />
         <div className="modal-action">
           <button className="btn" onClick={() => setModalState(false)}>
             Close
           </button>
-          <button
-            data-test-id="send-algo"
-            className={`btn ${receiverAddress.length === 58 ? '' : 'btn-disabled'} lo`}
-            onClick={handleSubmitAlgo}
-          >
-            {loading ? <span className="loading loading-spinner" /> : 'Send 1 Algo'}
+          <button data-test-id="buy-nft" className={'btn'} onClick={handleBuyNft}>
+            {loading ? <span className="loading loading-spinner" /> : 'Buy NFT!'}
           </button>
         </div>
       </form>
