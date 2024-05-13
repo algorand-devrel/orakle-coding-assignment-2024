@@ -1,0 +1,131 @@
+#pragma version 10
+
+smart_contracts.nft_marketplace_list.contract.NftMarketplaceList.approval_program:
+    txn ApplicationID
+    bnz main_entrypoint@2
+    callsub __init__
+
+main_entrypoint@2:
+    // smart_contracts/nft_marketplace_list/contract.py:8
+    // class NftMarketplaceList(ARC4Contract):
+    txn NumAppArgs
+    bz main_bare_routing@8
+    method "add_marketplace_to_list(uint64)uint64[]"
+    method "read_marketplace_list()uint64[]"
+    txna ApplicationArgs 0
+    match main_add_marketplace_to_list_route@4 main_read_marketplace_list_route@5
+    err // reject transaction
+
+main_add_marketplace_to_list_route@4:
+    // smart_contracts/nft_marketplace_list/contract.py:13
+    // @arc4.abimethod()
+    txn OnCompletion
+    !
+    assert // OnCompletion is NoOp
+    txn ApplicationID
+    assert // is not creating
+    // smart_contracts/nft_marketplace_list/contract.py:8
+    // class NftMarketplaceList(ARC4Contract):
+    txna ApplicationArgs 1
+    btoi
+    // smart_contracts/nft_marketplace_list/contract.py:13
+    // @arc4.abimethod()
+    callsub add_marketplace_to_list
+    byte 0x151f7c75
+    swap
+    concat
+    log
+    int 1
+    return
+
+main_read_marketplace_list_route@5:
+    // smart_contracts/nft_marketplace_list/contract.py:18
+    // @arc4.abimethod(readonly=True)
+    txn OnCompletion
+    !
+    assert // OnCompletion is NoOp
+    txn ApplicationID
+    assert // is not creating
+    callsub read_marketplace_list
+    byte 0x151f7c75
+    swap
+    concat
+    log
+    int 1
+    return
+
+main_bare_routing@8:
+    // smart_contracts/nft_marketplace_list/contract.py:8
+    // class NftMarketplaceList(ARC4Contract):
+    txn OnCompletion
+    !
+    assert // reject transaction
+    txn ApplicationID
+    !
+    assert // is creating
+    int 1
+    return
+
+
+// smart_contracts.nft_marketplace_list.contract.NftMarketplaceList.add_marketplace_to_list(app_id: uint64) -> bytes:
+add_marketplace_to_list:
+    // smart_contracts/nft_marketplace_list/contract.py:13-14
+    // @arc4.abimethod()
+    // def add_marketplace_to_list(self, app_id: UInt64) -> app_id_list:
+    proto 1 1
+    // smart_contracts/nft_marketplace_list/contract.py:15
+    // self.marketplace_list.append(arc4.UInt64(app_id))
+    int 0
+    byte "marketplace_list"
+    app_global_get_ex
+    assert // check marketplace_list exists
+    extract 2 0
+    frame_dig -1
+    itob
+    concat
+    dup
+    len
+    int 8
+    /
+    itob
+    extract 6 0
+    swap
+    concat
+    byte "marketplace_list"
+    swap
+    app_global_put
+    // smart_contracts/nft_marketplace_list/contract.py:16
+    // return self.marketplace_list
+    int 0
+    byte "marketplace_list"
+    app_global_get_ex
+    assert // check marketplace_list exists
+    retsub
+
+
+// smart_contracts.nft_marketplace_list.contract.NftMarketplaceList.read_marketplace_list() -> bytes:
+read_marketplace_list:
+    // smart_contracts/nft_marketplace_list/contract.py:18-19
+    // @arc4.abimethod(readonly=True)
+    // def read_marketplace_list(self) -> app_id_list:
+    proto 0 1
+    // smart_contracts/nft_marketplace_list/contract.py:20
+    // return self.marketplace_list
+    int 0
+    byte "marketplace_list"
+    app_global_get_ex
+    assert // check marketplace_list exists
+    retsub
+
+
+// smart_contracts.nft_marketplace_list.contract.NftMarketplaceList.__init__() -> void:
+__init__:
+    // smart_contracts/nft_marketplace_list/contract.py:10
+    // def __init__(self) -> None:
+    proto 0 0
+    // smart_contracts/nft_marketplace_list/contract.py:11
+    // self.marketplace_list = app_id_list()
+    byte "marketplace_list"
+    byte 0x0000
+    app_global_put
+    retsub

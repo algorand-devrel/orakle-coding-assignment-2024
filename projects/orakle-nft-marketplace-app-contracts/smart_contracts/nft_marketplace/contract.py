@@ -49,29 +49,6 @@ class NftMarketplace(arc4.ARC4Contract):
         self.bootstrapped = False
 
     """
-    문제 2
-    set_price 메서드를 구현하세요.
-
-    set_price 메서드는 판매할 에셋의 단가를 변경하는 메서드입니다.
-
-    set_price 메서드는 호출 시 아래 사항들을 만족해야 합니다.
-    1. 메서드 호출자가 앱의 생성자인지 체크해야합니다.
-    2. 이 메서드 호출 시 bootstrapped 상태가 True인지 체크해야합니다. 즉 부트스트랩이 된 상태에서만(단기 초기 설정이 완료된 상태) 단가를 변경할 수 있습니다.
-
-    set_price 메서드는 아래 기능들을 수행합니다.
-    1. unitary_price 글로벌 상태를 업데이트합니다. 
-
-    힌트 1: https://algorandfoundation.github.io/puya/lg-errors.html#assertions
-    힌트 2: https://github.com/algorandfoundation/puya/blob/11843f6bc4bb6e4c56ac53e3980f74df69d07397/examples/auction/contract.py#L32 
-    """
-
-    @arc4.abimethod
-    def set_price(self, unitary_price: UInt64) -> None:
-        assert Txn.sender == Global.creator_address
-
-        self.unitary_price = unitary_price
-
-    """
     문제 3
     bootstrap 메서드를 구현하세요.
 
@@ -145,6 +122,7 @@ class NftMarketplace(arc4.ARC4Contract):
         quantity: UInt64,
     ) -> None:
         assert self.unitary_price != UInt64(0)
+        assert buyer_txn.sender != Global.creator_address
 
         assert buyer_txn.sender == Txn.sender
         assert buyer_txn.receiver == Global.current_application_address
@@ -184,18 +162,19 @@ class NftMarketplace(arc4.ARC4Contract):
     """
 
     @arc4.abimethod(allow_actions=["DeleteApplication"])
-    def withdraw_and_delete(self) -> None:
+    def withdraw_and_delete(self) -> UInt64:
         assert Txn.sender == Global.creator_address
+        contract_balance = Global.current_application_address.balance
 
         itxn.AssetTransfer(
             xfer_asset=self.asset_id,
             asset_receiver=Global.creator_address,
-            asset_amount=0,
             asset_close_to=Global.creator_address,
         ).submit()
 
         itxn.Payment(
             receiver=Global.creator_address,
-            amount=0,
             close_remainder_to=Global.creator_address,
         ).submit()
+
+        return contract_balance

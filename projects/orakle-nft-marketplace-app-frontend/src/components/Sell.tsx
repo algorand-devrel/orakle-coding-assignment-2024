@@ -1,32 +1,33 @@
 import * as algokit from '@algorandfoundation/algokit-utils'
 import { useWallet } from '@txnlab/use-wallet'
-import algosdk from 'algosdk'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
-import { getAlgodConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
+import { NftMarketplaceClient } from '../contracts/NftMarketplace'
+import { NftMarketplaceListClient } from '../contracts/NftMarketplaceList'
+import * as methods from '../methods'
 
 interface SellInterface {
+  algorandObject: {
+    algorand: algokit.AlgorandClient
+    nftmClient: NftMarketplaceClient
+    listClient: NftMarketplaceListClient
+  }
+  setAppId: (id: number) => void
   openModal: boolean
   setModalState: (value: boolean) => void
 }
 
 // TODO: Implement sell tx call
-const Sell = ({ openModal, setModalState }: SellInterface) => {
+const Sell = ({ algorandObject, setAppId, openModal, setModalState }: SellInterface) => {
   const [loading, setLoading] = useState<boolean>(false)
-  const [receiverAddress, setReceiverAddress] = useState<string>('')
-
-  const algodConfig = getAlgodConfigFromViteEnvironment()
-  const algodClient = algokit.getAlgoClient({
-    server: algodConfig.server,
-    port: algodConfig.port,
-    token: algodConfig.token,
-  })
+  const [assetIdToSell, setAssetIdToSell] = useState<string>('')
+  const [unitaryPrice, setUnitaryPrice] = useState<string>('')
 
   const { enqueueSnackbar } = useSnackbar()
 
-  const { signer, activeAddress, signTransactions, sendTransactions } = useWallet()
+  const { signer, activeAddress } = useWallet()
 
-  const handleSubmitAlgo = async () => {
+  const handleMethodCall = async () => {
     setLoading(true)
 
     if (!signer || !activeAddress) {
@@ -34,58 +35,57 @@ const Sell = ({ openModal, setModalState }: SellInterface) => {
       return
     }
 
-    const suggestedParams = await algodClient.getTransactionParams().do()
-
-    const transaction = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
-      from: activeAddress,
-      to: receiverAddress,
-      amount: 1e6,
-      suggestedParams,
-    })
-
-    const encodedTransaction = algosdk.encodeUnsignedTransaction(transaction)
-
-    const signedTransactions = await signTransactions([encodedTransaction])
-
-    const waitRoundsToConfirm = 4
-
     try {
-      enqueueSnackbar('Sending transaction...', { variant: 'info' })
-      const { id } = await sendTransactions(signedTransactions, waitRoundsToConfirm)
-      enqueueSnackbar(`Transaction sent: ${id}`, { variant: 'success' })
-      setReceiverAddress('')
-    } catch (e) {
-      enqueueSnackbar('Failed to send transaction', { variant: 'error' })
+      await methods.create(
+        algorandObject.algorand,
+        algorandObject.nftmClient,
+        algorandObject.listClient,
+        activeAddress,
+        BigInt(unitaryPrice!),
+        10n,
+        BigInt(assetIdToSell!),
+        setAppId,
+      )()
+    } catch (error) {
+      enqueueSnackbar('Error while creating the listing', { variant: 'error' })
+      setLoading(false)
+      return
     }
-
+    enqueueSnackbar('Listing created successfully', { variant: 'success' })
     setLoading(false)
   }
 
   return (
     <dialog id="Sell_modal" className={`modal ${openModal ? 'modal-open' : ''} bg-slate-200`}>
       <form method="dialog" className="modal-box">
-        <h3 className="font-bold text-lg">Sell NFT</h3>
+        <h3 className="font-bold text-lg">Create a listing</h3>
         <br />
         <input
-          type="text"
+          type="number"
           data-test-id="asset-id"
-          placeholder="Provide asset id"
+          placeholder="Enter the NFT asset ID for sale"
           className="input input-bordered w-full"
-          value={receiverAddress}
+          value={assetIdToSell}
           onChange={(e) => {
-            setReceiverAddress(e.target.value)
+            setAssetIdToSell(e.target.value)
+          }}
+        />
+        <input
+          type="number"
+          data-test-id="unitary-price"
+          placeholder="Enter the NFT price for sale"
+          className="input input-bordered w-full"
+          value={unitaryPrice}
+          onChange={(e) => {
+            setUnitaryPrice(e.target.value)
           }}
         />
         <div className="modal-action ">
           <button className="btn" onClick={() => setModalState(false)}>
             Close
           </button>
-          <button
-            data-test-id="send-algo"
-            className={`btn ${receiverAddress.length === 58 ? '' : 'btn-disabled'} lo`}
-            onClick={handleSubmitAlgo}
-          >
-            {loading ? <span className="loading loading-spinner" /> : 'Send 1 Algo'}
+          <button data-test-id="list-nft" className="btn" onClick={handleMethodCall}>
+            {loading ? <span className="loading loading-spinner" /> : 'publish'}
           </button>
         </div>
       </form>

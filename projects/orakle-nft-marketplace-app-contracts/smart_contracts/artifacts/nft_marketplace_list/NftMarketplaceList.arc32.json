@@ -1,0 +1,72 @@
+{
+    "hints": {
+        "add_marketplace_to_list(uint64)uint64[]": {
+            "call_config": {
+                "no_op": "CALL"
+            }
+        },
+        "read_marketplace_list()uint64[]": {
+            "read_only": true,
+            "call_config": {
+                "no_op": "CALL"
+            }
+        }
+    },
+    "source": {
+        "approval": "I3ByYWdtYSB2ZXJzaW9uIDEwCgpzbWFydF9jb250cmFjdHMubmZ0X21hcmtldHBsYWNlX2xpc3QuY29udHJhY3QuTmZ0TWFya2V0cGxhY2VMaXN0LmFwcHJvdmFsX3Byb2dyYW06CiAgICB0eG4gQXBwbGljYXRpb25JRAogICAgYm56IG1haW5fZW50cnlwb2ludEAyCiAgICBjYWxsc3ViIF9faW5pdF9fCgptYWluX2VudHJ5cG9pbnRAMjoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9uZnRfbWFya2V0cGxhY2VfbGlzdC9jb250cmFjdC5weTo4CiAgICAvLyBjbGFzcyBOZnRNYXJrZXRwbGFjZUxpc3QoQVJDNENvbnRyYWN0KToKICAgIHR4biBOdW1BcHBBcmdzCiAgICBieiBtYWluX2JhcmVfcm91dGluZ0A4CiAgICBtZXRob2QgImFkZF9tYXJrZXRwbGFjZV90b19saXN0KHVpbnQ2NCl1aW50NjRbXSIKICAgIG1ldGhvZCAicmVhZF9tYXJrZXRwbGFjZV9saXN0KCl1aW50NjRbXSIKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDAKICAgIG1hdGNoIG1haW5fYWRkX21hcmtldHBsYWNlX3RvX2xpc3Rfcm91dGVANCBtYWluX3JlYWRfbWFya2V0cGxhY2VfbGlzdF9yb3V0ZUA1CiAgICBlcnIgLy8gcmVqZWN0IHRyYW5zYWN0aW9uCgptYWluX2FkZF9tYXJrZXRwbGFjZV90b19saXN0X3JvdXRlQDQ6CiAgICAvLyBzbWFydF9jb250cmFjdHMvbmZ0X21hcmtldHBsYWNlX2xpc3QvY29udHJhY3QucHk6MTMKICAgIC8vIEBhcmM0LmFiaW1ldGhvZCgpCiAgICB0eG4gT25Db21wbGV0aW9uCiAgICAhCiAgICBhc3NlcnQgLy8gT25Db21wbGV0aW9uIGlzIE5vT3AKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBhc3NlcnQgLy8gaXMgbm90IGNyZWF0aW5nCiAgICAvLyBzbWFydF9jb250cmFjdHMvbmZ0X21hcmtldHBsYWNlX2xpc3QvY29udHJhY3QucHk6OAogICAgLy8gY2xhc3MgTmZ0TWFya2V0cGxhY2VMaXN0KEFSQzRDb250cmFjdCk6CiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAxCiAgICBidG9pCiAgICAvLyBzbWFydF9jb250cmFjdHMvbmZ0X21hcmtldHBsYWNlX2xpc3QvY29udHJhY3QucHk6MTMKICAgIC8vIEBhcmM0LmFiaW1ldGhvZCgpCiAgICBjYWxsc3ViIGFkZF9tYXJrZXRwbGFjZV90b19saXN0CiAgICBieXRlIDB4MTUxZjdjNzUKICAgIHN3YXAKICAgIGNvbmNhdAogICAgbG9nCiAgICBpbnQgMQogICAgcmV0dXJuCgptYWluX3JlYWRfbWFya2V0cGxhY2VfbGlzdF9yb3V0ZUA1OgogICAgLy8gc21hcnRfY29udHJhY3RzL25mdF9tYXJrZXRwbGFjZV9saXN0L2NvbnRyYWN0LnB5OjE4CiAgICAvLyBAYXJjNC5hYmltZXRob2QocmVhZG9ubHk9VHJ1ZSkKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgTm9PcAogICAgdHhuIEFwcGxpY2F0aW9uSUQKICAgIGFzc2VydCAvLyBpcyBub3QgY3JlYXRpbmcKICAgIGNhbGxzdWIgcmVhZF9tYXJrZXRwbGFjZV9saXN0CiAgICBieXRlIDB4MTUxZjdjNzUKICAgIHN3YXAKICAgIGNvbmNhdAogICAgbG9nCiAgICBpbnQgMQogICAgcmV0dXJuCgptYWluX2JhcmVfcm91dGluZ0A4OgogICAgLy8gc21hcnRfY29udHJhY3RzL25mdF9tYXJrZXRwbGFjZV9saXN0L2NvbnRyYWN0LnB5OjgKICAgIC8vIGNsYXNzIE5mdE1hcmtldHBsYWNlTGlzdChBUkM0Q29udHJhY3QpOgogICAgdHhuIE9uQ29tcGxldGlvbgogICAgIQogICAgYXNzZXJ0IC8vIHJlamVjdCB0cmFuc2FjdGlvbgogICAgdHhuIEFwcGxpY2F0aW9uSUQKICAgICEKICAgIGFzc2VydCAvLyBpcyBjcmVhdGluZwogICAgaW50IDEKICAgIHJldHVybgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5uZnRfbWFya2V0cGxhY2VfbGlzdC5jb250cmFjdC5OZnRNYXJrZXRwbGFjZUxpc3QuYWRkX21hcmtldHBsYWNlX3RvX2xpc3QoYXBwX2lkOiB1aW50NjQpIC0+IGJ5dGVzOgphZGRfbWFya2V0cGxhY2VfdG9fbGlzdDoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9uZnRfbWFya2V0cGxhY2VfbGlzdC9jb250cmFjdC5weToxMy0xNAogICAgLy8gQGFyYzQuYWJpbWV0aG9kKCkKICAgIC8vIGRlZiBhZGRfbWFya2V0cGxhY2VfdG9fbGlzdChzZWxmLCBhcHBfaWQ6IFVJbnQ2NCkgLT4gYXBwX2lkX2xpc3Q6CiAgICBwcm90byAxIDEKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9uZnRfbWFya2V0cGxhY2VfbGlzdC9jb250cmFjdC5weToxNQogICAgLy8gc2VsZi5tYXJrZXRwbGFjZV9saXN0LmFwcGVuZChhcmM0LlVJbnQ2NChhcHBfaWQpKQogICAgaW50IDAKICAgIGJ5dGUgIm1hcmtldHBsYWNlX2xpc3QiCiAgICBhcHBfZ2xvYmFsX2dldF9leAogICAgYXNzZXJ0IC8vIGNoZWNrIG1hcmtldHBsYWNlX2xpc3QgZXhpc3RzCiAgICBleHRyYWN0IDIgMAogICAgZnJhbWVfZGlnIC0xCiAgICBpdG9iCiAgICBjb25jYXQKICAgIGR1cAogICAgbGVuCiAgICBpbnQgOAogICAgLwogICAgaXRvYgogICAgZXh0cmFjdCA2IDAKICAgIHN3YXAKICAgIGNvbmNhdAogICAgYnl0ZSAibWFya2V0cGxhY2VfbGlzdCIKICAgIHN3YXAKICAgIGFwcF9nbG9iYWxfcHV0CiAgICAvLyBzbWFydF9jb250cmFjdHMvbmZ0X21hcmtldHBsYWNlX2xpc3QvY29udHJhY3QucHk6MTYKICAgIC8vIHJldHVybiBzZWxmLm1hcmtldHBsYWNlX2xpc3QKICAgIGludCAwCiAgICBieXRlICJtYXJrZXRwbGFjZV9saXN0IgogICAgYXBwX2dsb2JhbF9nZXRfZXgKICAgIGFzc2VydCAvLyBjaGVjayBtYXJrZXRwbGFjZV9saXN0IGV4aXN0cwogICAgcmV0c3ViCgoKLy8gc21hcnRfY29udHJhY3RzLm5mdF9tYXJrZXRwbGFjZV9saXN0LmNvbnRyYWN0Lk5mdE1hcmtldHBsYWNlTGlzdC5yZWFkX21hcmtldHBsYWNlX2xpc3QoKSAtPiBieXRlczoKcmVhZF9tYXJrZXRwbGFjZV9saXN0OgogICAgLy8gc21hcnRfY29udHJhY3RzL25mdF9tYXJrZXRwbGFjZV9saXN0L2NvbnRyYWN0LnB5OjE4LTE5CiAgICAvLyBAYXJjNC5hYmltZXRob2QocmVhZG9ubHk9VHJ1ZSkKICAgIC8vIGRlZiByZWFkX21hcmtldHBsYWNlX2xpc3Qoc2VsZikgLT4gYXBwX2lkX2xpc3Q6CiAgICBwcm90byAwIDEKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9uZnRfbWFya2V0cGxhY2VfbGlzdC9jb250cmFjdC5weToyMAogICAgLy8gcmV0dXJuIHNlbGYubWFya2V0cGxhY2VfbGlzdAogICAgaW50IDAKICAgIGJ5dGUgIm1hcmtldHBsYWNlX2xpc3QiCiAgICBhcHBfZ2xvYmFsX2dldF9leAogICAgYXNzZXJ0IC8vIGNoZWNrIG1hcmtldHBsYWNlX2xpc3QgZXhpc3RzCiAgICByZXRzdWIKCgovLyBzbWFydF9jb250cmFjdHMubmZ0X21hcmtldHBsYWNlX2xpc3QuY29udHJhY3QuTmZ0TWFya2V0cGxhY2VMaXN0Ll9faW5pdF9fKCkgLT4gdm9pZDoKX19pbml0X186CiAgICAvLyBzbWFydF9jb250cmFjdHMvbmZ0X21hcmtldHBsYWNlX2xpc3QvY29udHJhY3QucHk6MTAKICAgIC8vIGRlZiBfX2luaXRfXyhzZWxmKSAtPiBOb25lOgogICAgcHJvdG8gMCAwCiAgICAvLyBzbWFydF9jb250cmFjdHMvbmZ0X21hcmtldHBsYWNlX2xpc3QvY29udHJhY3QucHk6MTEKICAgIC8vIHNlbGYubWFya2V0cGxhY2VfbGlzdCA9IGFwcF9pZF9saXN0KCkKICAgIGJ5dGUgIm1hcmtldHBsYWNlX2xpc3QiCiAgICBieXRlIDB4MDAwMAogICAgYXBwX2dsb2JhbF9wdXQKICAgIHJldHN1Ygo=",
+        "clear": "I3ByYWdtYSB2ZXJzaW9uIDEwCgpzbWFydF9jb250cmFjdHMubmZ0X21hcmtldHBsYWNlX2xpc3QuY29udHJhY3QuTmZ0TWFya2V0cGxhY2VMaXN0LmNsZWFyX3N0YXRlX3Byb2dyYW06CiAgICAvLyBzbWFydF9jb250cmFjdHMvbmZ0X21hcmtldHBsYWNlX2xpc3QvY29udHJhY3QucHk6OAogICAgLy8gY2xhc3MgTmZ0TWFya2V0cGxhY2VMaXN0KEFSQzRDb250cmFjdCk6CiAgICBpbnQgMQogICAgcmV0dXJuCg=="
+    },
+    "state": {
+        "global": {
+            "num_byte_slices": 1,
+            "num_uints": 0
+        },
+        "local": {
+            "num_byte_slices": 0,
+            "num_uints": 0
+        }
+    },
+    "schema": {
+        "global": {
+            "declared": {
+                "marketplace_list": {
+                    "type": "bytes",
+                    "key": "marketplace_list"
+                }
+            },
+            "reserved": {}
+        },
+        "local": {
+            "declared": {},
+            "reserved": {}
+        }
+    },
+    "contract": {
+        "name": "NftMarketplaceList",
+        "methods": [
+            {
+                "name": "add_marketplace_to_list",
+                "args": [
+                    {
+                        "type": "uint64",
+                        "name": "app_id"
+                    }
+                ],
+                "returns": {
+                    "type": "uint64[]"
+                }
+            },
+            {
+                "name": "read_marketplace_list",
+                "args": [],
+                "returns": {
+                    "type": "uint64[]"
+                }
+            }
+        ],
+        "networks": {}
+    },
+    "bare_call_config": {
+        "no_op": "CREATE"
+    }
+}
