@@ -1,24 +1,17 @@
-import * as algokit from '@algorandfoundation/algokit-utils'
 import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { NftMarketplaceClient } from '../contracts/NftMarketplace'
-import { NftMarketplaceListClient } from '../contracts/NftMarketplaceList'
+import { algorandObject } from '../interfaces/algorandObject'
 import * as methods from '../methods'
 
 interface SellInterface {
-  algorandObject: {
-    algorand: algokit.AlgorandClient
-    nftmClient: NftMarketplaceClient
-    listClient: NftMarketplaceListClient
-  }
-  setAppId: (id: number) => void
+  algorandObject: algorandObject
   openModal: boolean
   setModalState: (value: boolean) => void
 }
 
-// TODO: Implement sell tx call
-const Sell = ({ algorandObject, setAppId, openModal, setModalState }: SellInterface) => {
+const Sell = ({ algorandObject, openModal, setModalState }: SellInterface) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [assetIdToSell, setAssetIdToSell] = useState<string>('')
   const [unitaryPrice, setUnitaryPrice] = useState<string>('')
@@ -35,16 +28,24 @@ const Sell = ({ algorandObject, setAppId, openModal, setModalState }: SellInterf
       return
     }
 
+    const nftmClient = new NftMarketplaceClient(
+      {
+        resolveBy: 'id',
+        id: 0,
+        sender: { addr: activeAddress!, signer },
+      },
+      algorandObject.algorand.client.algod,
+    )
+
     try {
       await methods.create(
         algorandObject.algorand,
-        algorandObject.nftmClient,
+        nftmClient,
         algorandObject.listClient,
         activeAddress,
         BigInt(unitaryPrice!) * BigInt(1e6),
         10n,
         BigInt(assetIdToSell!),
-        setAppId,
       )()
     } catch (error) {
       enqueueSnackbar('Error while creating the listing', { variant: 'error' })

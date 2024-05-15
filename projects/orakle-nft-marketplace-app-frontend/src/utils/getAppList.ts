@@ -5,9 +5,9 @@ import { appDetails } from '../interfaces/appDetails'
 
 export const getAppList = async (algorandObject: algorandObject, activeAddress: string, signer: TransactionSigner) => {
   let appList: bigint[] = []
+
   const list = await algorandObject.listClient.readMarketplaceList({})
   appList = list.return!
-  console.log('appList', appList)
 
   const appDetailsList: appDetails[] = []
   for (const appId of appList) {

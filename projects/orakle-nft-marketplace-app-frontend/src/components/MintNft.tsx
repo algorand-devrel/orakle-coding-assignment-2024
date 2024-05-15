@@ -1,21 +1,16 @@
-import * as algokit from '@algorandfoundation/algokit-utils'
 import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
-import { NftMarketplaceClient } from '../contracts/NftMarketplace'
+import { algorandObject } from '../interfaces/algorandObject'
 
 //로컬 네트워크 테스트용 nft 민팅 컴포넌트
 
 interface BuyInterface {
-  algorandObject: {
-    algorand: algokit.AlgorandClient
-    nftmClient: NftMarketplaceClient
-  }
+  algorandObject: algorandObject
   openModal: boolean
   setModalState: (value: boolean) => void
 }
 
-// TODO: Implement buy tx call
 const MintNft = ({ algorandObject, openModal, setModalState }: BuyInterface) => {
   const [loading, setLoading] = useState<boolean>(false)
 

@@ -2,16 +2,6 @@ import { useState } from 'react'
 import { algorandObject } from '../interfaces/algorandObject'
 import Buy from './Buy'
 
-// interface appDetails {
-//   appId: bigint
-//   unitaryPrice: bigint
-//   assetId: bigint
-//   assetName: string
-//   imageUrl: string
-//   remainingQty: bigint
-//   totalQty: bigint
-// }
-
 interface NftCardProps {
   appId: bigint
   unitaryPrice: bigint

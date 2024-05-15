@@ -2,7 +2,6 @@ import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { NftMarketplaceClient } from '../contracts/NftMarketplace'
-import { NftMarketplaceListClient } from '../contracts/NftMarketplaceList'
 import { algorandObject } from '../interfaces/algorandObject'
 import { appDetails } from '../interfaces/appDetails'
 import * as methods from '../methods'
@@ -12,21 +11,11 @@ interface WithdrawInterface {
   openModal: boolean
   appDetailsList: appDetails[]
   setModalState: (value: boolean) => void
-  setAppId: (id: number) => void
   setTotalProfit: (value: bigint) => void
-  listClient: NftMarketplaceListClient
 }
 
 // TODO: Implement withdraw tx call
-const Withdraw = ({
-  algorandObject,
-  openModal,
-  appDetailsList,
-  setModalState,
-  setAppId,
-  setTotalProfit,
-  listClient,
-}: WithdrawInterface) => {
+const Withdraw = ({ algorandObject, openModal, appDetailsList, setModalState, setTotalProfit }: WithdrawInterface) => {
   const [loading, setLoading] = useState<boolean>(false)
 
   const { enqueueSnackbar } = useSnackbar()
@@ -66,7 +55,7 @@ const Withdraw = ({
     }
 
     try {
-      await methods.deleteApp(nftmClient, listClient, Number(myAppId), setAppId, setTotalProfit)()
+      await methods.deleteApp(nftmClient, algorandObject.listClient, Number(myAppId), setTotalProfit)()
     } catch (error) {
       enqueueSnackbar('Error while withdrawing profits', { variant: 'error' })
       setLoading(false)

@@ -2,11 +2,6 @@ import * as algokit from '@algorandfoundation/algokit-utils'
 import { NftMarketplaceClient } from './contracts/NftMarketplace'
 import { NftMarketplaceListClient } from './contracts/NftMarketplaceList'
 
-/**
- * Create the application and opt it into the desired asset
- */
-
-// const = //marketplace contract list app id
 export function create(
   algorand: algokit.AlgorandClient,
   nftmClient: NftMarketplaceClient,
@@ -15,12 +10,10 @@ export function create(
   unitaryPrice: bigint,
   quantity: bigint,
   assetBeingSold: bigint,
-  setAppId: (id: number) => void,
 ) {
   return async () => {
     const createResult = await nftmClient.create.bare()
     console.log('App Id: ', createResult.appId)
-    // 마켓플레이스 스마트 계약 기록하는 앱에 앱 아이디 기록하기
 
     const listResult = await listClient.addMarketplaceToList({ appId: createResult.appId })
     console.log('List Result: ', listResult.return)
@@ -42,8 +35,6 @@ export function create(
       amount: quantity,
     })
     console.log('asset transfer done')
-
-    setAppId(Number(createResult.appId))
   }
 }
 
@@ -76,7 +67,6 @@ export function deleteApp(
   nftmClient: NftMarketplaceClient,
   listClient: NftMarketplaceListClient,
   appId: number,
-  setAppId: (id: number) => void,
   setTotalProfit: (profit: bigint) => void,
 ) {
   return async () => {
@@ -85,14 +75,6 @@ export function deleteApp(
     console.log('Total Profit: ', totalProfit.return)
 
     listClient.removeMarketplaceFromList({ appId: appId })
-    setAppId(0)
     setTotalProfit(totalProfit.return!)
-  }
-}
-
-export function readMarketplaceList(listClient: NftMarketplaceListClient, setAppList: (list: bigint[]) => void) {
-  return async () => {
-    const result = await listClient.readMarketplaceList({})
-    setAppList(result.return!)
   }
 }

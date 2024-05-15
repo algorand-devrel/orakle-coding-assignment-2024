@@ -10,12 +10,11 @@ import Withdraw from './Withdraw'
 
 interface HeaderProps {
   algorandObject: algorandObject
-  setAppId: (id: number) => void
   appDetailsList: appDetails[]
   isSelling: boolean
 }
 
-export function Header({ algorandObject, setAppId, appDetailsList, isSelling }: HeaderProps) {
+export function Header({ algorandObject, appDetailsList, isSelling }: HeaderProps) {
   const { activeAddress } = useWallet()
 
   const [openWalletModal, setOpenWalletModal] = useState(false)
@@ -57,15 +56,13 @@ export function Header({ algorandObject, setAppId, appDetailsList, isSelling }: 
         {activeAddress ? ellipseAddress(activeAddress) : 'Connect Wallet'}
       </button>
       <ConnectWallet openModal={openWalletModal} closeModal={toggleWalletModal} />
-      <Sell algorandObject={algorandObject} setAppId={setAppId} openModal={openSellModal} setModalState={setOpenSellModal} />
+      <Sell algorandObject={algorandObject} openModal={openSellModal} setModalState={setOpenSellModal} />
       <Withdraw
         algorandObject={algorandObject}
-        setAppId={setAppId}
         setTotalProfit={setTotalProfit}
         appDetailsList={appDetailsList}
         openModal={openWithdrawModal}
         setModalState={setOpenWithdrawModal}
-        listClient={algorandObject.listClient}
       />
       <MintNft algorandObject={algorandObject} openModal={openMintModal} setModalState={setOpenMintModal} />
     </div>
