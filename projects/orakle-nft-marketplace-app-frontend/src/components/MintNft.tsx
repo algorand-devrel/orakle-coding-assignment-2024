@@ -1,22 +1,23 @@
 import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
-import { algorandObject } from '../interfaces/algorandObject'
+import { useAtomValue } from 'jotai'
+import { algorandClientAtom } from '../atoms'
 
 //로컬 네트워크 테스트용 nft 민팅 컴포넌트
 
 interface BuyInterface {
-  algorandObject: algorandObject
   openModal: boolean
   setModalState: (value: boolean) => void
 }
 
-const MintNft = ({ algorandObject, openModal, setModalState }: BuyInterface) => {
+const MintNft = ({ openModal, setModalState }: BuyInterface) => {
   const [loading, setLoading] = useState<boolean>(false)
 
   const { enqueueSnackbar } = useSnackbar()
 
   const { signer, activeAddress } = useWallet()
+  const algorandClient = useAtomValue(algorandClientAtom)
 
   const handleMintNft = async () => {
     setLoading(true)
@@ -26,7 +27,7 @@ const MintNft = ({ algorandObject, openModal, setModalState }: BuyInterface) => 
       return
     }
 
-    const result = await algorandObject.algorand.send.assetCreate({
+    const result = await algorandClient?.send.assetCreate({
       sender: activeAddress,
       assetName: 'Orakle NFT',
       unitName: 'NFT',
@@ -34,7 +35,7 @@ const MintNft = ({ algorandObject, openModal, setModalState }: BuyInterface) => 
       decimals: 1,
       url: `ipfs://QmV1dyum28Y4Nhz6wVRTgb1nc6CwqHUwSvkyji1sPGzt6X/#arc3`,
     })
-    console.log(result.confirmation.assetIndex!)
+    console.log(result?.confirmation.assetIndex)
 
     setLoading(false)
   }

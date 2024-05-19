@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { algorandObject } from '../interfaces/algorandObject'
 import Buy from './Buy'
 
 interface NftCardProps {
@@ -10,10 +9,9 @@ interface NftCardProps {
   imageUrl: string
   remainingQty: bigint
   totalQty: bigint
-  algorandObject: algorandObject
 }
 
-export function NftCard({ appId, unitaryPrice, assetId, assetName, imageUrl, remainingQty, totalQty, algorandObject }: NftCardProps) {
+export function NftCard({ appId, unitaryPrice, assetName, imageUrl, remainingQty, totalQty }: NftCardProps) {
   const [openModal, setOpenModal] = useState(false)
   const toggleModal = () => {
     setOpenModal((prev) => !prev)
@@ -42,13 +40,7 @@ export function NftCard({ appId, unitaryPrice, assetId, assetName, imageUrl, rem
           <div className="w-full p-2 text-white bg-teal-900 group-hover:bg-teal-100 group-disabled:bg-gray-300">Buy</div>
         </div>
       </button>
-      <Buy
-        openModal={openModal}
-        setModalState={setOpenModal}
-        currentAppId={appId}
-        unitaryPrice={unitaryPrice}
-        algorandObject={algorandObject}
-      />
+      <Buy openModal={openModal} setModalState={setOpenModal} currentAppId={appId} unitaryPrice={unitaryPrice} />
     </>
   )
 }

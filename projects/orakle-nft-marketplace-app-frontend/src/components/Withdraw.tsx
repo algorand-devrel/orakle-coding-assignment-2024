@@ -1,32 +1,36 @@
+import { useState } from 'react'
+import { useAtomValue } from 'jotai'
 import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
-import { useState } from 'react'
 import { NftMarketplaceClient } from '../contracts/NftMarketplace'
-import { algorandObject } from '../interfaces/algorandObject'
-import { appDetails } from '../interfaces/appDetails'
+import { algorandClientAtom, appDetailsListAtom, listClientAtom } from '../atoms'
 import * as methods from '../methods'
 
 interface WithdrawInterface {
-  algorandObject: algorandObject
   openModal: boolean
-  appDetailsList: appDetails[]
   setModalState: (value: boolean) => void
   setTotalProfit: (value: bigint) => void
 }
 
-// TODO: Implement withdraw tx call
-const Withdraw = ({ algorandObject, openModal, appDetailsList, setModalState, setTotalProfit }: WithdrawInterface) => {
+const Withdraw = ({ openModal, setModalState, setTotalProfit }: WithdrawInterface) => {
   const [loading, setLoading] = useState<boolean>(false)
 
   const { enqueueSnackbar } = useSnackbar()
 
   const { signer, activeAddress } = useWallet()
+  const algorandClient = useAtomValue(algorandClientAtom)
+  const listClient = useAtomValue(listClientAtom)
+  const appDetailsList = useAtomValue(appDetailsListAtom)
 
   const handleWithdraw = async () => {
     setLoading(true)
 
     if (!signer || !activeAddress) {
       enqueueSnackbar('Please connect wallet first', { variant: 'warning' })
+      return
+    }
+
+    if (!algorandClient || !listClient) {
       return
     }
 
@@ -41,7 +45,7 @@ const Withdraw = ({ algorandObject, openModal, appDetailsList, setModalState, se
             id: appDetails.appId,
             sender: { addr: activeAddress!, signer },
           },
-          algorandObject.algorand.client.algod,
+          algorandClient.client.algod,
         )
         myAppId = appDetails.appId
         break
@@ -55,7 +59,7 @@ const Withdraw = ({ algorandObject, openModal, appDetailsList, setModalState, se
     }
 
     try {
-      await methods.deleteApp(nftmClient, algorandObject.listClient, Number(myAppId), setTotalProfit)()
+      await methods.deleteApp(nftmClient, listClient, Number(myAppId), setTotalProfit)()
     } catch (error) {
       enqueueSnackbar('Error while withdrawing profits', { variant: 'error' })
       setLoading(false)

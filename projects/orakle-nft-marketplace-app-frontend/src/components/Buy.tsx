@@ -1,27 +1,27 @@
+import { useState } from 'react'
+import { useAtomValue } from 'jotai'
 import { useWallet } from '@txnlab/use-wallet'
 import algosdk from 'algosdk'
 import { useSnackbar } from 'notistack'
-import { useState } from 'react'
 import { NftMarketplaceClient } from '../contracts/NftMarketplace'
-import { algorandObject } from '../interfaces/algorandObject'
 import * as methods from '../methods'
+import { algorandClientAtom } from '../atoms'
 
 interface BuyInterface {
   openModal: boolean
   setModalState: (value: boolean) => void
   currentAppId: bigint
   unitaryPrice: bigint
-  algorandObject: algorandObject
 }
 
-// TODO: Implement buy tx call
-const Buy = ({ openModal, setModalState, currentAppId, unitaryPrice, algorandObject }: BuyInterface) => {
+const Buy = ({ openModal, setModalState, currentAppId, unitaryPrice }: BuyInterface) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [quantity, setQuantity] = useState<string>('')
 
   const { enqueueSnackbar } = useSnackbar()
 
   const { signer, activeAddress } = useWallet()
+  const algorandClient = useAtomValue(algorandClientAtom)
 
   const handleBuyNft = async () => {
     setLoading(true)
@@ -30,18 +30,23 @@ const Buy = ({ openModal, setModalState, currentAppId, unitaryPrice, algorandObj
       enqueueSnackbar('Please connect wallet first', { variant: 'warning' })
       return
     }
+
+    if (!algorandClient) {
+      return
+    }
+
     const nftmClient = new NftMarketplaceClient(
       {
         resolveBy: 'id',
         id: currentAppId,
         sender: { addr: activeAddress!, signer },
       },
-      algorandObject.algorand.client.algod,
+      algorandClient.client.algod,
     )
 
-    const appAddress = await algosdk.getApplicationAddress(currentAppId)
+    const appAddress = algosdk.getApplicationAddress(currentAppId)
     try {
-      await methods.buy(algorandObject.algorand, nftmClient, activeAddress, appAddress, BigInt(quantity), unitaryPrice)()
+      await methods.buy(algorandClient, nftmClient, activeAddress, appAddress, BigInt(quantity), unitaryPrice)()
     } catch (error) {
       enqueueSnackbar('Error while buying the NFT', { variant: 'error' })
       setLoading(false)

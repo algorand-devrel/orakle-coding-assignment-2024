@@ -1,17 +1,17 @@
+import { useState } from 'react'
+import { useAtomValue } from 'jotai'
 import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
-import { useState } from 'react'
 import { NftMarketplaceClient } from '../contracts/NftMarketplace'
-import { algorandObject } from '../interfaces/algorandObject'
+import { algorandClientAtom, listClientAtom } from '../atoms'
 import * as methods from '../methods'
 
 interface SellInterface {
-  algorandObject: algorandObject
   openModal: boolean
   setModalState: (value: boolean) => void
 }
 
-const Sell = ({ algorandObject, openModal, setModalState }: SellInterface) => {
+const Sell = ({ openModal, setModalState }: SellInterface) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [assetIdToSell, setAssetIdToSell] = useState<string>('')
   const [unitaryPrice, setUnitaryPrice] = useState<string>('')
@@ -19,6 +19,8 @@ const Sell = ({ algorandObject, openModal, setModalState }: SellInterface) => {
   const { enqueueSnackbar } = useSnackbar()
 
   const { signer, activeAddress } = useWallet()
+  const algorandClient = useAtomValue(algorandClientAtom)
+  const listClient = useAtomValue(listClientAtom)
 
   const handleMethodCall = async () => {
     setLoading(true)
@@ -28,20 +30,24 @@ const Sell = ({ algorandObject, openModal, setModalState }: SellInterface) => {
       return
     }
 
+    if (!algorandClient || !listClient) {
+      return
+    }
+
     const nftmClient = new NftMarketplaceClient(
       {
         resolveBy: 'id',
         id: 0,
         sender: { addr: activeAddress!, signer },
       },
-      algorandObject.algorand.client.algod,
+      algorandClient?.client.algod,
     )
 
     try {
       await methods.create(
-        algorandObject.algorand,
+        algorandClient,
         nftmClient,
-        algorandObject.listClient,
+        listClient,
         activeAddress,
         BigInt(unitaryPrice!) * BigInt(1e6),
         10n,
