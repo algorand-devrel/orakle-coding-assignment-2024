@@ -1,21 +1,16 @@
 import { useWallet } from '@txnlab/use-wallet'
 import { useState } from 'react'
-import { algorandObject } from '../interfaces/algorandObject'
-import { appDetails } from '../interfaces/appDetails'
+import { useAtomValue } from 'jotai'
 import { ellipseAddress } from '../utils/ellipseAddress'
 import ConnectWallet from './ConnectWallet'
 import MintNft from './MintNft'
 import Sell from './Sell'
 import Withdraw from './Withdraw'
+import { isSellingAtom } from '../atoms'
 
-interface HeaderProps {
-  algorandObject: algorandObject
-  appDetailsList: appDetails[]
-  isSelling: boolean
-}
-
-export function Header({ algorandObject, appDetailsList, isSelling }: HeaderProps) {
+export function Header() {
   const { activeAddress } = useWallet()
+  const isSelling = useAtomValue(isSellingAtom)
 
   const [openWalletModal, setOpenWalletModal] = useState(false)
   const [openSellModal, setOpenSellModal] = useState(false)
@@ -56,15 +51,9 @@ export function Header({ algorandObject, appDetailsList, isSelling }: HeaderProp
         {activeAddress ? ellipseAddress(activeAddress) : 'Connect Wallet'}
       </button>
       <ConnectWallet openModal={openWalletModal} closeModal={toggleWalletModal} />
-      <Sell algorandObject={algorandObject} openModal={openSellModal} setModalState={setOpenSellModal} />
-      <Withdraw
-        algorandObject={algorandObject}
-        setTotalProfit={setTotalProfit}
-        appDetailsList={appDetailsList}
-        openModal={openWithdrawModal}
-        setModalState={setOpenWithdrawModal}
-      />
-      <MintNft algorandObject={algorandObject} openModal={openMintModal} setModalState={setOpenMintModal} />
+      <Sell openModal={openSellModal} setModalState={setOpenSellModal} />
+      <Withdraw setTotalProfit={setTotalProfit} openModal={openWithdrawModal} setModalState={setOpenWithdrawModal} />
+      <MintNft openModal={openMintModal} setModalState={setOpenMintModal} />
     </div>
   )
 }
