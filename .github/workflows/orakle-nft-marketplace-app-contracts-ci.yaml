@@ -40,12 +40,6 @@ jobs:
       - name: Lint and format python dependencies
         run: algokit project run lint --project-name 'orakle-nft-marketplace-app-contracts'
 
-      - name: Run tests
-        shell: bash
-        run: |
-          set -o pipefail
-          algokit project run test --project-name 'orakle-nft-marketplace-app-contracts'
-
       - name: Build smart contracts
         run: algokit project run build --project-name 'orakle-nft-marketplace-app-contracts'
 

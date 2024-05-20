@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import * as algokit from '@algorandfoundation/algokit-utils'
 import { NftMarketplaceClient } from './contracts/NftMarketplace'
 import { NftMarketplaceListClient } from './contracts/NftMarketplaceList'

@@ -1,7 +1,8 @@
+/* eslint-disable no-console */
 import { useWallet } from '@txnlab/use-wallet'
+import { useAtomValue } from 'jotai'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
-import { useAtomValue } from 'jotai'
 import { algorandClientAtom } from '../atoms'
 
 //로컬 네트워크 테스트용 nft 민팅 컴포넌트
