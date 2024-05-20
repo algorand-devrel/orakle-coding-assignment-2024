@@ -1,6 +1,7 @@
 # pyright: reportMissingModuleSource=false
 import typing
-from algopy import *
+
+from algopy import ARC4Contract, UInt64, arc4, urange
 
 app_id_list: typing.TypeAlias = arc4.DynamicArray[arc4.UInt64]
 

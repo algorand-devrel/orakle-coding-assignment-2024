@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
-import { useAtom, useSetAtom } from 'jotai'
 import AlgorandClient from '@algorandfoundation/algokit-utils/types/algorand-client'
 import { useWallet } from '@txnlab/use-wallet'
-import { NftMarketplaceListClient } from '../contracts/NftMarketplaceList'
-import { getAlgodConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
+import { useAtom, useSetAtom } from 'jotai'
+import { useEffect, useState } from 'react'
 import { algorandClientAtom, appDetailsListAtom, isSellingAtom, listClientAtom } from '../atoms'
+import { NftMarketplaceListClient } from '../contracts/NftMarketplaceList'
 import { getAppList } from '../utils/getAppList'
+import { getAlgodConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
 
 export function useMarketPlace() {
   const { activeAddress, signer, clients } = useWallet()
@@ -43,7 +43,7 @@ export function useMarketPlace() {
       const listClient = new NftMarketplaceListClient(
         {
           resolveBy: 'id',
-          id: 1047, // Update this ID as needed
+          id: 4319, // Update this ID as needed
           sender: { addr: activeAddress, signer },
         },
         algorandClient.client.algod,
