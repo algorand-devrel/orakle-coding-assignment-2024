@@ -152,25 +152,26 @@ export async function deploy() {
 
   await buyAsset(buyerAppClient, 'buyer', buyer, assetId, 1, app.appAddress, unitaryPrice)
 
-  // 아이유 콘서트가 인기가 너무 많아서 가격을 올림
-  await appClient.setPrice({
-    unitaryPrice: unitaryPrice * 2,
-  })
-  console.log('4. IU 티켓 가격 2배로 올림!')
+  // // 아이유 콘서트가 인기가 너무 많아서 가격을 올림
+  // await appClient.setPrice({
+  //   unitaryPrice: unitaryPrice * 2,
+  // })
+  // console.log('4. IU 티켓 가격 2배로 올림!')
 
-  unitaryPrice = unitaryPrice * 2
+  // unitaryPrice = unitaryPrice * 2
 
-  // Buyer가 친구도 데리고 가고 싶어서 1개의 티켓을 추가 구매
-  await buyAsset(buyerAppClient, 'buyer', buyer, assetId, 1, app.appAddress, unitaryPrice)
+  // // Buyer가 친구도 데리고 가고 싶어서 1개의 티켓을 추가 구매
+  // await buyAsset(buyerAppClient, 'buyer', buyer, assetId, 1, app.appAddress, unitaryPrice)
 
-  // 티켓팅에 늦은 lateBuyer가 2개의 티켓을 구매
-  await buyAsset(lateBuyerAppClient, 'lateBuyer', lateBuyer, assetId, 2, app.appAddress, unitaryPrice)
+  // // 티켓팅에 늦은 lateBuyer가 2개의 티켓을 구매
+  // await buyAsset(lateBuyerAppClient, 'lateBuyer', lateBuyer, assetId, 2, app.appAddress, unitaryPrice)
 
   // 판매자가 NftMarketplaceClient 앱을 삭제하며 수익금과 잔여 NFT 에셋을 회수
-  await appClient.delete.withdrawAndDelete(
+  const returnVal = await appClient.delete.withdrawAndDelete(
     {},
     { sendParams: { fee: algokit.transactionFees(3), populateAppCallResources: true } },
   )
+  console.log(returnVal.return)
   console.log('5. IU 티켓 판매 종료 및 수익금 회수 완료!')
 
   /* 
@@ -407,5 +408,5 @@ export async function deploy() {
   문제 7
   보너스 문제를 푸셨다면 아래 주석을 해제하고 await btsScenario를 실행하세요!
   */
-  await btsScenario()
+  // await btsScenario()
 }

@@ -1,32 +1,28 @@
-import * as algokit from '@algorandfoundation/algokit-utils'
-import { useWallet } from '@txnlab/use-wallet'
-import algosdk from 'algosdk'
-import { useSnackbar } from 'notistack'
 import { useState } from 'react'
-import { getAlgodConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
+import { useAtomValue } from 'jotai'
+import { useWallet } from '@txnlab/use-wallet'
+import { useSnackbar } from 'notistack'
+import { NftMarketplaceClient } from '../contracts/NftMarketplace'
+import { algorandClientAtom, appDetailsListAtom, listClientAtom } from '../atoms'
+import * as methods from '../methods'
 
 interface WithdrawInterface {
   openModal: boolean
   setModalState: (value: boolean) => void
+  setTotalProfit: (value: bigint) => void
 }
 
-// TODO: Implement withdraw tx call
-const Withdraw = ({ openModal, setModalState }: WithdrawInterface) => {
+const Withdraw = ({ openModal, setModalState, setTotalProfit }: WithdrawInterface) => {
   const [loading, setLoading] = useState<boolean>(false)
-  const [receiverAddress, setReceiverAddress] = useState<string>('')
-
-  const algodConfig = getAlgodConfigFromViteEnvironment()
-  const algodClient = algokit.getAlgoClient({
-    server: algodConfig.server,
-    port: algodConfig.port,
-    token: algodConfig.token,
-  })
 
   const { enqueueSnackbar } = useSnackbar()
 
-  const { signer, activeAddress, signTransactions, sendTransactions } = useWallet()
+  const { signer, activeAddress } = useWallet()
+  const algorandClient = useAtomValue(algorandClientAtom)
+  const listClient = useAtomValue(listClientAtom)
+  const appDetailsList = useAtomValue(appDetailsListAtom)
 
-  const handleSubmitAlgo = async () => {
+  const handleWithdraw = async () => {
     setLoading(true)
 
     if (!signer || !activeAddress) {
@@ -34,29 +30,42 @@ const Withdraw = ({ openModal, setModalState }: WithdrawInterface) => {
       return
     }
 
-    const suggestedParams = await algodClient.getTransactionParams().do()
+    if (!algorandClient || !listClient) {
+      return
+    }
 
-    const transaction = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
-      from: activeAddress,
-      to: receiverAddress,
-      amount: 1e6,
-      suggestedParams,
-    })
+    let nftmClient: NftMarketplaceClient | undefined = undefined
+    let myAppId: bigint | undefined = undefined
 
-    const encodedTransaction = algosdk.encodeUnsignedTransaction(transaction)
+    for (const appDetails of appDetailsList) {
+      if (appDetails.creator == activeAddress) {
+        nftmClient = new NftMarketplaceClient(
+          {
+            resolveBy: 'id',
+            id: appDetails.appId,
+            sender: { addr: activeAddress!, signer },
+          },
+          algorandClient.client.algod,
+        )
+        myAppId = appDetails.appId
+        break
+      }
+    }
 
-    const signedTransactions = await signTransactions([encodedTransaction])
-
-    const waitRoundsToConfirm = 4
+    if (!nftmClient) {
+      enqueueSnackbar('No app details found for the active address', { variant: 'error' })
+      setLoading(false)
+      return
+    }
 
     try {
-      enqueueSnackbar('Sending transaction...', { variant: 'info' })
-      const { id } = await sendTransactions(signedTransactions, waitRoundsToConfirm)
-      enqueueSnackbar(`Transaction sent: ${id}`, { variant: 'success' })
-      setReceiverAddress('')
-    } catch (e) {
-      enqueueSnackbar('Failed to send transaction', { variant: 'error' })
+      await methods.deleteApp(nftmClient, listClient, Number(myAppId), setTotalProfit)()
+    } catch (error) {
+      enqueueSnackbar('Error while withdrawing profits', { variant: 'error' })
+      setLoading(false)
+      return
     }
+    enqueueSnackbar('Profits withdrawn successfully', { variant: 'success' })
 
     setLoading(false)
   }
@@ -70,11 +79,7 @@ const Withdraw = ({ openModal, setModalState }: WithdrawInterface) => {
           <button className="btn" onClick={() => setModalState(false)}>
             Close
           </button>
-          <button
-            data-test-id="send-algo"
-            className={`btn ${receiverAddress.length === 58 ? '' : 'btn-disabled'} lo`}
-            onClick={handleSubmitAlgo}
-          >
+          <button data-test-id="send-algo" className={`btn`} onClick={handleWithdraw}>
             {loading ? <span className="loading loading-spinner" /> : 'Withdraw all profits'}
           </button>
         </div>

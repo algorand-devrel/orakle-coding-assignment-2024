@@ -28,7 +28,7 @@
     "vite.config.js",
     "src/utils/ellipseAddress.spec.tsx",
     "src/utils/ellipseAddress.spec.tsx",
-    "src/main.tsx",
+    "src/main.tsx"
   ],
   "references": [
     {
