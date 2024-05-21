@@ -5,10 +5,10 @@ on:
     branches:
       - main
     paths-ignore:
-      - 'docs/**'
-      - '**.md'
-      - '.vscode/**'
-      - '.idea/**'
+      - "docs/**"
+      - "**.md"
+      - ".vscode/**"
+      - ".idea/**"
 
 permissions:
   contents: read
@@ -20,11 +20,11 @@ jobs:
     secrets: inherit
     uses: ./.github/workflows/orakle-nft-marketplace-app-contracts-ci.yaml
 
-  orakle-nft-marketplace-app-contracts-release:
-    name: Run orakle-nft-marketplace-app-contracts release
-    secrets: inherit
-    uses: ./.github/workflows/orakle-nft-marketplace-app-contracts-cd.yaml
-    needs: orakle-nft-marketplace-app-contracts-validate
+  # orakle-nft-marketplace-app-contracts-release:
+  #   name: Run orakle-nft-marketplace-app-contracts release
+  #   secrets: inherit
+  #   uses: ./.github/workflows/orakle-nft-marketplace-app-contracts-cd.yaml
+  #   needs: orakle-nft-marketplace-app-contracts-validate
 
   orakle-nft-marketplace-app-frontend-validate:
     name: Run orakle-nft-marketplace-app-frontend release
