@@ -13,8 +13,8 @@ artifacts = 'smart_contracts/artifacts'
 [project.deploy]
 command = "npm run deploy:ci"
 environment_secrets = [
-  "DEPLOYER_MNEMONIC",
-  "DISPENSER_MNEMONIC",
+  # "DEPLOYER_MNEMONIC",
+  # "DISPENSER_MNEMONIC",
 ]
 
 [project.deploy.localnet]

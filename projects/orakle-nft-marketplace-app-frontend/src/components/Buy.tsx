@@ -1,11 +1,11 @@
-import { useState } from 'react'
-import { useAtomValue } from 'jotai'
 import { useWallet } from '@txnlab/use-wallet'
 import algosdk from 'algosdk'
+import { useAtomValue } from 'jotai'
 import { useSnackbar } from 'notistack'
+import { useState } from 'react'
+import { algorandClientAtom, appDetailsListAtom } from '../atoms'
 import { NftMarketplaceClient } from '../contracts/NftMarketplace'
 import * as methods from '../methods'
-import { algorandClientAtom } from '../atoms'
 
 interface BuyInterface {
   openModal: boolean
@@ -22,6 +22,7 @@ const Buy = ({ openModal, setModalState, currentAppId, unitaryPrice }: BuyInterf
 
   const { signer, activeAddress } = useWallet()
   const algorandClient = useAtomValue(algorandClientAtom)
+  const appDetails = useAtomValue(appDetailsListAtom)
 
   const handleBuyNft = async () => {
     setLoading(true)
@@ -44,9 +45,19 @@ const Buy = ({ openModal, setModalState, currentAppId, unitaryPrice }: BuyInterf
       algorandClient.client.algod,
     )
 
+    console.log('appDetails', appDetails)
+
+    let currentAppDetails
+
+    for (const app of appDetails) {
+      if (app.appId === currentAppId) {
+        currentAppDetails = app
+      }
+    }
+
     const appAddress = algosdk.getApplicationAddress(currentAppId)
     try {
-      await methods.buy(algorandClient, nftmClient, activeAddress, appAddress, BigInt(quantity), unitaryPrice)()
+      await methods.buy(algorandClient, nftmClient, activeAddress, currentAppDetails!.assetId, appAddress, BigInt(quantity), unitaryPrice)()
     } catch (error) {
       enqueueSnackbar('Error while buying the NFT', { variant: 'error' })
       setLoading(false)

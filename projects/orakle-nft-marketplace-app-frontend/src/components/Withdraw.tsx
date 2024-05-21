@@ -1,9 +1,9 @@
-import { useState } from 'react'
-import { useAtomValue } from 'jotai'
 import { useWallet } from '@txnlab/use-wallet'
+import { useAtomValue } from 'jotai'
 import { useSnackbar } from 'notistack'
-import { NftMarketplaceClient } from '../contracts/NftMarketplace'
+import { useState } from 'react'
 import { algorandClientAtom, appDetailsListAtom, listClientAtom } from '../atoms'
+import { NftMarketplaceClient } from '../contracts/NftMarketplace'
 import * as methods from '../methods'
 
 interface WithdrawInterface {
@@ -59,7 +59,7 @@ const Withdraw = ({ openModal, setModalState, setTotalProfit }: WithdrawInterfac
     }
 
     try {
-      await methods.deleteApp(nftmClient, listClient, Number(myAppId), setTotalProfit)()
+      await methods.deleteApp(algorandClient, nftmClient, listClient, activeAddress, Number(myAppId), setTotalProfit)()
     } catch (error) {
       enqueueSnackbar('Error while withdrawing profits', { variant: 'error' })
       setLoading(false)

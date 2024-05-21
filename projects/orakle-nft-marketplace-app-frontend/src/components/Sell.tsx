@@ -1,9 +1,9 @@
-import { useState } from 'react'
-import { useAtomValue } from 'jotai'
 import { useWallet } from '@txnlab/use-wallet'
+import { useAtomValue } from 'jotai'
 import { useSnackbar } from 'notistack'
-import { NftMarketplaceClient } from '../contracts/NftMarketplace'
+import { useState } from 'react'
 import { algorandClientAtom, listClientAtom } from '../atoms'
+import { NftMarketplaceClient } from '../contracts/NftMarketplace'
 import * as methods from '../methods'
 
 interface SellInterface {
@@ -31,6 +31,8 @@ const Sell = ({ openModal, setModalState }: SellInterface) => {
     }
 
     if (!algorandClient || !listClient) {
+      enqueueSnackbar('AlgorandClient or ListClient not found', { variant: 'error' })
+      setLoading(false)
       return
     }
 
@@ -43,6 +45,7 @@ const Sell = ({ openModal, setModalState }: SellInterface) => {
       algorandClient?.client.algod,
     )
 
+    console.log('algorand client', algorandClient)
     try {
       await methods.create(
         algorandClient,

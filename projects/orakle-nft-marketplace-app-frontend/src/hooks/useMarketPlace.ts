@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { algorandClientAtom, appDetailsListAtom, isSellingAtom, listClientAtom } from '../atoms'
 import { NftMarketplaceListClient } from '../contracts/NftMarketplaceList'
 import { getAppList } from '../utils/getAppList'
+import { marketplaceListAppId } from '../utils/marketplaceListAppId'
 import { getAlgodConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
 
 const isLocalNet = import.meta.env.VITE_ALGOD_NETWORK === ''
@@ -45,7 +46,7 @@ export function useMarketPlace() {
       const listClient = new NftMarketplaceListClient(
         {
           resolveBy: 'id',
-          id: 667004938, // Update this ID as needed
+          id: marketplaceListAppId,
           sender: { addr: activeAddress, signer },
         },
         algorandClient.client.algod,
