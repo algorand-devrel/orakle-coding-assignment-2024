@@ -8,26 +8,22 @@ export async function deploy() {
   // 여러 클라이언트 생성
   const algod = algokit.getAlgoClient()
   const indexer = algokit.getAlgoIndexerClient()
-  const algorand = algokit.AlgorandClient.defaultLocalNet()
+  const algorand = algokit.AlgorandClient.testNet()
   algorand.setDefaultValidityWindow(1000)
 
   // 랜덤 계정 생성 후 자금 지급
-  const deployer = await algorand.account.random()
-  const buyer = await algorand.account.random()
-  const lateBuyer = await algorand.account.random()
-  const accounts = [deployer, buyer, lateBuyer]
+  // const deployer = await algorand.account.random()
+  const deployer = await algorand.account.fromMnemonic(process.env.MY_ACCOUNT_MNEMONIC!, process.env.MY_ACCOUNT_SENDER!)
 
-  const dispenser = await algorand.account.dispenser()
-  for (let i = 0; i < accounts.length; i++) {
-    await algorand.send.payment(
-      {
-        sender: dispenser.addr,
-        receiver: accounts[i].addr,
-        amount: algokit.algos(100),
-      },
-      { suppressLog: true },
-    )
-  }
+  // const dispenser = await algorand.account.dispenser()
+  // await algorand.send.payment(
+  //   {
+  //     sender: dispenser.addr,
+  //     receiver: deployer.addr,
+  //     amount: algokit.algos(100),
+  //   },
+  //   { suppressLog: true },
+  // )
 
   const appClient = new NftMarketplaceListClient(
     {
@@ -42,7 +38,7 @@ export async function deploy() {
   const app = await appClient.create.bare()
 
   await algorand.send.payment({
-    sender: dispenser.addr,
+    sender: deployer.addr,
     receiver: app.appAddress,
     amount: algokit.algos(0.2),
   })
