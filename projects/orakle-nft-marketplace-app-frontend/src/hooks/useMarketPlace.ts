@@ -7,18 +7,20 @@ import { NftMarketplaceListClient } from '../contracts/NftMarketplaceList'
 import { getAppList } from '../utils/getAppList'
 import { getAlgodConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
 
+const isLocalNet = import.meta.env.VITE_ALGOD_NETWORK === ''
+
 export function useMarketPlace() {
   const { activeAddress, signer, clients } = useWallet()
   const [algorandClient, setAlgorandClient] = useAtom(algorandClientAtom)
   const [listClient, setListClient] = useAtom(listClientAtom)
   const setAppDetailsList = useSetAtom(appDetailsListAtom)
   const setIsSelling = useSetAtom(isSellingAtom)
-  const [health, setHealth] = useState(false)
+  const [health, setHealth] = useState(!isLocalNet)
 
   useEffect(() => {
     let healthInterval: NodeJS.Timeout
 
-    if (!health) {
+    if (!health && isLocalNet) {
       healthInterval = setInterval(async () => {
         setHealth((await clients?.kmd?.healthCheck()) !== undefined)
       }, 500)
@@ -27,7 +29,7 @@ export function useMarketPlace() {
     return () => {
       healthInterval && clearInterval(healthInterval)
     }
-  }, [clients?.kmd])
+  }, [clients?.kmd, isLocalNet])
 
   useEffect(() => {
     if (health && activeAddress) {
