@@ -45,7 +45,6 @@ const Sell = ({ openModal, setModalState }: SellInterface) => {
       algorandClient?.client.algod,
     )
 
-    console.log('algorand client', algorandClient)
     try {
       await methods.create(
         algorandClient,

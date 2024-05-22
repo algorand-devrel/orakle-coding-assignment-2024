@@ -45,8 +45,6 @@ const Buy = ({ openModal, setModalState, currentAppId, unitaryPrice }: BuyInterf
       algorandClient.client.algod,
     )
 
-    console.log('appDetails', appDetails)
-
     let currentAppDetails
 
     for (const app of appDetails) {
