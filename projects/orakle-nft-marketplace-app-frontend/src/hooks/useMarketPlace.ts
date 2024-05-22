@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import AlgorandClient from '@algorandfoundation/algokit-utils/types/algorand-client'
 import { useWallet } from '@txnlab/use-wallet'
 import { useAtom, useSetAtom } from 'jotai'
@@ -57,6 +58,8 @@ export function useMarketPlace() {
 
   useEffect(() => {
     if (activeAddress && algorandClient && listClient) {
+      console.log('algorandClient', algorandClient)
+      console.log('listClient', listClient)
       getAppList({ algorand: algorandClient, listClient }, activeAddress, signer).then((appList) => {
         setAppDetailsList(appList)
         const isUserSelling = appList.some((app) => app.creator === activeAddress)
