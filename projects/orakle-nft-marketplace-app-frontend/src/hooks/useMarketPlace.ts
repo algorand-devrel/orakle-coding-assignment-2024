@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import AlgorandClient from '@algorandfoundation/algokit-utils/types/algorand-client'
 import { useWallet } from '@txnlab/use-wallet'
 import { useAtom, useSetAtom } from 'jotai'
