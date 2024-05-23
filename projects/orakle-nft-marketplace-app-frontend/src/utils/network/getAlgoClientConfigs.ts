@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { AlgoViteClientConfig, AlgoViteKMDConfig } from '../../interfaces/network'
 
 export function getAlgodConfigFromViteEnvironment(): AlgoViteClientConfig {
