@@ -4,6 +4,7 @@ export function getAlgodConfigFromViteEnvironment(): AlgoViteClientConfig {
   if (!import.meta.env.VITE_ALGOD_SERVER) {
     throw new Error('Attempt to get default algod configuration without specifying VITE_ALGOD_SERVER in the environment variables')
   }
+  console.log('import.meta.env.VITE_ALGOD_SERVER', process.env.VITE_ALGOD_SERVER)
 
   return {
     server: import.meta.env.VITE_ALGOD_SERVER,
