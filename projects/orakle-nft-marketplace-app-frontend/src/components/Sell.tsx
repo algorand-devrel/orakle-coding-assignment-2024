@@ -63,6 +63,7 @@ const Sell = ({ openModal, setModalState }: SellInterface) => {
     }
     enqueueSnackbar('Listing created successfully', { variant: 'success' })
     setLoading(false)
+    window.location.reload()
   }
 
   return (

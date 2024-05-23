@@ -115,7 +115,6 @@ export function deleteApp(
 ) {
   return async () => {
     console.log('deleting app')
-    console.log(sender)
     const totalProfit = await nftmClient.delete.withdrawAndDelete({}, { sendParams: { fee: algokit.algos(0.003) } })
     console.log('Total Profit: ', totalProfit.return)
 
@@ -123,18 +122,17 @@ export function deleteApp(
     //   .compose()
     //   .delete.withdrawAndDelete({}, { sendParams: { fee: algokit.algos(0.003) } })
     //   .atc()
-    // console.log('Total Profit: ', totalProfit.return)
 
     // const result = await algorand
     //   .newGroup()
-    //   .addAtc(withdrawAtc)
-    //   // .addMethodCall({
-    //   //   sender: sender,
-    //   //   appId: BigInt(appId),
-    //   //   method: nftmClient.appClient.delete().getABIMethod('withdraw_and_delete')!,
-    //   //   args: [],
-    //   //   extraFee: algokit.algos(0.003),
-    //   // })
+    //   // .addAtc(withdrawAtc)
+    //   .addMethodCall({
+    //     sender: sender,
+    //     appId: BigInt(appId),
+    //     method: nftmClient.appClient.getABIMethod('withdraw_and_delete')!,
+    //     args: [],
+    //     extraFee: algokit.algos(0.003),
+    //   })
     //   .addMethodCall({
     //     sender: sender,
     //     appId: BigInt(marketplaceListAppId),
@@ -147,6 +145,6 @@ export function deleteApp(
     // console.log('Total Profit: ', totalProfit!.valueOf())
 
     listClient.removeMarketplaceFromList({ appId: appId })
-    setTotalProfit(BigInt(totalProfit!.return!))
+    setTotalProfit(BigInt(totalProfit!.toString()))
   }
 }

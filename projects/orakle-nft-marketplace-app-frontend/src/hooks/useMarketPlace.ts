@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import AlgorandClient from '@algorandfoundation/algokit-utils/types/algorand-client'
 import { useWallet } from '@txnlab/use-wallet'
 import { useAtom, useSetAtom } from 'jotai'
@@ -35,6 +36,7 @@ export function useMarketPlace() {
   useEffect(() => {
     if (health && activeAddress) {
       const algodConfig = getAlgodConfigFromViteEnvironment()
+      console.log('algodConfig', algodConfig)
       const algorandClient = AlgorandClient.fromConfig({ algodConfig })
       algorandClient.setDefaultSigner(signer)
       setAlgorandClient(algorandClient)

@@ -68,6 +68,7 @@ const Withdraw = ({ openModal, setModalState, setTotalProfit }: WithdrawInterfac
     enqueueSnackbar('Profits withdrawn successfully', { variant: 'success' })
 
     setLoading(false)
+    window.location.reload()
   }
 
   return (

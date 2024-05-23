@@ -64,6 +64,7 @@ const Buy = ({ openModal, setModalState, currentAppId, unitaryPrice }: BuyInterf
     enqueueSnackbar('NFT purchased successfully', { variant: 'success' })
 
     setLoading(false)
+    window.location.reload()
   }
 
   return (
