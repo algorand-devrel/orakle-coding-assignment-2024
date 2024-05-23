@@ -92,6 +92,7 @@ class NftMarketplace(arc4.ARC4Contract):
 
         assert mbr_pay.receiver == Global.current_application_address
         assert mbr_pay.amount == Global.min_balance + Global.asset_opt_in_min_balance
+        assert self.bootstrapped == False
 
         self.asset_id = asset.id
         self.unitary_price = unitary_price

@@ -15,6 +15,7 @@ const Sell = ({ openModal, setModalState }: SellInterface) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [assetIdToSell, setAssetIdToSell] = useState<string>('')
   const [unitaryPrice, setUnitaryPrice] = useState<string>('')
+  const [quantityForSale, setQuantityForSale] = useState<string>('')
 
   const { enqueueSnackbar } = useSnackbar()
 
@@ -52,7 +53,7 @@ const Sell = ({ openModal, setModalState }: SellInterface) => {
         listClient,
         activeAddress,
         BigInt(unitaryPrice!) * BigInt(1e6),
-        10n,
+        BigInt(quantityForSale!),
         BigInt(assetIdToSell!),
       )()
     } catch (error) {
@@ -77,6 +78,16 @@ const Sell = ({ openModal, setModalState }: SellInterface) => {
           value={assetIdToSell}
           onChange={(e) => {
             setAssetIdToSell(e.target.value)
+          }}
+        />
+        <input
+          type="number"
+          data-test-id="quantity-for-sale"
+          placeholder="How many NFTs do you want to list for sale?"
+          className="input input-bordered w-full"
+          value={quantityForSale}
+          onChange={(e) => {
+            setQuantityForSale(e.target.value)
           }}
         />
         <input
