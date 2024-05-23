@@ -40,6 +40,7 @@
     "@txnlab/use-wallet": "^2.4.0",
     "@walletconnect/modal-sign-html": "^2.6.1",
     "algosdk": "^2.7.0",
+    "axios": "^1.7.2",
     "daisyui": "^4.0.0",
     "jotai": "^2.8.0",
     "notistack": "^3.0.1",

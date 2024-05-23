@@ -1,6 +1,6 @@
-/* eslint-disable no-console */
 import AlgorandClient from '@algorandfoundation/algokit-utils/types/algorand-client'
 import algosdk, { ABIArrayDynamicType, ABIUintType, ABIValue, TransactionSigner } from 'algosdk'
+import axios from 'axios'
 import { NftMarketplaceClient } from '../contracts/NftMarketplace'
 import { NftMarketplaceListClient } from '../contracts/NftMarketplaceList'
 import { appDetails } from '../interfaces/appDetails'
@@ -11,7 +11,6 @@ export const getAppList = async (
   activeAddress: string,
   signer: TransactionSigner,
 ) => {
-  console.log('algorandClient6', algorandClient)
   let appList: ABIValue[] = []
 
   const listAsBytes = (await listClient.getGlobalState()).marketplaceList?.asByteArray()
@@ -48,8 +47,13 @@ export const getAppList = async (
 
     const assetDetail = await algorandClient.client.algod.getAssetByID(Number(assetId)).do()
     appDetails.assetName = assetDetail['params']['name']
-    // appDetails.imageUrl = assetDetail['params']['url'] //  returns -> "url": "ipfs://QmSiHBwQgK7Nnzas4Chc9Jg9EmJYjwAH3P4r6WeTAWme3w/#arc3",
-    appDetails.imageUrl = 'https://gateway.pinata.cloud/ipfs/QmV1dyum28Y4Nhz6wVRTgb1nc6CwqHUwSvkyji1sPGzt6X'
+    const inputString = assetDetail['params']['url'] //returns -> "url": "ipfs://QmSiHBwQgK7Nnzas4Chc9Jg9EmJYjwAH3P4r6WeTAWme3w/#arc3",
+    const slicedURL = inputString.split('ipfs://')[1]
+    const response = await axios.get(`https://ipfs.algonode.xyz/ipfs/${slicedURL}`)
+    const responseImage = response.data.image
+    const slicedResponseImage = responseImage.split('ipfs://')[1]
+    const outputString = `https://ipfs.algonode.xyz/ipfs/${slicedResponseImage}`
+    appDetails.imageUrl = outputString
 
     const info = await algorandClient.account.getAssetInformation(algosdk.getApplicationAddress(Number(appId)), assetId)
     appDetails.remainingQty = info.balance
