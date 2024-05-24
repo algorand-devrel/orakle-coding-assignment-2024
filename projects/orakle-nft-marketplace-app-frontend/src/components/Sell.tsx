@@ -73,9 +73,9 @@ const Sell = ({ openModal, setModalState }: SellInterface) => {
       <form method="dialog" className="modal-box">
         <h3 className="font-bold text-lg">Create a listing</h3>
         <br />
-        <div className="flex">
+        <div className="flex items-center mb-3">
           <div className="dropdown dropdown-hover">
-            <div tabIndex={0} role="button" className="btn m-1">
+            <div tabIndex={0} role="button" className="btn w-full">
               Select NFT to sell
             </div>
             <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
@@ -95,31 +95,47 @@ const Sell = ({ openModal, setModalState }: SellInterface) => {
             readOnly
           />
         </div>
-        <input
-          type="number"
-          data-test-id="quantity-for-sale"
-          placeholder="How many NFTs do you want to list for sale?"
-          className="input input-bordered w-full"
-          value={quantityForSale}
-          onChange={(e) => {
-            setQuantityForSale(e.target.value)
-          }}
-        />
-        <input
-          type="number"
-          data-test-id="unitary-price"
-          placeholder="Enter the NFT price for sale"
-          className="input input-bordered w-full"
-          value={unitaryPrice}
-          onChange={(e) => {
-            setUnitaryPrice(e.target.value)
-          }}
-        />
+        <div className="flex flex-col mb-3">
+          <label htmlFor="asset-id" className=" mb-1 font-semibold">
+            How many NFTs do you want to list for sale?
+          </label>
+          <input
+            type="number"
+            data-test-id="quantity-for-sale"
+            placeholder="0"
+            className="input input-bordered w-full"
+            value={quantityForSale}
+            onChange={(e) => {
+              setQuantityForSale(e.target.value)
+            }}
+          />
+        </div>
+        <div className="flex flex-col mb-3">
+          <label htmlFor="asset-id" className=" mb-1 font-semibold">
+            Your Price:
+          </label>
+          <label className="input input-bordered flex items-center gap-2">
+            <input
+              type="number"
+              data-test-id="unitary-price"
+              placeholder="0"
+              className="grow"
+              value={unitaryPrice}
+              onChange={(e) => {
+                setUnitaryPrice(e.target.value)
+              }}
+            />
+            <span className="badge badge-default">ALGO</span>
+          </label>
+        </div>
+        <h4 className="font-bold mt-4">
+          <span className="text-yellow-500">⚠️</span> You need to sign 2 transactions
+        </h4>
         <div className="modal-action ">
           <button className="btn" onClick={() => setModalState(false)}>
             Close
           </button>
-          <button data-test-id="list-nft" className="btn" onClick={handleMethodCall}>
+          <button data-test-id="list-nft" className="btn bg-green-300" onClick={handleMethodCall}>
             {loading ? <span className="loading loading-spinner" /> : 'publish'}
           </button>
         </div>

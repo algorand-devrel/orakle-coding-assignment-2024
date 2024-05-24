@@ -6,5 +6,4 @@ export interface appDetails {
   assetName: string
   imageUrl: string
   remainingQty: bigint
-  totalQty: bigint
 }

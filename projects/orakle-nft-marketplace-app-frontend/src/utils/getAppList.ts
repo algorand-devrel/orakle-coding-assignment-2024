@@ -36,7 +36,6 @@ export const getAppList = async (
       assetName: '',
       imageUrl: '',
       remainingQty: 0n,
-      totalQty: 0n,
     }
     const appInfo = await algorandClient.client.algod.getApplicationByID(Number(appId)).do()
     appDetails.creator = appInfo['params']['creator']
@@ -57,8 +56,6 @@ export const getAppList = async (
 
     const info = await algorandClient.account.getAssetInformation(algosdk.getApplicationAddress(Number(appId)), assetId)
     appDetails.remainingQty = info.balance
-
-    appDetails.totalQty = assetDetail['params']['total']
 
     appDetailsList.push(appDetails)
   }

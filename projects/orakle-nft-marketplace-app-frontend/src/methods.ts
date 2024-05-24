@@ -49,7 +49,7 @@ export function create(
       })
       .execute()
 
-    // console.log('List Result: ', result.returns![1].returnValue)
+    console.log('List Result: ', result.returns![1].returnValue)
   }
 }
 
