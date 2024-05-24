@@ -145,7 +145,7 @@ bootstrap:
     ==
     assert
     // smart_contracts/nft_marketplace/contract.py:95
-    // assert self.bootstrapped == False
+    // assert not self.bootstrapped
     int 0
     byte "bootstrapped"
     app_global_get_ex
