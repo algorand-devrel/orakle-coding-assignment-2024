@@ -136,6 +136,7 @@ class NftMarketplace(arc4.ARC4Contract):
         assert buyer_txn.sender == Txn.sender
         assert buyer_txn.receiver == Global.current_application_address
         assert buyer_txn.amount == self.unitary_price * quantity
+        assert Txn.sender != Global.creator_address
 
         itxn.AssetTransfer(
             xfer_asset=self.asset_id,

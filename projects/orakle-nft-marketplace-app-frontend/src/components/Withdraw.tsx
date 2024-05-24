@@ -61,14 +61,14 @@ const Withdraw = ({ openModal, setModalState, setTotalProfit }: WithdrawInterfac
     try {
       await methods.deleteApp(algorandClient, nftmClient, listClient, activeAddress, Number(myAppId), setTotalProfit)()
     } catch (error) {
-      enqueueSnackbar('Error while withdrawing profits', { variant: 'error' })
+      enqueueSnackbar('Error outside', { variant: 'error' })
       setLoading(false)
       return
     }
     enqueueSnackbar('Profits withdrawn successfully', { variant: 'success' })
 
     setLoading(false)
-    window.location.reload()
+    // window.location.reload()
   }
 
   return (

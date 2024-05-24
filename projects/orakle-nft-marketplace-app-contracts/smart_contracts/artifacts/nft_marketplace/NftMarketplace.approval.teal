@@ -73,7 +73,7 @@ main_buy_route@5:
     return
 
 main_withdraw_and_delete_route@6:
-    // smart_contracts/nft_marketplace/contract.py:176
+    // smart_contracts/nft_marketplace/contract.py:177
     // @arc4.abimethod(allow_actions=["DeleteApplication"])
     txn OnCompletion
     int DeleteApplication
@@ -241,31 +241,37 @@ buy:
     *
     ==
     assert
-    // smart_contracts/nft_marketplace/contract.py:140-144
+    // smart_contracts/nft_marketplace/contract.py:139
+    // assert Txn.sender != Global.creator_address
+    txn Sender
+    global CreatorAddress
+    !=
+    assert
+    // smart_contracts/nft_marketplace/contract.py:141-145
     // itxn.AssetTransfer(
     //     xfer_asset=self.asset_id,
     //     asset_receiver=Txn.sender,
     //     asset_amount=quantity,
     // ).submit()
     itxn_begin
-    // smart_contracts/nft_marketplace/contract.py:141
+    // smart_contracts/nft_marketplace/contract.py:142
     // xfer_asset=self.asset_id,
     int 0
     byte "asset_id"
     app_global_get_ex
     assert // check asset_id exists
-    // smart_contracts/nft_marketplace/contract.py:142
+    // smart_contracts/nft_marketplace/contract.py:143
     // asset_receiver=Txn.sender,
     txn Sender
     frame_dig -1
     itxn_field AssetAmount
     itxn_field AssetReceiver
     itxn_field XferAsset
-    // smart_contracts/nft_marketplace/contract.py:140
+    // smart_contracts/nft_marketplace/contract.py:141
     // itxn.AssetTransfer(
     int axfer
     itxn_field TypeEnum
-    // smart_contracts/nft_marketplace/contract.py:140-144
+    // smart_contracts/nft_marketplace/contract.py:141-145
     // itxn.AssetTransfer(
     //     xfer_asset=self.asset_id,
     //     asset_receiver=Txn.sender,
@@ -277,79 +283,79 @@ buy:
 
 // smart_contracts.nft_marketplace.contract.NftMarketplace.withdraw_and_delete() -> uint64:
 withdraw_and_delete:
-    // smart_contracts/nft_marketplace/contract.py:176-177
+    // smart_contracts/nft_marketplace/contract.py:177-178
     // @arc4.abimethod(allow_actions=["DeleteApplication"])
     // def withdraw_and_delete(self) -> UInt64:
     proto 0 1
-    // smart_contracts/nft_marketplace/contract.py:178
+    // smart_contracts/nft_marketplace/contract.py:179
     // assert Txn.sender == Global.creator_address
     txn Sender
     global CreatorAddress
     ==
     assert
-    // smart_contracts/nft_marketplace/contract.py:179
+    // smart_contracts/nft_marketplace/contract.py:180
     // contract_balance = Global.current_application_address.balance
     global CurrentApplicationAddress
     acct_params_get AcctBalance
     assert // account funded
-    // smart_contracts/nft_marketplace/contract.py:181-185
+    // smart_contracts/nft_marketplace/contract.py:182-186
     // itxn.AssetTransfer(
     //     xfer_asset=self.asset_id,
     //     asset_receiver=Global.creator_address,
     //     asset_close_to=Global.creator_address,
     // ).submit()
     itxn_begin
-    // smart_contracts/nft_marketplace/contract.py:182
+    // smart_contracts/nft_marketplace/contract.py:183
     // xfer_asset=self.asset_id,
     int 0
     byte "asset_id"
     app_global_get_ex
     assert // check asset_id exists
-    // smart_contracts/nft_marketplace/contract.py:183
+    // smart_contracts/nft_marketplace/contract.py:184
     // asset_receiver=Global.creator_address,
     global CreatorAddress
-    // smart_contracts/nft_marketplace/contract.py:184
+    // smart_contracts/nft_marketplace/contract.py:185
     // asset_close_to=Global.creator_address,
     dup
     itxn_field AssetCloseTo
     itxn_field AssetReceiver
     itxn_field XferAsset
-    // smart_contracts/nft_marketplace/contract.py:181
+    // smart_contracts/nft_marketplace/contract.py:182
     // itxn.AssetTransfer(
     int axfer
     itxn_field TypeEnum
-    // smart_contracts/nft_marketplace/contract.py:181-185
+    // smart_contracts/nft_marketplace/contract.py:182-186
     // itxn.AssetTransfer(
     //     xfer_asset=self.asset_id,
     //     asset_receiver=Global.creator_address,
     //     asset_close_to=Global.creator_address,
     // ).submit()
     itxn_submit
-    // smart_contracts/nft_marketplace/contract.py:187-190
+    // smart_contracts/nft_marketplace/contract.py:188-191
     // itxn.Payment(
     //     receiver=Global.creator_address,
     //     close_remainder_to=Global.creator_address,
     // ).submit()
     itxn_begin
-    // smart_contracts/nft_marketplace/contract.py:188
+    // smart_contracts/nft_marketplace/contract.py:189
     // receiver=Global.creator_address,
     global CreatorAddress
-    // smart_contracts/nft_marketplace/contract.py:189
+    // smart_contracts/nft_marketplace/contract.py:190
     // close_remainder_to=Global.creator_address,
     dup
     itxn_field CloseRemainderTo
     itxn_field Receiver
-    // smart_contracts/nft_marketplace/contract.py:187
+    // smart_contracts/nft_marketplace/contract.py:188
     // itxn.Payment(
     int pay
     itxn_field TypeEnum
-    // smart_contracts/nft_marketplace/contract.py:187-190
+    // smart_contracts/nft_marketplace/contract.py:188-191
     // itxn.Payment(
     //     receiver=Global.creator_address,
     //     close_remainder_to=Global.creator_address,
     // ).submit()
     itxn_submit
-    // smart_contracts/nft_marketplace/contract.py:192
+    // smart_contracts/nft_marketplace/contract.py:193
     // return contract_balance
     retsub
 
