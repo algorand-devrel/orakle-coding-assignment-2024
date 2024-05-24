@@ -17,20 +17,27 @@ const Withdraw = ({ openModal, setModalState, setTotalProfit }: WithdrawInterfac
 
   const { enqueueSnackbar } = useSnackbar()
 
-  const { signer, activeAddress } = useWallet()
+  const { signer, activeAddress, clients, activeAccount, isActive, isReady } = useWallet()
   const algorandClient = useAtomValue(algorandClientAtom)
   const listClient = useAtomValue(listClientAtom)
   const appDetailsList = useAtomValue(appDetailsListAtom)
 
   const handleWithdraw = async () => {
     setLoading(true)
-
-    if (!signer || !activeAddress) {
+    if (!isActive || !isReady) {
+      enqueueSnackbar('not active', { variant: 'warning' })
+      setLoading(true)
+      return
+    }
+    if (!signer || !activeAddress || !clients || !activeAccount) {
       enqueueSnackbar('Please connect wallet first', { variant: 'warning' })
+      setLoading(true)
       return
     }
 
     if (!algorandClient || !listClient) {
+      enqueueSnackbar('client not ready', { variant: 'warning' })
+      setLoading(true)
       return
     }
 
@@ -61,14 +68,14 @@ const Withdraw = ({ openModal, setModalState, setTotalProfit }: WithdrawInterfac
     try {
       await methods.deleteApp(algorandClient, nftmClient, listClient, activeAddress, Number(myAppId), setTotalProfit)()
     } catch (error) {
-      enqueueSnackbar('Error outside', { variant: 'error' })
+      enqueueSnackbar('Error deleting the app', { variant: 'error' })
       setLoading(false)
       return
     }
     enqueueSnackbar('Profits withdrawn successfully', { variant: 'success' })
 
     setLoading(false)
-    // window.location.reload()
+    window.location.reload()
   }
 
   return (

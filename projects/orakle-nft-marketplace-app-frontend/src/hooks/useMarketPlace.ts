@@ -2,7 +2,7 @@ import AlgorandClient from '@algorandfoundation/algokit-utils/types/algorand-cli
 import { useWallet } from '@txnlab/use-wallet'
 import { useAtom, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
-import { algorandClientAtom, appDetailsListAtom, isSellingAtom, listClientAtom } from '../atoms'
+import { algorandClientAtom, appDetailsListAtom, assetHoldingAtom, isSellingAtom, listClientAtom } from '../atoms'
 import { NftMarketplaceListClient } from '../contracts/NftMarketplaceList'
 import { getAppList } from '../utils/getAppList'
 import { marketplaceListAppId } from '../utils/marketplaceListAppId'
@@ -16,6 +16,7 @@ export function useMarketPlace() {
   const [listClient, setListClient] = useAtom(listClientAtom)
   const setAppDetailsList = useSetAtom(appDetailsListAtom)
   const setIsSelling = useSetAtom(isSellingAtom)
+  const setAssetHolding = useSetAtom(assetHoldingAtom)
   const [health, setHealth] = useState(!isLocalNet)
 
   useEffect(() => {
@@ -61,6 +62,14 @@ export function useMarketPlace() {
         setAppDetailsList(appList)
         const isUserSelling = appList.some((app) => app.creator === activeAddress)
         setIsSelling(isUserSelling)
+
+        algorandClient.account.getInformation(activeAddress).then((info) => {
+          const listOfAssetsHolding = []
+          for (const asset of info.assets!) {
+            listOfAssetsHolding.push(BigInt(asset.assetId))
+          }
+          setAssetHolding(listOfAssetsHolding)
+        })
       })
     }
   }, [algorandClient, listClient, activeAddress])

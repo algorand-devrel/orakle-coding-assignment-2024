@@ -20,14 +20,14 @@ const Buy = ({ openModal, setModalState, currentAppId, unitaryPrice }: BuyInterf
 
   const { enqueueSnackbar } = useSnackbar()
 
-  const { signer, activeAddress } = useWallet()
+  const { signer, activeAddress, activeAccount, clients } = useWallet()
   const algorandClient = useAtomValue(algorandClientAtom)
   const appDetails = useAtomValue(appDetailsListAtom)
 
   const handleBuyNft = async () => {
     setLoading(true)
 
-    if (!signer || !activeAddress) {
+    if (!signer || !activeAddress || !clients || !activeAccount) {
       enqueueSnackbar('Please connect wallet first', { variant: 'warning' })
       return
     }

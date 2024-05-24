@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import * as algokit from '@algorandfoundation/algokit-utils'
-import { enqueueSnackbar } from 'notistack'
+import algosdk from 'algosdk'
 import { NftMarketplaceClient } from './contracts/NftMarketplace'
 import { NftMarketplaceListClient } from './contracts/NftMarketplaceList'
 import { marketplaceListAppId } from './utils/marketplaceListAppId'
@@ -17,7 +17,6 @@ export function create(
   return async () => {
     console.log('creating app')
     const createResult = await nftmClient.create.bare()
-    console.log('App Id: ', createResult.appId)
 
     const mbrTxn = await algorand.transactions.payment({
       sender,
@@ -49,10 +48,8 @@ export function create(
         args: [createResult.appId],
       })
       .execute()
-    console.log('bootstrap done')
-    console.log('asset transfer done')
 
-    console.log('List Result: ', result.returns![1].returnValue)
+    // console.log('List Result: ', result.returns![1].returnValue)
   }
 }
 
@@ -72,7 +69,6 @@ export function buy(
       amount: algokit.microAlgos(Number(quantity * unitaryPrice)),
       extraFee: algokit.algos(0.001),
     })
-    console.log('buyerTxn', buyerTxn)
 
     try {
       const assetInfo = await algorand.account.getAssetInformation(sender, assetId)
@@ -116,48 +112,26 @@ export function deleteApp(
 ) {
   return async () => {
     console.log('deleting app')
-    let totalProfit
-    try {
-      totalProfit = await nftmClient.delete.withdrawAndDelete({}, { sendParams: { fee: algokit.algos(0.003) } })
-    } catch (error) {
-      console.log('error while withdrawing', error)
-      enqueueSnackbar('Error while withdrawing profits', { variant: 'error' })
-      return
-    }
 
-    // const withdrawAtc = await nftmClient
-    //   .compose()
-    //   .delete.withdrawAndDelete({}, { sendParams: { fee: algokit.algos(0.003) } })
-    //   .atc()
+    const result = await algorand
+      .newGroup()
+      .addMethodCall({
+        sender: sender,
+        appId: BigInt(appId),
+        method: nftmClient.appClient.getABIMethod('withdraw_and_delete')!,
+        args: [],
+        extraFee: algokit.algos(0.003),
+        onComplete: algosdk.OnApplicationComplete.DeleteApplicationOC,
+      })
+      .addMethodCall({
+        sender: sender,
+        appId: BigInt(marketplaceListAppId),
+        method: listClient.appClient.getABIMethod('remove_marketplace_from_list')!,
+        args: [appId],
+      })
+      .execute()
 
-    // let result
-    // try {
-    //   result = await algorand
-    //     .newGroup()
-    //     .addAtc(withdrawAtc)
-    //     .addMethodCall({
-    //       sender: sender,
-    //       appId: BigInt(marketplaceListAppId),
-    //       method: listClient.appClient.getABIMethod('remove_marketplace_from_list')!,
-    //       args: [appId],
-    //     })
-    //     .execute()
-    //   console.log('result', result)
-    //   const totalProfit = result.returns![0].returnValue
-    //   console.log('Total Profit: ', totalProfit!.valueOf())
-    // } catch (e) {
-    //   console.log('error while withdrawing inside', e)
-    //   enqueueSnackbar('Error while withdrawing inside', { variant: 'error' })
-    // }
-
-    try {
-      listClient.removeMarketplaceFromList({ appId: appId })
-    } catch (error) {
-      console.log('error while removing list', error)
-      enqueueSnackbar('Error while removing list', { variant: 'error' })
-      return
-    }
-    // console.log('Total Profit: ', totalProfit.return)
-    setTotalProfit(totalProfit!.return!.valueOf())
+    const totalProfit = result.returns![0].returnValue
+    setTotalProfit(totalProfit?.valueOf() as bigint)
   }
 }

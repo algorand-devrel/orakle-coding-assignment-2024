@@ -29,9 +29,7 @@ export function NftCard({ appId, unitaryPrice, assetName, imageUrl, remainingQty
           <div className="w-full px-2 flex flex-col gap-2 items-start">
             <div className="w-full flex flex-row gap-2 items-center">
               <span className="font-bold whitespace-nowrap overflow-hidden text-ellipsis">{assetName}</span>
-              <span>
-                {Number(remainingQty)}/{Number(totalQty)}
-              </span>
+              <span>{Number(remainingQty)} Available</span>
             </div>
             <span className="font-bold">
               {(unitaryPrice / BigInt(1e6)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ALGO

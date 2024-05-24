@@ -2,7 +2,7 @@ import { useWallet } from '@txnlab/use-wallet'
 import { useAtomValue } from 'jotai'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
-import { algorandClientAtom, listClientAtom } from '../atoms'
+import { algorandClientAtom, assetHoldingAtom, listClientAtom } from '../atoms'
 import { NftMarketplaceClient } from '../contracts/NftMarketplace'
 import * as methods from '../methods'
 
@@ -19,15 +19,17 @@ const Sell = ({ openModal, setModalState }: SellInterface) => {
 
   const { enqueueSnackbar } = useSnackbar()
 
-  const { signer, activeAddress } = useWallet()
+  const { signer, activeAddress, clients, activeAccount } = useWallet()
   const algorandClient = useAtomValue(algorandClientAtom)
   const listClient = useAtomValue(listClientAtom)
+  const assetHolding = useAtomValue(assetHoldingAtom)
 
   const handleMethodCall = async () => {
     setLoading(true)
 
-    if (!signer || !activeAddress) {
+    if (!signer || !activeAddress || !clients || !activeAccount) {
       enqueueSnackbar('Please connect wallet first', { variant: 'warning' })
+      setLoading(false)
       return
     }
 
@@ -71,16 +73,28 @@ const Sell = ({ openModal, setModalState }: SellInterface) => {
       <form method="dialog" className="modal-box">
         <h3 className="font-bold text-lg">Create a listing</h3>
         <br />
-        <input
-          type="number"
-          data-test-id="asset-id"
-          placeholder="Enter the NFT asset ID for sale"
-          className="input input-bordered w-full"
-          value={assetIdToSell}
-          onChange={(e) => {
-            setAssetIdToSell(e.target.value)
-          }}
-        />
+        <div className="flex">
+          <div className="dropdown dropdown-hover">
+            <div tabIndex={0} role="button" className="btn m-1">
+              Select NFT to sell
+            </div>
+            <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+              {assetHolding.map((number, index) => (
+                <li key={index}>
+                  <a onClick={() => setAssetIdToSell(String(number))}>{`Asset ID: ${number}`}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <input
+            type="number"
+            data-test-id="asset-id"
+            placeholder="NFT to be sold"
+            className="input input-bordered w-full"
+            value={assetIdToSell}
+            readOnly
+          />
+        </div>
         <input
           type="number"
           data-test-id="quantity-for-sale"
