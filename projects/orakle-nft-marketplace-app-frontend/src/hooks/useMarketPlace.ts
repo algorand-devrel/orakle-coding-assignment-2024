@@ -20,22 +20,18 @@ export function useMarketPlace() {
   const [health, setHealth] = useState(false)
 
   useEffect(() => {
-    let healthInterval: NodeJS.Timeout
-
-    if (isLocalNet) {
-      healthInterval = setInterval(async () => {
+    const healthInterval = setInterval(async () => {
+      if (isLocalNet) {
         setHealth((await clients?.kmd?.healthCheck()) !== undefined)
-      }, 500)
-    } else {
-      healthInterval = setInterval(async () => {
+      } else {
         setHealth((await clients?.pera?.healthCheck()) !== undefined)
-      }, 500)
-    }
+      }
+    }, 500)
 
     return () => {
       healthInterval && clearInterval(healthInterval)
     }
-  }, [clients?.kmd, clients?.pera, isLocalNet])
+  }, [isLocalNet])
 
   useEffect(() => {
     if (health && activeAddress) {
