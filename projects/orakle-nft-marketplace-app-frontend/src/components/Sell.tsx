@@ -135,7 +135,7 @@ const Sell = ({ openModal, setModalState }: SellInterface) => {
           <button className="btn" onClick={() => setModalState(false)}>
             Close
           </button>
-          <button data-test-id="list-nft" className="btn bg-green-300" onClick={handleMethodCall}>
+          <button data-test-id="list-nft" className="btn btn-primary" onClick={handleMethodCall}>
             {loading ? <span className="loading loading-spinner" /> : 'publish'}
           </button>
         </div>

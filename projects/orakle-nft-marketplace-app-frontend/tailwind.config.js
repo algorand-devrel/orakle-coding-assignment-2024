@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
@@ -5,7 +6,7 @@ module.exports = {
     extend: {},
   },
   daisyui: {
-    themes: ['lofi'],
+    themes: ['dim'],
   },
   plugins: [require('daisyui')],
-  }
+}

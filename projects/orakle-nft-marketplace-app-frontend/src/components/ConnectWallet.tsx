@@ -14,7 +14,7 @@ const ConnectWallet = ({ openModal, closeModal }: ConnectWalletInterface) => {
   return (
     <dialog id="connect_wallet_modal" className={`modal ${openModal ? 'modal-open' : ''}`}>
       <form method="dialog" className="modal-box">
-        <h3 className="font-bold text-2xl">Select wallet provider</h3>
+        <h3 className="font-bold text-2xl">{activeAddress ? 'Wallet Connected' : 'Select wallet provider'}</h3>
 
         <div className="grid m-2 pt-5">
           {activeAddress && (
@@ -28,7 +28,7 @@ const ConnectWallet = ({ openModal, closeModal }: ConnectWalletInterface) => {
             providers?.map((provider) => (
               <button
                 data-test-id={`${provider.metadata.id}-connect`}
-                className="btn border-teal-800 border-1  m-2"
+                className="btn border-1  m-2"
                 key={`provider-${provider.metadata.id}`}
                 onClick={() => {
                   return provider.connect()
@@ -58,7 +58,7 @@ const ConnectWallet = ({ openModal, closeModal }: ConnectWalletInterface) => {
           </button>
           {activeAddress && (
             <button
-              className="btn btn-warning"
+              className="btn btn-secondary"
               data-test-id="logout"
               onClick={() => {
                 if (providers) {

@@ -72,21 +72,27 @@ const Buy = ({ openModal, setModalState, currentAppId, unitaryPrice }: BuyInterf
       <form method="dialog" className="modal-box">
         <h3 className="font-bold text-lg">Buy NFT</h3>
         <br />
-        <input
-          type="number"
-          data-test-id="amount"
-          placeholder="How many do you want to buy?"
-          className="input input-bordered w-full"
-          value={quantity}
-          onChange={(e) => {
-            setQuantity(e.target.value)
-          }}
-        />
+        <div className="flex flex-col mb-3">
+          <label htmlFor="asset-id" className=" mb-1 font-semibold">
+            Buy Amount
+          </label>
+          <input
+            type="number"
+            data-test-id="amount"
+            placeholder="0"
+            className="input input-bordered w-full"
+            value={quantity}
+            onChange={(e) => {
+              setQuantity(e.target.value)
+            }}
+          />
+        </div>
+
         <div className="modal-action">
           <button className="btn" onClick={() => setModalState(false)}>
             Close
           </button>
-          <button data-test-id="buy-nft" className={'btn'} onClick={handleBuyNft}>
+          <button data-test-id="buy-nft" className={'btn btn-accent'} onClick={handleBuyNft}>
             {loading ? <span className="loading loading-spinner" /> : 'Buy NFT!'}
           </button>
         </div>

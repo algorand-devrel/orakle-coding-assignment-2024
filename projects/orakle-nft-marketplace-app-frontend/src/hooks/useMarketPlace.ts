@@ -1,9 +1,8 @@
-/* eslint-disable no-console */
 import AlgorandClient from '@algorandfoundation/algokit-utils/types/algorand-client'
 import { useWallet } from '@txnlab/use-wallet'
 import { useAtom, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
-import { algorandClientAtom, appDetailsListAtom, assetHoldingAtom, isSellingAtom, listClientAtom } from '../atoms'
+import { algorandClientAtom, appDetailsListAtom, assetHoldingAtom, healthAtom, isSellingAtom, listClientAtom } from '../atoms'
 import { NftMarketplaceListClient } from '../contracts/NftMarketplaceList'
 import { getAppList } from '../utils/getAppList'
 import { marketplaceListAppId } from '../utils/marketplaceListAppId'
@@ -18,6 +17,7 @@ export function useMarketPlace() {
   const setAppDetailsList = useSetAtom(appDetailsListAtom)
   const setIsSelling = useSetAtom(isSellingAtom)
   const setAssetHolding = useSetAtom(assetHoldingAtom)
+  const setHealthAtom = useSetAtom(healthAtom)
   const [health, setHealth] = useState(false)
 
   let healthInterval: NodeJS.Timeout | null
@@ -28,7 +28,6 @@ export function useMarketPlace() {
         if (isLocalNet) {
           setHealth((await clients?.kmd?.healthCheck()) !== undefined)
         } else {
-          console.log('pera health check')
           setHealth((await clients?.pera?.healthCheck()) !== undefined)
         }
       }, 500)
@@ -71,6 +70,7 @@ export function useMarketPlace() {
         setAppDetailsList(appList)
         const isUserSelling = appList.some((app) => app.creator === activeAddress)
         setIsSelling(isUserSelling)
+        setHealthAtom(true)
 
         algorandClient.account.getInformation(activeAddress).then((info) => {
           const listOfAssetsHolding = []
@@ -78,7 +78,6 @@ export function useMarketPlace() {
             listOfAssetsHolding.push(BigInt(asset.assetId))
           }
           setAssetHolding(listOfAssetsHolding)
-          console.log('listOfAssetsHolding', listOfAssetsHolding)
         })
       })
     }

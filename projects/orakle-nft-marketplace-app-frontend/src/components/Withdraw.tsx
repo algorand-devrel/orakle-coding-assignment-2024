@@ -87,7 +87,7 @@ const Withdraw = ({ openModal, setModalState, setTotalProfit }: WithdrawInterfac
           <button className="btn" onClick={() => setModalState(false)}>
             Close
           </button>
-          <button data-test-id="send-algo" className={`btn`} onClick={handleWithdraw}>
+          <button data-test-id="send-algo" className={`btn btn-accent`} onClick={handleWithdraw}>
             {loading ? <span className="loading loading-spinner" /> : 'Withdraw all profits'}
           </button>
         </div>
