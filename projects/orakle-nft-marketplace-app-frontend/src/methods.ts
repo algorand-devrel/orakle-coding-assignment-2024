@@ -108,12 +108,11 @@ export function deleteApp(
   listClient: NftMarketplaceListClient,
   sender: string,
   appId: number,
-  setTotalProfit: (profit: bigint) => void,
 ) {
   return async () => {
     console.log('deleting app')
 
-    const result = await algorand
+    await algorand
       .newGroup()
       .addMethodCall({
         sender: sender,
@@ -130,8 +129,5 @@ export function deleteApp(
         args: [appId],
       })
       .execute()
-
-    const totalProfit = result.returns![0].returnValue
-    setTotalProfit(totalProfit?.valueOf() as bigint)
   }
 }

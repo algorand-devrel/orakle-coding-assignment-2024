@@ -15,7 +15,6 @@ export function Header() {
   const [openSellModal, setOpenSellModal] = useState(false)
   const [openWithdrawModal, setOpenWithdrawModal] = useState(false)
   // const [openMintModal, setOpenMintModal] = useState(false)
-  const [totalProfit, setTotalProfit] = useState<bigint>(0n)
 
   const toggleWalletModal = () => {
     setOpenWalletModal((prev) => !prev)
@@ -38,7 +37,6 @@ export function Header() {
         {/* <button className="font-bold disabled:text-gray-200" onClick={toggleMintModal} disabled={!activeAddress}>
           Mint NFT
         </button> */}
-        {/* <span className="font-bold">Total Profit: {Number(totalProfit) / 1e6} ALGOs</span> */}
       </div>
       <div className="flex flex-row items-center gap-8 text-white px-4">
         <button
@@ -54,7 +52,7 @@ export function Header() {
       </div>
       <ConnectWallet openModal={openWalletModal} closeModal={toggleWalletModal} />
       <Sell openModal={openSellModal} setModalState={setOpenSellModal} />
-      <Withdraw setTotalProfit={setTotalProfit} openModal={openWithdrawModal} setModalState={setOpenWithdrawModal} />
+      <Withdraw openModal={openWithdrawModal} setModalState={setOpenWithdrawModal} />
       {/* <MintNft openModal={openMintModal} setModalState={setOpenMintModal} /> */}
     </div>
   )

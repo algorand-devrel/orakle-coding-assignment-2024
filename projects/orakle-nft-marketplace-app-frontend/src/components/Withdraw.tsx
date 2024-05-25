@@ -9,10 +9,9 @@ import * as methods from '../methods'
 interface WithdrawInterface {
   openModal: boolean
   setModalState: (value: boolean) => void
-  setTotalProfit: (value: bigint) => void
 }
 
-const Withdraw = ({ openModal, setModalState, setTotalProfit }: WithdrawInterface) => {
+const Withdraw = ({ openModal, setModalState }: WithdrawInterface) => {
   const [loading, setLoading] = useState<boolean>(false)
 
   const { enqueueSnackbar } = useSnackbar()
@@ -66,7 +65,7 @@ const Withdraw = ({ openModal, setModalState, setTotalProfit }: WithdrawInterfac
     }
 
     try {
-      await methods.deleteApp(algorandClient, nftmClient, listClient, activeAddress, Number(myAppId), setTotalProfit)()
+      await methods.deleteApp(algorandClient, nftmClient, listClient, activeAddress, Number(myAppId))()
     } catch (error) {
       enqueueSnackbar('Error deleting the app', { variant: 'error' })
       setLoading(false)
