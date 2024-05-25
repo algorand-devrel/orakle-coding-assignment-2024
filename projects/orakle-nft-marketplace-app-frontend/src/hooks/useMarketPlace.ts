@@ -35,7 +35,7 @@ export function useMarketPlace() {
     return () => {
       healthInterval && clearInterval(healthInterval)
     }
-  }, [isLocalNet])
+  }, [isLocalNet, clients?.kmd, clients?.pera])
 
   useEffect(() => {
     if (health) {
