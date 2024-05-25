@@ -21,10 +21,14 @@ export function useMarketPlace() {
 
   useEffect(() => {
     const healthInterval = setInterval(async () => {
-      if (isLocalNet) {
-        setHealth((await clients?.kmd?.healthCheck()) !== undefined)
+      if (!health) {
+        if (isLocalNet) {
+          setHealth((await clients?.kmd?.healthCheck()) !== undefined)
+        } else {
+          setHealth((await clients?.pera?.healthCheck()) !== undefined)
+        }
       } else {
-        setHealth((await clients?.pera?.healthCheck()) !== undefined)
+        clearInterval(healthInterval)
       }
     }, 500)
 
