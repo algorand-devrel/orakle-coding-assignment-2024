@@ -30,9 +30,9 @@ export function Header() {
   // }
 
   return (
-    <div className="w-full px-8 py-4 top-0 flex flex-row justify-between items-center shadow-md">
+    <div className="w-full px-4 sm:px-8 py-4 flex flex-col sm:flex-row justify-between items-center shadow-md">
       <div className="flex flex-row items-center gap-8 text-white">
-        <h1 className="font-bold text-xl">Algorand X Orakle NFT Marketplace</h1>
+        <h1 className="font-bold text-xl py-2">Algorand X Orakle NFT Marketplace</h1>
 
         {/* <button className="font-bold disabled:text-gray-200" onClick={toggleMintModal} disabled={!activeAddress}>
           Mint NFT
