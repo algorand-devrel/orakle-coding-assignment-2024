@@ -40,6 +40,7 @@ export default function App() {
       nodeToken: String(algodConfig.token),
     },
     algosdkStatic: algosdk,
+    debug: true,
   })
 
   return (
