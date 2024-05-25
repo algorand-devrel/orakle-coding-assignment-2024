@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import AlgorandClient from '@algorandfoundation/algokit-utils/types/algorand-client'
 import { useWallet } from '@txnlab/use-wallet'
 import { useAtom, useSetAtom } from 'jotai'
@@ -27,6 +28,7 @@ export function useMarketPlace() {
         if (isLocalNet) {
           setHealth((await clients?.kmd?.healthCheck()) !== undefined)
         } else {
+          console.log('pera health check')
           setHealth((await clients?.pera?.healthCheck()) !== undefined)
         }
       }, 500)
@@ -76,6 +78,7 @@ export function useMarketPlace() {
             listOfAssetsHolding.push(BigInt(asset.assetId))
           }
           setAssetHolding(listOfAssetsHolding)
+          console.log('listOfAssetsHolding', listOfAssetsHolding)
         })
       })
     }
