@@ -19,16 +19,16 @@ export function useMarketPlace() {
   const setAssetHolding = useSetAtom(assetHoldingAtom)
   const [health, setHealth] = useState(false)
 
+  let healthInterval: NodeJS.Timeout
+
   useEffect(() => {
-    const healthInterval = setInterval(async () => {
+    healthInterval = setInterval(async () => {
       if (!health) {
         if (isLocalNet) {
           setHealth((await clients?.kmd?.healthCheck()) !== undefined)
         } else {
           setHealth((await clients?.pera?.healthCheck()) !== undefined)
         }
-      } else {
-        clearInterval(healthInterval)
       }
     }, 500)
 
@@ -36,6 +36,16 @@ export function useMarketPlace() {
       healthInterval && clearInterval(healthInterval)
     }
   }, [isLocalNet])
+
+  useEffect(() => {
+    if (health) {
+      clearInterval(healthInterval)
+    }
+
+    return () => {
+      healthInterval && clearInterval(healthInterval)
+    }
+  }, [health])
 
   useEffect(() => {
     if (health && activeAddress) {
