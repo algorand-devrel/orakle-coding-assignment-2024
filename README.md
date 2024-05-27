@@ -6,8 +6,6 @@
 
 카이스트 오라클 X 알고랜드 개발자 세션에 오신 여러분 반갑습니다~!
 
-알고랜드 스마트 계약 호출에 관한 모든 것 👉 [PPT 슬라이드](https://docs.google.com/presentation/d/1VOYewmGymgK8QSpm_Y3WeqL3QFSzGbfCSSDtrlgKtJo/edit?usp=sharing)
-
 이 코딩과제에서 여러분은 [알고랜드 파이썬](https://algorandfoundation.github.io/puya/index.html)으로 NFT 마켓플레이스 스마트 계약을 직접 구현하고 [AlgoKit Utils TypeScript](https://github.com/algorandfoundation/algokit-utils-ts)와 [Application Client](https://github.com/algorandfoundation/algokit-client-generator-ts/tree/main)를 사용해 스마트계약을 배포 및 호출하는 React 프론트앤드 연동을 구축해볼 것 입니다.
 
 이 Algokit 프로젝트는 2개의 프로젝트 폴더가 있습니다.
