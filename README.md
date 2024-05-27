@@ -89,9 +89,6 @@ https://github.com/algorand-fix-the-bug-campaign/challenge-1/assets/52557585/acd
 
 이 모든 것이 에러없이 제대로 실행되면 성공적으로 과제를 해결하신겁니다! 🎉🎉 이제부턴 자유롭게 직접 만든 디지털 마켓플레이스 앱을 사용해보세요~!
 
-https://github.com/algorand-devrel/blockchain-valley-session-4/assets/52557585/811c5a53-7341-4e97-9bf7-07d8f55a0261
-
-
 ## 체크포인트 4: 💯 과제 제출하는 방법
 
 1. 성공적으로 모든 문제를 해결하셨다면 본인이 fork한 깃헙 리포로 코드를 푸쉬해주세요. 그런 다음 [원래의 리포로 Pull request를 해주세요.](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork)
