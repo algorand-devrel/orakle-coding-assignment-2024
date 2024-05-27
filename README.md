@@ -73,23 +73,20 @@ https://github.com/algorand-fix-the-bug-campaign/challenge-1/assets/52557585/acd
 4. 문제 6-9는 `src/methods.ts` 파일에 있습니다! 파일에 문제들이 적혀있습니다.
 3. 문제들를 다 해결한 뒤 아래 설명대로 직접 웹사이트에 가서 실행해보세요:
 
-#### 로컬 지갑 연결
-1. `Wallet Connection` 버튼을 눌러 로컬 지갑을 연결하세요.
-#### 테스트용 NFT 생성
-2. 위에 `mint test nft` 버튼을 눌러 테스트용 nft를 만드세요. 코드가 궁금하시면 `src/components/MintNft.tsx`를 확인하세요. 테스트용이기에 고정적으로
+#### 1. 로컬 지갑 연결
+- `Wallet Connection` 버튼을 눌러 로컬 지갑을 연결하세요.
+#### 2. 테스트용 NFT 생성
+- 위에 `mint test nft` 버튼을 눌러 테스트용 nft를 만드세요. 코드가 궁금하시면 `src/components/MintNft.tsx`를 확인하세요. 테스트용이기에 고정적으로
    같은 이미지에 total supply 10개인 NFT를 만듭니다. 서명창에서 패스워드 기입 없이 `ok` 버튼을 눌러 서명하세요.
-#### 판매할 NFT 리스팅
-3. 위에 `sell NFT` 버튼을 누르고 `Select NFT to Sell`에서 2단계에서 만든 테스트 NFT를 선택, 개수는 1개, 가격은 1알고로 설정한 뒤 `publish`를 눌러 nft를
+#### 3. 판매할 NFT 리스팅
+- 위에 `sell NFT` 버튼을 누르고 `Select NFT to Sell`에서 2단계에서 만든 테스트 NFT를 선택, 개수는 1개, 가격은 1알고로 설정한 뒤 `publish`를 눌러 nft를
    리스팅하세요. 이때 서명 창이 **4번** 나옵니다. 서명창에서 패스워드 기입 없이 `ok` 버튼을 눌러 서명하세요.
-#### NFT 구매
-4. `Buy now` 버튼을 누르고 Buy Amount를 1개로 설정한 뒤 `Buy NFT!`를 눌러 구매하세요. 서명 창 1번 나옵니다.
-#### 수익금 회수 및 스마트계약 삭제
-5. `Withdraw Profit` 버튼을 누르고 `Withdraw all profits` 버튼을 눌러 수익금을 회수하고 스마트계약을 삭제하세요. 서명 창은 2번 나옵니다.
+#### 4. NFT 구매
+- `Buy now` 버튼을 누르고 Buy Amount를 1개로 설정한 뒤 `Buy NFT!`를 눌러 구매하세요. 서명 창 1번 나옵니다.
+#### 5. 수익금 회수 및 스마트계약 삭제
+- `Withdraw Profit` 버튼을 누르고 `Withdraw all profits` 버튼을 눌러 수익금을 회수하고 스마트계약을 삭제하세요. 서명 창은 2번 나옵니다.
 
 이 모든 것이 에러없이 제대로 실행되면 성공적으로 과제를 해결하신겁니다! 🎉🎉 이제부턴 자유롭게 직접 만든 디지털 마켓플레이스 앱을 사용해보세요~!
-
-https://github.com/algorand-devrel/blockchain-valley-session-4/assets/52557585/811c5a53-7341-4e97-9bf7-07d8f55a0261
-
 
 ## 체크포인트 4: 💯 과제 제출하는 방법
 
