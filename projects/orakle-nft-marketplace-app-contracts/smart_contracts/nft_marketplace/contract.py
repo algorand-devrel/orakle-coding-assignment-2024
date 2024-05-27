@@ -1,13 +1,5 @@
 # pyright: reportMissingModuleSource=false
-from algopy import (
-    Asset,
-    Global,
-    Txn,
-    UInt64,
-    arc4,
-    gtxn,
-    itxn,
-)
+from algopy import *
 
 """
 NftMarketplace 앱 설명
@@ -52,9 +44,9 @@ class NftMarketplace(arc4.ARC4Contract):
 
     def __init__(self) -> None:
         "문제 1 시작"
-        self.asset_id = UInt64(0)
-        self.unitary_price = UInt64(0)
-        self.bootstrapped = False
+        self.asset_id = "여기에 코드 작성"
+        self.unitary_price = "여기에 코드 작성"
+        self.bootstrapped = "여기에 코드 작성"
         "문제 1 끝"
 
     """
@@ -93,24 +85,15 @@ class NftMarketplace(arc4.ARC4Contract):
     힌트 4 itxn asset transfer 코드 예시: https://github.com/algorandfoundation/puya/blob/2acea25a96c0acd818e9410007d473b2a82e754d/examples/amm/contract.py#L357
     """
 
+    "문제 2 시작"
+
     @arc4.abimethod
     def bootstrap(
         self, asset: Asset, unitary_price: UInt64, mbr_pay: gtxn.PaymentTransaction
     ) -> None:
-        assert Txn.sender == Global.creator_address
-        assert not self.bootstrapped
-        assert mbr_pay.receiver == Global.current_application_address
-        assert mbr_pay.amount == Global.min_balance + Global.asset_opt_in_min_balance
+        "여기에 코드 작성"
 
-        self.asset_id = asset.id
-        self.unitary_price = unitary_price
-        self.bootstrapped = True
-
-        itxn.AssetTransfer(
-            xfer_asset=asset,
-            asset_receiver=Global.current_application_address,
-            asset_amount=0,
-        ).submit()
+    "문제 2 끝"
 
     """
     문제 3
@@ -140,6 +123,7 @@ class NftMarketplace(arc4.ARC4Contract):
     힌트 2 - Asset Transfer Inner Txn: https://algorandfoundation.github.io/puya/api-algopy.itxn.html#algopy.itxn.AssetTransfer
     힌트 3 itxn asset transfer 코드 예시: https://github.com/algorandfoundation/puya/blob/2acea25a96c0acd818e9410007d473b2a82e754d/examples/amm/contract.py#L357
     """
+    "문제 3 시작"
 
     @arc4.abimethod
     def buy(
@@ -147,16 +131,10 @@ class NftMarketplace(arc4.ARC4Contract):
         buyer_txn: gtxn.PaymentTransaction,
         quantity: UInt64,
     ) -> None:
-        assert self.bootstrapped == True
-        assert buyer_txn.sender == Txn.sender
-        assert buyer_txn.receiver == Global.current_application_address
-        assert buyer_txn.amount == self.unitary_price * quantity
 
-        itxn.AssetTransfer(
-            xfer_asset=self.asset_id,
-            asset_receiver=Txn.sender,
-            asset_amount=quantity,
-        ).submit()
+        "여기에 코드 작성"
+
+    "문제 3 끝"
 
     """
     문제 4
@@ -196,17 +174,10 @@ class NftMarketplace(arc4.ARC4Contract):
     이때 두 트랜잭션 다 앱 계정이 보내는 트랜잭션이기 때문에 Inner Transaction을 사용하세요!
     """
 
+    "문제 4 시작"
+
     @arc4.abimethod(allow_actions=["DeleteApplication"])
     def withdraw_and_delete(self) -> None:
-        assert Txn.sender == Global.creator_address
+        "여기에 코드 작성"
 
-        itxn.AssetTransfer(
-            xfer_asset=self.asset_id,
-            asset_receiver=Global.creator_address,
-            asset_close_to=Global.creator_address,
-        ).submit()
-
-        itxn.Payment(
-            receiver=Global.creator_address,
-            close_remainder_to=Global.creator_address,
-        ).submit()
+    "문제 4 끝"
