@@ -55,7 +55,7 @@ class NftMarketplace(arc4.ARC4Contract):
         self.bootstrapped = False
 
     """
-    문제 3
+    문제 2
     bootstrap 메서드를 구현하세요.
 
     bootstrap 메서드는 앱이 판매할 에셋(ASA)을 설정하고, 단가를 설정하고 에셋이 앱 계정이 옵트인 하는 메서드입니다.
@@ -105,7 +105,7 @@ class NftMarketplace(arc4.ARC4Contract):
         ).submit()
 
     """
-    문제 4
+    문제 3
     buy 메서드를 구현하세요.
 
     buy 메서드는 앱에서 판매하는 에셋(ASA)을 구매할때 구매자가 호출하는 메서드입니다.
@@ -136,7 +136,6 @@ class NftMarketplace(arc4.ARC4Contract):
         assert buyer_txn.sender == Txn.sender
         assert buyer_txn.receiver == Global.current_application_address
         assert buyer_txn.amount == self.unitary_price * quantity
-        assert Txn.sender != Global.creator_address
 
         itxn.AssetTransfer(
             xfer_asset=self.asset_id,
@@ -145,7 +144,7 @@ class NftMarketplace(arc4.ARC4Contract):
         ).submit()
 
     """
-    문제 5 (쪼금 어려움 😝)
+    문제 4
     withdraw_and_delete 메서드를 구현하세요.
 
     withdraw_and_delete 메서드는 앱 계정에 있는 잔여 에셋(ASA)을 앱 계정으로 전송하고,

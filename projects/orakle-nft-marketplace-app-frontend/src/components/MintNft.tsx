@@ -34,11 +34,12 @@ const MintNft = ({ openModal, setModalState }: BuyInterface) => {
       unitName: 'NFT',
       total: 10n,
       decimals: 1,
-      url: `ipfs://QmV1dyum28Y4Nhz6wVRTgb1nc6CwqHUwSvkyji1sPGzt6X/#arc3`,
+      url: `ipfs://QmUGFmpbvqsSoNP8yhLuVwQ7vYJ5MQ7VuEjrXNUUfifewx/#arc3`,
     })
     console.log(result?.confirmation.assetIndex)
 
     setLoading(false)
+    window.location.reload()
   }
 
   return (

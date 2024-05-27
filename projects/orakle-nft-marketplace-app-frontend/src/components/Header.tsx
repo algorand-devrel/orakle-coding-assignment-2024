@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { isSellingAtom } from '../atoms'
 import { ellipseAddress } from '../utils/ellipseAddress'
 import ConnectWallet from './ConnectWallet'
+import MintNft from './MintNft'
 import Sell from './Sell'
 import Withdraw from './Withdraw'
 
@@ -14,7 +15,7 @@ export function Header() {
   const [openWalletModal, setOpenWalletModal] = useState(false)
   const [openSellModal, setOpenSellModal] = useState(false)
   const [openWithdrawModal, setOpenWithdrawModal] = useState(false)
-  // const [openMintModal, setOpenMintModal] = useState(false)
+  const [openMintModal, setOpenMintModal] = useState(false)
 
   const toggleWalletModal = () => {
     setOpenWalletModal((prev) => !prev)
@@ -25,20 +26,19 @@ export function Header() {
   const toggleWithdrawModal = () => {
     setOpenWithdrawModal((prev) => !prev)
   }
-  // const toggleMintModal = () => {
-  //   setOpenMintModal((prev) => !prev)
-  // }
+  const toggleMintModal = () => {
+    setOpenMintModal((prev) => !prev)
+  }
 
   return (
     <div className="w-full px-4 sm:px-8 py-4 flex flex-col sm:flex-row justify-between items-center shadow-md">
       <div className="flex flex-row items-center gap-8 text-white">
         <h1 className="font-bold text-xl py-2">Algorand X Orakle NFT Marketplace</h1>
-
-        {/* <button className="font-bold disabled:text-gray-200" onClick={toggleMintModal} disabled={!activeAddress}>
-          Mint NFT
-        </button> */}
       </div>
       <div className="flex flex-row items-center gap-8 text-white px-4">
+        <button className="btn btn-outline disabled:btn-disabled justify-end border-2" onClick={toggleMintModal} disabled={!activeAddress}>
+          Mint Test NFT
+        </button>
         <button
           className="btn btn-outline disabled:btn-disabled justify-end border-2"
           onClick={isSelling ? toggleWithdrawModal : toggleSellModal}
@@ -53,7 +53,7 @@ export function Header() {
       <ConnectWallet openModal={openWalletModal} closeModal={toggleWalletModal} />
       <Sell openModal={openSellModal} setModalState={setOpenSellModal} />
       <Withdraw openModal={openWithdrawModal} setModalState={setOpenWithdrawModal} />
-      {/* <MintNft openModal={openMintModal} setModalState={setOpenMintModal} /> */}
+      <MintNft openModal={openMintModal} setModalState={setOpenMintModal} />
     </div>
   )
 }

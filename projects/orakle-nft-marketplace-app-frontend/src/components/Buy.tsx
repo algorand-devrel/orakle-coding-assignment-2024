@@ -4,8 +4,8 @@ import { useAtomValue } from 'jotai'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { algorandClientAtom, appDetailsListAtom } from '../atoms'
-import { NftMarketplaceClient } from '../contracts/NftMarketplace'
 import * as methods from '../methods'
+import { getCurrentNftmClient } from '../utils/getCurrentNftmClient'
 
 interface BuyInterface {
   openModal: boolean
@@ -36,14 +36,7 @@ const Buy = ({ openModal, setModalState, currentAppId, unitaryPrice }: BuyInterf
       return
     }
 
-    const nftmClient = new NftMarketplaceClient(
-      {
-        resolveBy: 'id',
-        id: currentAppId,
-        sender: { addr: activeAddress!, signer },
-      },
-      algorandClient.client.algod,
-    )
+    const nftmClient = getCurrentNftmClient(algorandClient, currentAppId, activeAddress, signer)
 
     let currentAppDetails
 

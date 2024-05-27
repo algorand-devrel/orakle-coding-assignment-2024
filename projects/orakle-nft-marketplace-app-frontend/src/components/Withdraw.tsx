@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { algorandClientAtom, appDetailsListAtom, listClientAtom } from '../atoms'
 import { NftMarketplaceClient } from '../contracts/NftMarketplace'
 import * as methods from '../methods'
+import { getCurrentNftmClient } from '../utils/getCurrentNftmClient'
 
 interface WithdrawInterface {
   openModal: boolean
@@ -45,14 +46,8 @@ const Withdraw = ({ openModal, setModalState }: WithdrawInterface) => {
 
     for (const appDetails of appDetailsList) {
       if (appDetails.creator == activeAddress) {
-        nftmClient = new NftMarketplaceClient(
-          {
-            resolveBy: 'id',
-            id: appDetails.appId,
-            sender: { addr: activeAddress!, signer },
-          },
-          algorandClient.client.algod,
-        )
+        nftmClient = await getCurrentNftmClient(algorandClient, appDetails.appId, activeAddress, signer)
+
         myAppId = appDetails.appId
         break
       }
@@ -65,7 +60,7 @@ const Withdraw = ({ openModal, setModalState }: WithdrawInterface) => {
     }
 
     try {
-      await methods.deleteApp(algorandClient, nftmClient, listClient, activeAddress, Number(myAppId))()
+      await methods.deleteApp(nftmClient, listClient, Number(myAppId))()
     } catch (error) {
       enqueueSnackbar('Error deleting the app', { variant: 'error' })
       setLoading(false)

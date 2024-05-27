@@ -14,11 +14,15 @@ export function NftCardSection() {
     <section>
       {activeAddress ? (
         healthExternal ? (
-          <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-4">
-            {appDetailsList.map((data) => (
-              <NftCard key={data.assetId} {...data} />
-            ))}
-          </div>
+          appDetailsList.length > 0 ? (
+            <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-4">
+              {appDetailsList.map((data) => (
+                <NftCard key={data.assetId} {...data} />
+              ))}
+            </div>
+          ) : (
+            <h1 className="text-center">No NFTs available</h1>
+          )
         ) : (
           <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-4">
             {loadingList.map((data) => (
