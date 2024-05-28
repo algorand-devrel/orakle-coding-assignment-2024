@@ -65,9 +65,9 @@ class NftMarketplace(arc4.ARC4Contract):
     - 메서드 호출자 (Txn.sender)가 앱의 생성자(Global.creator_address)인지 체크하세요.
     - bootstrapped 글ㄹ로벌 상태가 False인지 체크하세요.
     - mbr_pay 트랜잭션을 받는 계정이 앱 계정인지 체크하세요.
-    - mbr_pay의 알고 송금량이 앱 계정의 미니멈 밸런스(0.1 알고)와 판매할 ASA에 옵트인하기
+    - mbr_pay의 알고 송금량(amount)이 앱 계정의 미니멈 밸런스(0.1 알고)와 판매할 ASA에 옵트인하기
        위한 미니멈 밸런스(0.1 알고)의 합과 같은지 체크해야합니다.
-    -> 팁: Global이라는 AVM opcode를 통해 여러 정보를 열람할 수 있습니다. 자세한 사항은 아래 힌트 1을 참고해주세요.
+        -> 팁: Global이라는 AVM opcode를 통해 min_balance, asset_opt_in_min_balance와 같은 여러 정보를 열람할 수 있습니다. 자세한 사항은 아래 힌트 1을 참고해주세요.
 
     # 2단계: bootstrap 메서드는 아래 기능들을 수행합니다.
     1. asset_id 글로벌 상태를 인수로 들어온 판매할 ASA 아이디로 업데이트합니다.
@@ -82,7 +82,7 @@ class NftMarketplace(arc4.ARC4Contract):
     힌트 1 - Global Opcode: https://algorandfoundation.github.io/puya/api-algopy.html#algopy.Global
     힌트 2 - How to Inner Transaction: https://algorandfoundation.github.io/puya/lg-transactions.html#inner-transactions
     힌트 3 - Asset Transfer Inner Txn: https://algorandfoundation.github.io/puya/api-algopy.itxn.html#algopy.itxn.AssetTransfer
-    힌트 4 itxn asset transfer 코드 예시: https://github.com/algorandfoundation/puya/blob/2acea25a96c0acd818e9410007d473b2a82e754d/examples/amm/contract.py#L357
+    힌트 4 - itxn asset transfer 코드 예시: https://github.com/algorandfoundation/puya/blob/2acea25a96c0acd818e9410007d473b2a82e754d/examples/amm/contract.py#L357
     """
 
     "문제 2 시작"
@@ -104,7 +104,7 @@ class NftMarketplace(arc4.ARC4Contract):
 
     함수 인수 설명:
     - buyer_txn: 앱 계정으로 어토믹 그룹에 묶여 동시다발적으로 보내지는 payment 트랜잭션입니다. 에섯 구매를 위해 구매자가 Algo를 보내는 Payment transaction입니다.
-    - quantity: 구매할 에셋(ASA)의 수량을 나타내는 UInt64 타입의 인수입니다.
+    - quantity: 에셋(ASA)을 몇개 구매할건지 나타내는 UInt64 타입의 인수입니다.
 
     # 1단계: assert로 buy 호출 조건을 체크하세요.
     - bootstrapped 글로벌 상태가 True인지 체크하세요. False라면 부트스트랩이 안된 상태입니다.
@@ -121,7 +121,7 @@ class NftMarketplace(arc4.ARC4Contract):
 
     힌트 1 - Inner Transaction: https://algorandfoundation.github.io/puya/lg-transactions.html#inner-transactions
     힌트 2 - Asset Transfer Inner Txn: https://algorandfoundation.github.io/puya/api-algopy.itxn.html#algopy.itxn.AssetTransfer
-    힌트 3 itxn asset transfer 코드 예시: https://github.com/algorandfoundation/puya/blob/2acea25a96c0acd818e9410007d473b2a82e754d/examples/amm/contract.py#L357
+    힌트 3 - itxn asset transfer 코드 예시: https://github.com/algorandfoundation/puya/blob/2acea25a96c0acd818e9410007d473b2a82e754d/examples/amm/contract.py#L357
     """
     "문제 3 시작"
 
@@ -131,7 +131,6 @@ class NftMarketplace(arc4.ARC4Contract):
         buyer_txn: gtxn.PaymentTransaction,
         quantity: UInt64,
     ) -> None:
-
         "여기에 코드 작성"
 
     "문제 3 끝"
@@ -172,6 +171,10 @@ class NftMarketplace(arc4.ARC4Contract):
         - close_remainder_to: 알고 전액이 송금될 주소
 
     이때 두 트랜잭션 다 앱 계정이 보내는 트랜잭션이기 때문에 Inner Transaction을 사용하세요!
+
+    힌트 1 - Inner Transaction: https://algorandfoundation.github.io/puya/lg-transactions.html#inner-transactions
+    힌트 2 - itxn asset transfer 코드 예시: https://github.com/algorandfoundation/puya/blob/2acea25a96c0acd818e9410007d473b2a82e754d/examples/amm/contract.py#L357
+
     """
 
     "문제 4 시작"

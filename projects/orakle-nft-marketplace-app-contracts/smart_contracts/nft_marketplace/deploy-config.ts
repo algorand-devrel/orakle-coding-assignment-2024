@@ -1,10 +1,12 @@
 import * as algokit from '@algorandfoundation/algokit-utils'
 import { NftMarketplaceClient } from '../artifacts/nft_marketplace/client'
 import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/types/account'
+import { Config as AlgokitConfig } from '@algorandfoundation/algokit-utils'
 
 // Below is a showcase of various deployment options you can use in TypeScript Client
 export async function deploy() {
   console.log('=== Deploying NftMarketplaceClient ===')
+  AlgokitConfig.configure({ populateAppCallResources: true })
 
   // 여러 클라이언트 생성
   const algod = algokit.getAlgoClient()
@@ -15,8 +17,7 @@ export async function deploy() {
   // 랜덤 계정 생성 후 자금 지급
   const deployer = await algorand.account.random()
   const buyer = await algorand.account.random()
-  const lateBuyer = await algorand.account.random()
-  const accounts = [deployer, buyer, lateBuyer]
+  const accounts = [deployer, buyer]
 
   const dispenser = await algorand.account.dispenser()
   for (let i = 0; i < accounts.length; i++) {
@@ -65,25 +66,29 @@ export async function deploy() {
     sender: deployer.addr,
     receiver: app.appAddress,
     amount: algokit.algos(0.2),
+    extraFee: algokit.algos(0.001),
   })
 
-  // 앱이 판매할 준비가 되도록 Bootstrap 메서드를 호출
-  await appClient.bootstrap(
-    { asset: assetId, unitaryPrice: unitaryPrice, mbrPay: mbrPay },
-    { sendParams: { fee: algokit.transactionFees(2), populateAppCallResources: true, suppressLog: true } },
-  )
-  console.log('2. 앱 부트스트래핑 완료!')
+  const sendAssetToSell = {
+    sender: deployer.addr,
+    receiver: app.appAddress,
+    assetId: assetId,
+    amount: 100n,
+  }
 
-  // NftMarketplaceClient 앱에 판매할 NFT 에셋 송금
-  await algorand.send.assetTransfer(
-    {
+  // 앱이 판매할 준비가 되도록 Bootstrap 메서드를 호출, NftMarketplaceClient 앱에 판매할 NFT 에셋 송금
+  await algorand
+    .newGroup()
+    .addMethodCall({
       sender: deployer.addr,
-      receiver: app.appAddress,
-      assetId: assetId,
-      amount: 100n,
-    },
-    { suppressLog: true },
-  )
+      appId: BigInt(app.appId),
+      method: appClient.appClient.getABIMethod('bootstrap')!,
+      args: [assetId, unitaryPrice, mbrPay],
+    })
+    .addAssetTransfer(sendAssetToSell)
+    .execute()
+
+  console.log('2. 앱 부트스트래핑 완료!')
   console.log('3. IU 티켓 에셋 앱으로 송금 완료!')
 
   // 구매자 앱 클라이언트 생성. 이 앱 클라이언트는 구매자 계정과 연동됨.
@@ -91,15 +96,6 @@ export async function deploy() {
     {
       resolveBy: 'id',
       sender: buyer,
-      id: app.appId,
-    },
-    algod,
-  )
-
-  const lateBuyerAppClient = new NftMarketplaceClient(
-    {
-      resolveBy: 'id',
-      sender: lateBuyer,
       id: app.appId,
     },
     algod,
@@ -115,21 +111,6 @@ export async function deploy() {
     appAddr: string,
     unitaryPrice: number,
   ): Promise<void> {
-    try {
-      let assetInfo = await algorand.account.getAssetInformation(buyer, assetId)
-      console.log(`${buyerName}가 이미 에셋에 옵트인 되어있어요! 현재 보유한 티켓 수: ${assetInfo.balance}개`)
-    } catch (e) {
-      console.log(`${buyerName}가 에셋에 옵트인이 안 되어있어요. 옵트인 진행할게요~`)
-      // 구매자가 NFT에 옵트인
-      await algorand.send.assetOptIn(
-        {
-          sender: buyer.addr,
-          assetId: assetId,
-        },
-        { suppressLog: true },
-      )
-    }
-
     // NftMarketplaceClient buy 메서드 호출때 구매 비용 지불로 사용할 결제 트랜잭션 생성
     const buyNftPay = await algorand.transactions.payment({
       sender: buyer.addr,
@@ -137,26 +118,59 @@ export async function deploy() {
       amount: algokit.algos((unitaryPrice * buyAmount) / 1_000_000),
     })
 
-    // 위 결제 트랜잭션과 NftMarketplaceClient buy 메서드를 어토믹 트랜잭션으로 동시에 호출
+    try {
+      let assetInfo = await algorand.account.getAssetInformation(buyer, assetId)
+      console.log(`${buyerName}가 이미 에셋에 옵트인 되어있어요! 현재 보유한 티켓 수: ${assetInfo.balance}개`)
+    } catch (e) {
+      console.log(`${buyerName}가 에셋에 옵트인이 안 되어있어요. 옵트인 진행할게요~`)
+
+      // buy메서드 앱 호출 트랜잭션 생성
+      const buyAppCall = await appClient
+        .compose()
+        .buy(
+          {
+            buyerTxn: buyNftPay,
+            quantity: buyAmount,
+          },
+          { sendParams: { fee: algokit.transactionFees(2), suppressLog: true } },
+        )
+        .atc()
+
+      // 구매자가 NFT에 옵트인, buyNftPay 결제 트랜잭션, NftMarketplaceClient buy 메서드를 어토믹 트랜잭션으로 동시에 호출
+      await algorand
+        .newGroup()
+        .addAssetOptIn({
+          sender: buyer.addr,
+          assetId: assetId,
+        })
+        .addAtc(buyAppCall)
+        .execute()
+
+      const assetInfo = await algorand.account.getAssetInformation(buyer, assetId)
+      console.log(`${buyerName}가 티켓 ${buyAmount}장을 구매하여 ${assetInfo.balance}개의 티켓을 보유하고 있어요!`)
+      return
+    }
+
+    // 계정이 이미 구매할 에셋(아이유 콘서트 티켓)에 옵트인 되어 있을 시 buy 메서드만 호출
     await appClient.buy(
       {
         buyerTxn: buyNftPay,
         quantity: buyAmount,
       },
-      { sendParams: { fee: algokit.transactionFees(2), populateAppCallResources: true, suppressLog: true } },
+      { sendParams: { fee: algokit.transactionFees(2), suppressLog: true } },
     )
 
     const assetInfo = await algorand.account.getAssetInformation(buyer, assetId)
-    console.log(`${buyerName}가 티켓 1장을 추가 구매하여 ${assetInfo.balance}개의 티켓을 보유하고 있어요!`)
+    console.log(`${buyerName}가 티켓 ${buyAmount}장을 구매하여 ${assetInfo.balance}개의 티켓을 보유하고 있어요!`)
   }
 
   await buyAsset(buyerAppClient, 'buyer', buyer, assetId, 1, app.appAddress, unitaryPrice)
+  await buyAsset(buyerAppClient, 'buyer', buyer, assetId, 2, app.appAddress, unitaryPrice)
 
   // 판매자가 NftMarketplaceClient 앱을 삭제하며 수익금과 잔여 NFT 에셋을 회수
   await appClient.delete.withdrawAndDelete(
     {},
     { sendParams: { fee: algokit.transactionFees(3), populateAppCallResources: true } },
   )
-
   console.log('4. IU 티켓 판매 종료 및 수익금 회수 완료!')
 }
