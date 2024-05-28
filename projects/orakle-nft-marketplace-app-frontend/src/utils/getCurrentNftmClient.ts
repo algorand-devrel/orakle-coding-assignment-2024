@@ -42,7 +42,10 @@ export function getCurrentNftmClient(
   */
 
   // 문제 5 시작
-  const nftmClient = '여기에 코드 작성'
+  const nftmClient = new NftMarketplaceClient(
+    { sender: { addr: activeAddress!, signer }, resolveBy: 'id', id: currentAppId },
+    algorandClient.client.algod,
+  )
   // 문제 5 끝
 
   return nftmClient

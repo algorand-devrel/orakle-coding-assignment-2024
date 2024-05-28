@@ -73,7 +73,7 @@ main_buy_route@5:
     return
 
 main_withdraw_and_delete_route@6:
-    // smart_contracts/nft_marketplace/contract.py:192
+    // smart_contracts/nft_marketplace/contract.py:196
     // @arc4.abimethod(allow_actions=["DeleteApplication"])
     txn OnCompletion
     int DeleteApplication
@@ -231,17 +231,17 @@ buy:
 
 // smart_contracts.nft_marketplace.contract.NftMarketplace.withdraw_and_delete() -> void:
 withdraw_and_delete:
-    // smart_contracts/nft_marketplace/contract.py:192-193
+    // smart_contracts/nft_marketplace/contract.py:196-197
     // @arc4.abimethod(allow_actions=["DeleteApplication"])
     // def withdraw_and_delete(self) -> None:
     proto 0 0
-    // smart_contracts/nft_marketplace/contract.py:194
+    // smart_contracts/nft_marketplace/contract.py:198
     // assert Txn.sender == Global.creator_address
     txn Sender
     global CreatorAddress
     ==
     assert
-    // smart_contracts/nft_marketplace/contract.py:196
+    // smart_contracts/nft_marketplace/contract.py:200
     // itxn.AssetTransfer(xfer_asset=self.asset_id, asset_receiver=Global.creator_address, asset_close_to=Global.creator_address).submit()
     itxn_begin
     int 0
@@ -256,7 +256,7 @@ withdraw_and_delete:
     int axfer
     itxn_field TypeEnum
     itxn_submit
-    // smart_contracts/nft_marketplace/contract.py:197
+    // smart_contracts/nft_marketplace/contract.py:201
     // itxn.Payment(receiver=Global.creator_address, close_remainder_to=Global.creator_address).submit()
     itxn_begin
     global CreatorAddress
