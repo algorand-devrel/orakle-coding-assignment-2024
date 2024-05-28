@@ -4,7 +4,7 @@
 
 > 🚧✋ 잠깐! 오늘 코딩 과제를 성공적으로 끝내기 위해 꼭!! 아래 설명을 차례대로 다 읽고 진행해주세요!!!
 
-카이스트 오라클 X 알고랜드 개발자 세션에 오신 여러분 반갑습니다~! test
+카이스트 오라클 X 알고랜드 개발자 세션에 오신 여러분 반갑습니다~!
 
 이 코딩과제에서 여러분은 [알고랜드 파이썬](https://algorandfoundation.github.io/puya/index.html)으로 NFT 마켓플레이스 스마트 계약을 직접 구현하고 [AlgoKit Utils TypeScript](https://github.com/algorandfoundation/algokit-utils-ts)와 [Application Client](https://github.com/algorandfoundation/algokit-client-generator-ts/tree/main)를 사용해 스마트계약을 배포 및 호출하는 React 프론트앤드 연동을 구축해볼 것 입니다.
 

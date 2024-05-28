@@ -153,10 +153,10 @@ export async function deploy() {
   await buyAsset(buyerAppClient, 'buyer', buyer, assetId, 1, app.appAddress, unitaryPrice)
 
   // 판매자가 NftMarketplaceClient 앱을 삭제하며 수익금과 잔여 NFT 에셋을 회수
-  const returnVal = await appClient.delete.withdrawAndDelete(
+  await appClient.delete.withdrawAndDelete(
     {},
     { sendParams: { fee: algokit.transactionFees(3), populateAppCallResources: true } },
   )
-  console.log('총 수익금: ', returnVal.return)
+
   console.log('4. IU 티켓 판매 종료 및 수익금 회수 완료!')
 }
