@@ -42,6 +42,8 @@
 algokit project bootstrap all
 ```
 
+> 만약 `Unhandled PermissionError: [Errno 13] Permission denied: '/Users/$name/.config/algokit'` 에러가 뜬다면 앞에 sudo를 붙여서 `sudo algokit project bootstrap all` 커맨드를 실행하세요!
+
 6. 이제 `orakle-nft-marketplace-app-contracts` 터미널을 선택한 뒤 `poetry shell` 커맨드를 실행해 파이썬 virtual environment를 활성화 시켜주세요.
    1. 파이썬 virtual environment를 비활성화 시킬때는 `exit` 커맨드를 실행하시면 됩니다.
 
