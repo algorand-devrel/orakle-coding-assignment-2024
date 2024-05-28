@@ -8,19 +8,12 @@ import { marketplaceListAppId } from './utils/marketplaceListAppId'
 === 먼저 읽고 진행해주세요!! ===
 methods.ts 파일은 디지털 마켓플레이스 앱을 생성하고 호출하는 여러 메서드들을 정의하는 파일입니다.
 이 파일에는 3개의 함수가 정의되어 있습니다.
-1. create
-2. buy
-3. deleteApp
+1. create: src/components/Sell.tsx에서 NFT 판매 리스팅을 할때 사용.
+2. buy: src/components/Buy.tsx에서 NFT 구매를 할때 사용.
+3. deleteApp: src/components/Withdraw.tsx에서 수익금을 인출 및 스마트계약 삭제할때 사용.
 
-Home.tsx 파일을 보면 상황에 따라 각 메서드들을 MethodCall.tsx 컴포넌트에 전달해 호출하고 있습니다.
-또한 Home.tsx에서 여러분들이 만든 dmClient가 디지털 마켓플레이스의 앱 클라이언트고 이 파일에 있는 3개의
-함수들의 전달값으로 사용되고 있습니다.
-
-시작하기 전 Home.tsx 라인 16을 보시면 아래 코드가 있습니다.
-- AlgokitConfig.configure({ populateAppCallResources: true })
-
-이 코드 하나로 모든 앱 호출시 필요한 레퍼런스들을 자동으로 기입해주는 기능을 활성화 할 수 있습니다.
-즉, 수동적으로 populateAppResources를 설정할 필요가 없습니다! (이거 직접 하게 만들려다가 참았어요 ^^)
+기억하세요!
+nftmClient로 nft marketplace 스마트계약을 배포 및 호출할때는 항상 await을 사용해야합니다.
 
 이 파일에는 문제 6부터 9까지 총 4문제가 있습니다. 아래 설명들을 자세히 읽고 문제를 풀어주세요!
 */
@@ -40,30 +33,43 @@ export function create(
 
     /*
     문제 6
-    문제1에서 생성한 dmClient를 사용하여 앱을 배포하세요.
+    문제5에서 생성한 nftmClient를 사용하여 앱을 배포하세요.
 
-    이때 `deploy`가 아닌 `create` 메서드를 사용해서 배포하세요.
+    사용해야할 인수:
+    - nftmClient: 문제 5에서 정의한 nft marketplace app client
+
+    스마트계약 배포시 `deploy`가 아닌 `create` 메서드를 사용해서 배포하세요.
     `deploy`는 스마트계약이 이미 배포 되있는지 확인하고 배포 되어 있다면 다시 배포하지 않습니다. 과제를 풀때 항상 새로
     배포하는게 편하기 때문에 스크립트가 실행될때마다 배포하는 `create` 메서드를 사용해주세요.
 
-    또한 디지털 마켓플레이스에 create 메서드를 따로 구현하지 않았기 때문에 기본적으로 제공되늗 bare create 메서드를 사용합니다.
+    또한 디지털 마켓플레이스에 create 메서드를 따로 구현하지 않았기 때문에 기본적으로 제공되늗 bare create 메서드를 사용하세요.
 
     힌트: https://github.com/algorandfoundation/algokit-client-generator-ts/blob/main/docs/usage.md#create-calls
     */
+    // 문제 6 시작
     const createResult = await nftmClient.create.bare()
+    // 문제 6 끝
 
     /*
     문제 7
-    부트스트랩 메서드는 앱이 필요한 미니멈 밸런스를 지급하고 앱이 판매할 NFT 에셋에 옵트인하는 메서드입니다.
     앱이 판매할 준비가 되도록 Bootstrap 메서드를 호출하세요.
 
+    bootstrap 메서드는 앱이 필요한 미니멈 밸런스를 지급하고 앱이 판매할 NFT 에셋에 옵트인하는 메서드입니다.
+
+    사용해야할 create함수의 인수:
+    - assetBeingSold: 판매할 NFT 에셋의 ID
+    - unitaryPrice: NFT 하나의 가격
+
     부트스트랩 메서드는 호출 시 판매할 NFT에 옵트인하는 inner transaction이 있습니다.
-    따라서 부트스트랩 메서드 호출자가 inner transaction의 트랜잭션 비용을 내야합니다.
-    이 부분은 mbrTxn안에 extraFee를 통해서 설정을 해주면 됩니다. 이때 extraFee는 AlgoAmount 데이터타입을 받습니다!!
+    따라서 부트스트랩 메서드 호출자가 inner transaction의 트랜잭션 비용을 대신 내야합니다.
+    이 추가 비용은 mbrTxn안에 extraFee를 통해서 설정할 수 있습니다. 이때 extraFee는 AlgoAmount 데이터타입을 받습니다!! (그냥 숫자 넣으면 에러뜸)
     알고랜드의 트랜잭션 비용은 0.001 Algos입니다.
 
+    팁!
+    Nft Markeplace 코드를 보고 bootstrap 메서드가 어떤 인수를 받는지 확인하고 진행하세요.
+
     힌트1: AlgoAmount 설정하는 방법: https://github.com/algorandfoundation/algokit-utils-ts/blob/e9682db133fab42627648ac2f779cd91f3e6cd21/docs/capabilities/amount.md#creating-an-algoamount
-    힌트2: 앱 클라이언트 메서드 호출때 메서드 전달값 넣는법: https://github.com/algorandfoundation/algokit-client-generator-ts/blob/main/docs/usage.md#abi-arguments
+    힌트2: 앱 클라이언트로 특정 메서드 호출 방법: https://github.com/algorandfoundation/algokit-client-generator-ts/blob/main/docs/usage.md#no-ops
     */
     const mbrTxn = await algorand.transactions.payment({
       sender,
@@ -112,15 +118,26 @@ export function buy(
   return async () => {
     /*
     문제 8
-    밑에 `buyerTxn` 결제 트랜잭션를 buy 메서드의 전달값으로 넣어 어토믹 트랜잭션으로 동시에 호출하세요.
+    구매자가 구매할 NFT에 optin하는 트랜잭션과 buy 메서드를 어토믹 그룹으로 묶어 동시다발적으로 실행하는 코드를 작성하세요.
 
-    buy 메서드는 호출 시 스마트 계약에 있는 NFT를 구매자 지갑으로 보내주는 inner transaction이 있습니다.
-    따라서 buy 메서드 호출자가 inner transaction의 트랜잭션 비용을 내야합니다.
-    이 부분은 buyerTxn안에 extraFee를 통해서 설정을 해주면 됩니다. 이때 extraFee는 AlgoAmount 데이터타입을 받습니다!!
-    알고랜드의 트랜잭션 비용은 0.001 Algos입니다.
+    알고랜드에서는 계정이 특정 ASA에 optin을 해야지만 그 ASA를 받고 보유할 수 있습니다. 따라서 이 파일의 buy 함수는 먼저
+    구매자가 구매할 NFT에 optin을 했는지 체크하고 했다면 바로 스마트계약의 buy 메서드를 호출하고, optin을 안했다면
+    먼저 optin을 하고 buy 메서드를 호출합니다.
 
-    힌트1: AlgoAmount 설정하는 방법: https://github.com/algorandfoundation/algokit-utils-ts/blob/e9682db133fab42627648ac2f779cd91f3e6cd21/docs/capabilities/amount.md#creating-an-algoamount
-    힌트2: 앱 클라이언트 메서드 호출때 메서드 전달값 넣는법: https://github.com/algorandfoundation/algokit-client-generator-ts/blob/main/docs/usage.md#abi-arguments
+    여러분은 optin을 하고 buy 메서드를 어토믹으로 동시에 호출하는 코드를 작성하셔야 합니다.
+
+    사용해야할 인수:
+    - nftmClient: 문제 5에서 정의한 nft marketplace app client
+    - quantity: 구매할 NFT의 수량
+
+    밑에 buyerTxn과 assetOptInTxn이라는 두개의 트래잭션 객체가 정의되어있습니다. 이 두 트랜잭션을 스마트계약의 buy 메서드와 어토믹 그룹으로 묶어서 실행하셔야합니다.
+    - buyerTxn: 구매자가 구매할 NFT에 대한 지불을 하는 트랜잭션입니다.
+    - assetOptInTxn: 구매자가 구매할 NFT에 optin을 하는 트랜잭션입니다.
+
+    여기서 buyerTxn은 buy 메서드의 인수로 들어가기 때문에 자동으로 어토믹 그룹에 포함됩니다. 따라서 assetOptInTxn만 어토믹 그룹에 추가해주시면 됩니다.
+    어토믹그룹을 형성하고 execute하는것을 까먹지 마세요!
+
+    힌트1: app client로 어토믹 그룹을 형성, 트랜잭션 추가, 제출하는법: https://github.com/algorandfoundation/algokit-client-generator-ts/blob/main/docs/usage.md#using-the-fluent-composer
     */
 
     const buyerTxn = await algorand.transactions.payment({
@@ -162,10 +179,10 @@ export function deleteApp(nftmClient: NftMarketplaceClient, listClient: NftMarke
 
     /*
     문제 9
-    앱을 삭제하고 수익금을 회수하는 withdrawAndDelete 메서드를 호출하세요.
+    앱을 삭제하고 수익금과 잔여 NFT를 회수하는 withdrawAndDelete 메서드를 호출하세요.
 
     withdrawAndDelete 메서드는 OnComplete Actions가 DeleteApplication으로 설정된 특별한 메서드입니다.
-    앱 클라이언트에는 delete라는 property가 있습니다. 이 delete property에 withdrawAndDelete 메서드가 있으니 이 메서드를 호출하시면 됩니다.
+    nftmClient에는 delete라는 property가 있습니다. 이 delete property에 withdrawAndDelete 메서드가 있으니 이 메서드를 호출하시면 됩니다.
 
     앱 클라이언트로 withdrawAndDelete 같은 메서드를 호출할때 전달값을 두개 넣을 수 있습니다.
     1. ABI Arguments: 스마트계약 메서드 호출시 전달값을 넣는 곳입니다.
@@ -179,13 +196,13 @@ export function deleteApp(nftmClient: NftMarketplaceClient, listClient: NftMarke
     1. 수익금 판매자에게 송금
     2. 잔여 nft 송금
     따라서 호출시 sendParams 안에 추가 fee 설정을 해야합니다.
-    - fee: sendParams 객체 안에 fee를 0.003 Algos로 설정해야합니다.
+    - fee: sendParams 객체 안에 fee를 algokit.algos(0.003)fh 설정해야합니다.
 
     힌트1: 앱클라이언트로 앱을 delete 하는법 - https://github.com/algorandfoundation/algokit-client-generator-ts/blob/main/docs/usage.md#update-and-delete-calls
     힌트2: 앱 클라이언트 메서드 호출때 메서드 전달값 넣는법: https://github.com/algorandfoundation/algokit-client-generator-ts/blob/main/docs/usage.md#abi-arguments
     힌트3: additional parameters에 extra fee 설정하는 방법: https://github.com/algorandfoundation/algokit-client-generator-ts/blob/main/docs/usage.md#additional-parameters
     힌트4: AlgoAmount 설정하는 방법: https://github.com/algorandfoundation/algokit-utils-ts/blob/e9682db133fab42627648ac2f779cd91f3e6cd21/docs/capabilities/amount.md#creating-an-algoamount
-    힌트5: 다 시도해보고 모르겠을때 보세요!: https://github.com/algorand-devrel/blockchain-valley-session-2/blob/df789308e76a5a6cb3c815b256779fb197add8fd/projects/coding-assignment/smart_contracts/digital_marketplace/deploy-config.ts#L70C1-L74C4
+    힌트5: 다 시도해보고 모르겠을때 보세요!: https://github.com/algorand-devrel/blockchain-valley-session-2/blob/df789308e76a5a6cb3c815b256779fb197add8fd/projects/coding-assignment/smart_contracts/digital_marketplace/deploy-config.ts#L392
     */
 
     // 문제 9 시작
