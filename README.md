@@ -83,9 +83,10 @@ algokit project deploy localnet
 1. `orakle-nft-marketplace-app-frontend` 터미널로 가서 `npm run dev`를 실행해 로컬 서버를 실행한 뒤, 브라우저에 페이지를 열고 진행해주세요!
 2. `orakle-nft-marketplace-app-contracts` 터미널에서 `algokit project deploy localnet`를 실행하시면 "=== Deploying NftMarketplaceList ===" 밑에
    "Created app ****..." 라는 메시지가 뜹니다. 여기서 나오는 app ID 번호를 복사해서 `src/utils/marketplaceListAppId.ts`에 `marketplaceListAppId` 변수값으로 붙여넣어주세요.
-3. 문제 5은 `src/utils/getCurrentNftmClient.ts` 파일에 있습니다! 파일에 문제가 적혀있습니다.
-4. 문제 6-9는 `src/methods.ts` 파일에 있습니다! 파일에 문제들이 적혀있습니다.
-5. 문제들를 다 해결한 뒤 아래 설명대로 직접 웹사이트에 가서 실행해보세요:
+<img width="871" alt="Screenshot 2024-05-28 at 9 08 36 PM" src="https://github.com/algorand-devrel/orakle-coding-assignment-2024/assets/52557585/dbad5218-5673-42c4-8f3e-ce93757b557f">
+4. 문제 5은 `src/utils/getCurrentNftmClient.ts` 파일에 있습니다! 파일에 문제가 적혀있습니다.
+5. 문제 6-9는 `src/methods.ts` 파일에 있습니다! 파일에 문제들이 적혀있습니다.
+6. 문제들를 다 해결한 뒤 아래 설명대로 직접 웹사이트에 가서 실행해보세요:
 
 > 🚧 주목!! 아래 단계를 실행 도중 에러가 발생할 시 위에 단계2를 다시 실행해 Nft Marketplace List 스마트계약을 로컬 네트워크에 재배포 한 후 app id 값을 교체한 뒤 진행해주세요!
 
