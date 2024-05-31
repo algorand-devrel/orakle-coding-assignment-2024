@@ -38,8 +38,8 @@ const MintNft = ({ openModal, setModalState }: BuyInterface) => {
     })
     console.log(result?.confirmation.assetIndex)
 
+    enqueueSnackbar('Test NFT Successfully minted', { variant: 'success' })
     setLoading(false)
-    window.location.reload()
   }
 
   return (
