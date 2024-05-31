@@ -1,7 +1,7 @@
 import { useWallet } from '@txnlab/use-wallet'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
-import { isSellingAtom } from '../atoms'
+import { algorandClientAtom, isSellingAtom } from '../atoms'
 import { ellipseAddress } from '../utils/ellipseAddress'
 import ConnectWallet from './ConnectWallet'
 import MintNft from './MintNft'
@@ -11,16 +11,27 @@ import Withdraw from './Withdraw'
 export function Header() {
   const { activeAddress } = useWallet()
   const isSelling = useAtomValue(isSellingAtom)
+  const algorandClient = useAtomValue(algorandClientAtom)
 
   const [openWalletModal, setOpenWalletModal] = useState(false)
   const [openSellModal, setOpenSellModal] = useState(false)
   const [openWithdrawModal, setOpenWithdrawModal] = useState(false)
   const [openMintModal, setOpenMintModal] = useState(false)
+  const [assetHolding, setAssetHolding] = useState<bigint[]>([])
 
   const toggleWalletModal = () => {
     setOpenWalletModal((prev) => !prev)
   }
   const toggleSellModal = () => {
+    if (activeAddress && algorandClient) {
+      algorandClient!.account.getInformation(activeAddress!).then((info) => {
+        const listOfAssetsHolding = []
+        for (const asset of info.assets!) {
+          listOfAssetsHolding.push(BigInt(asset.assetId))
+        }
+        setAssetHolding(listOfAssetsHolding)
+      })
+    }
     setOpenSellModal((prev) => !prev)
   }
   const toggleWithdrawModal = () => {
@@ -51,7 +62,7 @@ export function Header() {
         </button>
       </div>
       <ConnectWallet openModal={openWalletModal} closeModal={toggleWalletModal} />
-      <Sell openModal={openSellModal} setModalState={setOpenSellModal} />
+      <Sell assetHolding={assetHolding} openModal={openSellModal} setModalState={setOpenSellModal} />
       <Withdraw openModal={openWithdrawModal} setModalState={setOpenWithdrawModal} />
       <MintNft openModal={openMintModal} setModalState={setOpenMintModal} />
     </div>
