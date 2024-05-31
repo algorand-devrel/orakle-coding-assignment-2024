@@ -47,6 +47,9 @@ const MintNft = ({ openModal, setModalState }: BuyInterface) => {
       <form method="dialog" className="modal-box">
         <h3 className="font-bold text-lg">Mint NFT</h3>
         <br />
+        <h4 className="font-bold mt-4">
+          <span className="text-yellow-500">⚠️</span> 테스트용 NFT라서 모든 설정값이 설정되어 있습니다. "Mint NFT" 버튼을 눌러서 민팅하세요.
+        </h4>
         <div className="modal-action">
           <button className="btn" onClick={() => setModalState(false)}>
             Close
