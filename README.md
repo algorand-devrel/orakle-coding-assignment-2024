@@ -91,7 +91,7 @@ algokit project deploy localnet
 
 3. 문제 5은 `src/utils/getCurrentNftmClient.ts` 파일에 있습니다! 파일에 문제가 적혀있습니다.
 4. 문제 6-9는 `src/methods.ts` 파일에 있습니다! 파일에 문제들이 적혀있습니다.
-6. 문제들를 다 해결한 뒤 아래 설명대로 직접 웹사이트에 가서 실행해보세요:
+5. 문제들를 다 해결한 뒤 아래 설명대로 직접 웹사이트에 가서 실행해보세요:
 
 > 🚧 주목!! 아래 단계를 실행 도중 에러가 발생할 시 위에 단계1를 다시 실행해 Nft Marketplace List 스마트계약을 로컬 네트워크에 재배포 한 후 app id 값을 교체한 뒤 진행해주세요!
 
