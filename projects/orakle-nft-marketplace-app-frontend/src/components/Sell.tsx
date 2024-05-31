@@ -2,16 +2,17 @@ import { useWallet } from '@txnlab/use-wallet'
 import { useAtomValue } from 'jotai'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
-import { algorandClientAtom, assetHoldingAtom, listClientAtom } from '../atoms'
+import { algorandClientAtom, listClientAtom } from '../atoms'
 import * as methods from '../methods'
 import { getCurrentNftmClient } from '../utils/getCurrentNftmClient'
 
 interface SellInterface {
+  assetHolding: bigint[]
   openModal: boolean
   setModalState: (value: boolean) => void
 }
 
-const Sell = ({ openModal, setModalState }: SellInterface) => {
+const Sell = ({ assetHolding, openModal, setModalState }: SellInterface) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [assetIdToSell, setAssetIdToSell] = useState<string>('')
   const [unitaryPrice, setUnitaryPrice] = useState<string>('')
@@ -22,7 +23,6 @@ const Sell = ({ openModal, setModalState }: SellInterface) => {
   const { signer, activeAddress, clients, activeAccount } = useWallet()
   const algorandClient = useAtomValue(algorandClientAtom)
   const listClient = useAtomValue(listClientAtom)
-  const assetHolding = useAtomValue(assetHoldingAtom)
 
   const handleMethodCall = async () => {
     setLoading(true)
@@ -42,7 +42,7 @@ const Sell = ({ openModal, setModalState }: SellInterface) => {
     const nftmClient = await getCurrentNftmClient(algorandClient, 0, activeAddress, signer)
 
     try {
-      await methods.create(
+      await methods.createAndListNft(
         algorandClient,
         nftmClient,
         listClient,

@@ -47,8 +47,15 @@ export const getAppList = async (
     const assetDetail = await algorandClient.client.algod.getAssetByID(Number(assetId)).do()
     appDetails.assetName = assetDetail['params']['name']
     const inputString = assetDetail['params']['url'] //returns -> "url": "ipfs://QmSiHBwQgK7Nnzas4Chc9Jg9EmJYjwAH3P4r6WeTAWme3w/#arc3",
+    console.log('inputString', inputString)
     const slicedURL = inputString.split('ipfs://')[1]
-    const response = await axios.get(`https://ipfs.algonode.xyz/ipfs/${slicedURL}`)
+    let response
+    try {
+      response = await axios.get(`https://ipfs.algonode.xyz/ipfs/${slicedURL}`)
+    } catch (e) {
+      console.log('error', e)
+      continue
+    }
     const responseImage = response.data.image
     const slicedResponseImage = responseImage.split('ipfs://')[1]
     const outputString = `https://ipfs.algonode.xyz/ipfs/${slicedResponseImage}`

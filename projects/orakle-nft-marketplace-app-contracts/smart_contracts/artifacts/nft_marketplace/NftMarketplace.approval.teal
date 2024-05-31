@@ -6,7 +6,7 @@ smart_contracts.nft_marketplace.contract.NftMarketplace.approval_program:
     callsub __init__
 
 main_entrypoint@2:
-    // smart_contracts/nft_marketplace/contract.py:28
+    // smart_contracts/nft_marketplace/contract.py:20
     // class NftMarketplace(arc4.ARC4Contract):
     txn NumAppArgs
     bz main_bare_routing@9
@@ -25,7 +25,7 @@ main_bootstrap_route@4:
     assert // OnCompletion is NoOp
     txn ApplicationID
     assert // is not creating
-    // smart_contracts/nft_marketplace/contract.py:28
+    // smart_contracts/nft_marketplace/contract.py:20
     // class NftMarketplace(arc4.ARC4Contract):
     txna ApplicationArgs 1
     btoi
@@ -47,14 +47,14 @@ main_bootstrap_route@4:
     return
 
 main_buy_route@5:
-    // smart_contracts/nft_marketplace/contract.py:144
+    // smart_contracts/nft_marketplace/contract.py:147
     // @arc4.abimethod
     txn OnCompletion
     !
     assert // OnCompletion is NoOp
     txn ApplicationID
     assert // is not creating
-    // smart_contracts/nft_marketplace/contract.py:28
+    // smart_contracts/nft_marketplace/contract.py:20
     // class NftMarketplace(arc4.ARC4Contract):
     txn GroupIndex
     int 1
@@ -66,14 +66,14 @@ main_buy_route@5:
     assert // transaction type is pay
     txna ApplicationArgs 1
     btoi
-    // smart_contracts/nft_marketplace/contract.py:144
+    // smart_contracts/nft_marketplace/contract.py:147
     // @arc4.abimethod
     callsub buy
     int 1
     return
 
 main_withdraw_and_delete_route@6:
-    // smart_contracts/nft_marketplace/contract.py:199
+    // smart_contracts/nft_marketplace/contract.py:210
     // @arc4.abimethod(allow_actions=["DeleteApplication"])
     txn OnCompletion
     int DeleteApplication
@@ -86,7 +86,7 @@ main_withdraw_and_delete_route@6:
     return
 
 main_bare_routing@9:
-    // smart_contracts/nft_marketplace/contract.py:28
+    // smart_contracts/nft_marketplace/contract.py:20
     // class NftMarketplace(arc4.ARC4Contract):
     txn OnCompletion
     !
@@ -184,7 +184,7 @@ bootstrap:
 
 // smart_contracts.nft_marketplace.contract.NftMarketplace.buy(buyer_txn: uint64, quantity: uint64) -> void:
 buy:
-    // smart_contracts/nft_marketplace/contract.py:144-149
+    // smart_contracts/nft_marketplace/contract.py:147-152
     // @arc4.abimethod
     // def buy(
     //     self,
@@ -192,7 +192,7 @@ buy:
     //     quantity: UInt64,
     // ) -> None:
     proto 2 0
-    // smart_contracts/nft_marketplace/contract.py:150
+    // smart_contracts/nft_marketplace/contract.py:153
     // assert self.bootstrapped == True
     int 0
     byte "bootstrapped"
@@ -201,21 +201,21 @@ buy:
     int 1
     ==
     assert
-    // smart_contracts/nft_marketplace/contract.py:151
+    // smart_contracts/nft_marketplace/contract.py:154
     // assert buyer_txn.sender == Txn.sender
     frame_dig -2
     gtxns Sender
     txn Sender
     ==
     assert
-    // smart_contracts/nft_marketplace/contract.py:152
+    // smart_contracts/nft_marketplace/contract.py:155
     // assert buyer_txn.receiver == Global.current_application_address
     frame_dig -2
     gtxns Receiver
     global CurrentApplicationAddress
     ==
     assert
-    // smart_contracts/nft_marketplace/contract.py:153
+    // smart_contracts/nft_marketplace/contract.py:156
     // assert buyer_txn.amount == self.unitary_price * quantity
     frame_dig -2
     gtxns Amount
@@ -227,31 +227,31 @@ buy:
     *
     ==
     assert
-    // smart_contracts/nft_marketplace/contract.py:155-159
+    // smart_contracts/nft_marketplace/contract.py:158-162
     // itxn.AssetTransfer(
     //     xfer_asset=self.asset_id,
     //     asset_receiver=Txn.sender,
     //     asset_amount=quantity,
     // ).submit()
     itxn_begin
-    // smart_contracts/nft_marketplace/contract.py:156
+    // smart_contracts/nft_marketplace/contract.py:159
     // xfer_asset=self.asset_id,
     int 0
     byte "asset_id"
     app_global_get_ex
     assert // check asset_id exists
-    // smart_contracts/nft_marketplace/contract.py:157
+    // smart_contracts/nft_marketplace/contract.py:160
     // asset_receiver=Txn.sender,
     txn Sender
     frame_dig -1
     itxn_field AssetAmount
     itxn_field AssetReceiver
     itxn_field XferAsset
-    // smart_contracts/nft_marketplace/contract.py:155
+    // smart_contracts/nft_marketplace/contract.py:158
     // itxn.AssetTransfer(
     int axfer
     itxn_field TypeEnum
-    // smart_contracts/nft_marketplace/contract.py:155-159
+    // smart_contracts/nft_marketplace/contract.py:158-162
     // itxn.AssetTransfer(
     //     xfer_asset=self.asset_id,
     //     asset_receiver=Txn.sender,
@@ -263,68 +263,68 @@ buy:
 
 // smart_contracts.nft_marketplace.contract.NftMarketplace.withdraw_and_delete() -> void:
 withdraw_and_delete:
-    // smart_contracts/nft_marketplace/contract.py:199-200
+    // smart_contracts/nft_marketplace/contract.py:210-211
     // @arc4.abimethod(allow_actions=["DeleteApplication"])
     // def withdraw_and_delete(self) -> None:
     proto 0 0
-    // smart_contracts/nft_marketplace/contract.py:201
+    // smart_contracts/nft_marketplace/contract.py:212
     // assert Txn.sender == Global.creator_address
     txn Sender
     global CreatorAddress
     ==
     assert
-    // smart_contracts/nft_marketplace/contract.py:203-207
+    // smart_contracts/nft_marketplace/contract.py:214-218
     // itxn.AssetTransfer(
     //     xfer_asset=self.asset_id,
     //     asset_receiver=Global.creator_address,
     //     asset_close_to=Global.creator_address,
     // ).submit()
     itxn_begin
-    // smart_contracts/nft_marketplace/contract.py:204
+    // smart_contracts/nft_marketplace/contract.py:215
     // xfer_asset=self.asset_id,
     int 0
     byte "asset_id"
     app_global_get_ex
     assert // check asset_id exists
-    // smart_contracts/nft_marketplace/contract.py:205
+    // smart_contracts/nft_marketplace/contract.py:216
     // asset_receiver=Global.creator_address,
     global CreatorAddress
-    // smart_contracts/nft_marketplace/contract.py:206
+    // smart_contracts/nft_marketplace/contract.py:217
     // asset_close_to=Global.creator_address,
     dup
     itxn_field AssetCloseTo
     itxn_field AssetReceiver
     itxn_field XferAsset
-    // smart_contracts/nft_marketplace/contract.py:203
+    // smart_contracts/nft_marketplace/contract.py:214
     // itxn.AssetTransfer(
     int axfer
     itxn_field TypeEnum
-    // smart_contracts/nft_marketplace/contract.py:203-207
+    // smart_contracts/nft_marketplace/contract.py:214-218
     // itxn.AssetTransfer(
     //     xfer_asset=self.asset_id,
     //     asset_receiver=Global.creator_address,
     //     asset_close_to=Global.creator_address,
     // ).submit()
     itxn_submit
-    // smart_contracts/nft_marketplace/contract.py:209-212
+    // smart_contracts/nft_marketplace/contract.py:220-223
     // itxn.Payment(
     //     receiver=Global.creator_address,
     //     close_remainder_to=Global.creator_address,
     // ).submit()
     itxn_begin
-    // smart_contracts/nft_marketplace/contract.py:210
+    // smart_contracts/nft_marketplace/contract.py:221
     // receiver=Global.creator_address,
     global CreatorAddress
-    // smart_contracts/nft_marketplace/contract.py:211
+    // smart_contracts/nft_marketplace/contract.py:222
     // close_remainder_to=Global.creator_address,
     dup
     itxn_field CloseRemainderTo
     itxn_field Receiver
-    // smart_contracts/nft_marketplace/contract.py:209
+    // smart_contracts/nft_marketplace/contract.py:220
     // itxn.Payment(
     int pay
     itxn_field TypeEnum
-    // smart_contracts/nft_marketplace/contract.py:209-212
+    // smart_contracts/nft_marketplace/contract.py:220-223
     // itxn.Payment(
     //     receiver=Global.creator_address,
     //     close_remainder_to=Global.creator_address,
@@ -335,20 +335,20 @@ withdraw_and_delete:
 
 // smart_contracts.nft_marketplace.contract.NftMarketplace.__init__() -> void:
 __init__:
-    // smart_contracts/nft_marketplace/contract.py:53
+    // smart_contracts/nft_marketplace/contract.py:48
     // def __init__(self) -> None:
     proto 0 0
-    // smart_contracts/nft_marketplace/contract.py:55
+    // smart_contracts/nft_marketplace/contract.py:50
     // self.asset_id = UInt64(0)
     byte "asset_id"
     int 0
     app_global_put
-    // smart_contracts/nft_marketplace/contract.py:56
+    // smart_contracts/nft_marketplace/contract.py:51
     // self.unitary_price = UInt64(0)
     byte "unitary_price"
     int 0
     app_global_put
-    // smart_contracts/nft_marketplace/contract.py:57
+    // smart_contracts/nft_marketplace/contract.py:52
     // self.bootstrapped = False
     byte "bootstrapped"
     int 0

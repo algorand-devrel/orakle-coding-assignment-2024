@@ -5,14 +5,20 @@
       "name": "ROOT"
     },
     {
+      "path": "./projects/code-demo"
+    },
+    {
       "path": "./projects/orakle-nft-marketplace-app-contracts"
     },
     {
       "path": "./projects/orakle-nft-marketplace-app-frontend"
     },
+<<<<<<< HEAD
     {
       "path": "."
     },
+=======
+>>>>>>> origin/main
   ],
   "settings": {
     "files.exclude": {

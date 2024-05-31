@@ -48,7 +48,15 @@ const Buy = ({ openModal, setModalState, currentAppId, unitaryPrice }: BuyInterf
 
     const appAddress = algosdk.getApplicationAddress(currentAppId)
     try {
-      await methods.buy(algorandClient, nftmClient, activeAddress, currentAppDetails!.assetId, appAddress, BigInt(quantity), unitaryPrice)()
+      await methods.buyNft(
+        algorandClient,
+        nftmClient,
+        activeAddress,
+        currentAppDetails!.assetId,
+        appAddress,
+        BigInt(quantity),
+        unitaryPrice,
+      )()
     } catch (error) {
       enqueueSnackbar('Error while buying the NFT', { variant: 'error' })
       setLoading(false)
@@ -85,7 +93,7 @@ const Buy = ({ openModal, setModalState, currentAppId, unitaryPrice }: BuyInterf
           <button className="btn" onClick={() => setModalState(false)}>
             Close
           </button>
-          <button data-test-id="buy-nft" className={'btn btn-accent'} onClick={handleBuyNft}>
+          <button data-test-id="buy-nft" className={'btn btn-accent'} onClick={handleBuyNft} disabled={quantity == '' || quantity == '0'}>
             {loading ? <span className="loading loading-spinner" /> : 'Buy NFT!'}
           </button>
         </div>

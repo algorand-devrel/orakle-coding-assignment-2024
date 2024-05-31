@@ -60,7 +60,7 @@ const Withdraw = ({ openModal, setModalState }: WithdrawInterface) => {
     }
 
     try {
-      await methods.deleteApp(nftmClient, listClient, Number(myAppId))()
+      await methods.deleteAppAndWithdraw(nftmClient, listClient, Number(myAppId))()
     } catch (error) {
       enqueueSnackbar('Error deleting the app', { variant: 'error' })
       setLoading(false)
