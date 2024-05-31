@@ -42,7 +42,7 @@ const Sell = ({ openModal, setModalState }: SellInterface) => {
     const nftmClient = await getCurrentNftmClient(algorandClient, 0, activeAddress, signer)
 
     try {
-      await methods.create(
+      await methods.createAndListNft(
         algorandClient,
         nftmClient,
         listClient,

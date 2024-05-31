@@ -48,7 +48,15 @@ const Buy = ({ openModal, setModalState, currentAppId, unitaryPrice }: BuyInterf
 
     const appAddress = algosdk.getApplicationAddress(currentAppId)
     try {
-      await methods.buy(algorandClient, nftmClient, activeAddress, currentAppDetails!.assetId, appAddress, BigInt(quantity), unitaryPrice)()
+      await methods.buyNft(
+        algorandClient,
+        nftmClient,
+        activeAddress,
+        currentAppDetails!.assetId,
+        appAddress,
+        BigInt(quantity),
+        unitaryPrice,
+      )()
     } catch (error) {
       enqueueSnackbar('Error while buying the NFT', { variant: 'error' })
       setLoading(false)

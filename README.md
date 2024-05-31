@@ -62,7 +62,7 @@ https://github.com/algorand-fix-the-bug-campaign/challenge-1/assets/52557585/acd
 
 ### 로컬 네트워크 실행
 1. 도커 데스크탑을 실행한 뒤 터미널에서 `algokit localnet start` 커맨드로 로컬 네트워크를 실행시켜주세요.[더 자세히 알고 싶다면 여기를 클릭해주세요!](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/features/localnet.md#creating--starting-the-localnet). 오늘 모든 코드는 로컬 네트워크에서 실행됩니다.
-> 만약 로컬 네트워크 연결이 안되거나 뭔가 문제가 생기면 `algokit localnet reset` 커맨드로 다시 로컬네트워크를 지우고 생성하시면 됩니다.
+> 만약 로컬 네트워크 연결이 안되거나 뭔가 문제가 생기면 `algokit localnet reset` 커맨드로 다시 로컬네트워크를 지우고 다시 생성하시면 됩니다.
 
 ### 1-4문제: 스마트계약 문제 진행 설명
 1. `orakle-nft-marketplace-app-contracts` 터미널에서 `poetry shell`를 실행해서 파이썬 가상환경을 켰는지 확인하세요.
@@ -76,19 +76,24 @@ algokit project run build
 ```bash
 algokit project deploy localnet
 ```
+
+> 🚧 주목!! `algokit project deploy localnet` 작동 도중 에러가 나서 스마트계약을 고치셨다면 다시 `algokit project run build`를 해서 스마트계약을 재 compile 한 후 deploy 커멘드를 실행해주셔야 합니다!
+
 실행 후 다음과 같은 콘솔 값이 출력되면 성공적으로 모든 문제를 해결하신겁니다! 👏👏 이제 문제 5-9로 넘어가세요.
 <img width="1033" alt="image" src="https://github.com/algorand-devrel/orakle-coding-assignment-2024/assets/52557585/7c6b578d-fd59-42e6-a11d-184ed7552cef">
 
 ### 5-9문제: 프론트앤드 연동 문제 진행 설명
-1. `orakle-nft-marketplace-app-frontend` 터미널로 가서 `npm run dev`를 실행해 로컬 서버를 실행한 뒤, 브라우저에 페이지를 열고 진행해주세요!
-2. `orakle-nft-marketplace-app-contracts` 터미널에서 `algokit project deploy localnet`를 실행하시면 "=== Deploying NftMarketplaceList ===" 밑에
-   "Created app ****..." 라는 메시지가 뜹니다. 여기서 나오는 app ID 번호를 복사해서 `src/utils/marketplaceListAppId.ts`에 `marketplaceListAppId` 변수값으로 붙여넣어주세요.
+1. `orakle-nft-marketplace-app-contracts` 터미널에서 `algokit project deploy localnet`를 실행하시면 "=== Deploying NftMarketplaceList ===" 밑에
+   "Created app ****..." 라는 메시지가 뜹니다. 여기서 나오는 app ID 번호를 복사해서 `src/utils/marketplaceListAppId.ts`에 `marketplaceListAppId` 변수값으로 넣어주세요.
 <img width="871" alt="Screenshot 2024-05-28 at 9 08 36 PM" src="https://github.com/algorand-devrel/orakle-coding-assignment-2024/assets/52557585/dbad5218-5673-42c4-8f3e-ce93757b557f">
-4. 문제 5은 `src/utils/getCurrentNftmClient.ts` 파일에 있습니다! 파일에 문제가 적혀있습니다.
-5. 문제 6-9는 `src/methods.ts` 파일에 있습니다! 파일에 문제들이 적혀있습니다.
+
+2. `orakle-nft-marketplace-app-frontend` 터미널로 가서 `npm run dev`를 실행해 로컬 서버를 실행하고, 브라우저에 페이지를 열고 진행해주세요! `npm run dev` 실행시 프론트에서 사용할 앱 클라이언트 파일이 `src/contracts`에 자동 생성되니 꼭 먼저 실행한 한 후 진행해주세요!
+
+3. 문제 5은 `src/utils/getCurrentNftmClient.ts` 파일에 있습니다! 파일에 문제가 적혀있습니다.
+4. 문제 6-9는 `src/methods.ts` 파일에 있습니다! 파일에 문제들이 적혀있습니다.
 6. 문제들를 다 해결한 뒤 아래 설명대로 직접 웹사이트에 가서 실행해보세요:
 
-> 🚧 주목!! 아래 단계를 실행 도중 에러가 발생할 시 위에 단계2를 다시 실행해 Nft Marketplace List 스마트계약을 로컬 네트워크에 재배포 한 후 app id 값을 교체한 뒤 진행해주세요!
+> 🚧 주목!! 아래 단계를 실행 도중 에러가 발생할 시 위에 단계1를 다시 실행해 Nft Marketplace List 스마트계약을 로컬 네트워크에 재배포 한 후 app id 값을 교체한 뒤 진행해주세요!
 
 #### 1. 로컬 지갑 연결
 - `Wallet Connection` 버튼을 눌러 로컬 지갑을 연결하세요.
@@ -98,6 +103,7 @@ algokit project deploy localnet
 #### 3. 판매할 NFT 리스팅
 - 위에 `sell NFT` 버튼을 누르고 `Select NFT to Sell`에서 2단계에서 만든 테스트 NFT를 선택, 개수는 1개, 가격은 1알고로 설정한 뒤 `publish`를 눌러 nft를
    리스팅하세요. 이때 서명 창이 **4번** 나옵니다. 서명창에서 패스워드 기입 없이 `ok` 버튼을 눌러 서명하세요.
+- 리스팅 후 과제 제출을 위해 판매 NFT 등록이 보이도록 스크린샷을 찍어주세요!
 #### 4. NFT 구매
 - `Buy now` 버튼을 누르고 Buy Amount를 1개로 설정한 뒤 `Buy NFT!`를 눌러 구매하세요. 서명 창 1번 나옵니다.
 #### 5. 수익금 회수 및 스마트계약 삭제

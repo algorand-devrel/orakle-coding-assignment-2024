@@ -33,7 +33,7 @@ export function getCurrentNftmClient(
 
   주목!!!
   - 3번째 줄에서 import { NftMarketplaceClient } from '../contracts/NftMarketplace'로 import한 클래스는
-    Nft 마켓플레이스 앱을 빌드할때 자동 생성된 클라이언트 클래스입니다.
+    Nft 마켓플레이스 앱을 빌드할때 자동 생성된 클라이언트 클래스입니다. 이 파일이 없다면 `npm run dev`를 실행하시면 자동으로 생성됩니다.
   - 이 문제는 getCurrentNftmClient 함수의 인수로 들어오는 4개의 인수를 모두 사용하셔서 푸셔야 합니다.
   - id값에는 getCurrentNftmClient의 인수값으로 들어오는 currentAppId를 넣어주세요.
   - sender값에는 { addr: activeAddress!, signer }를 복붙해주세요. useWallet를 통해 현재 연결된 지갑 주소와 서명자를 포함한 객체를 설정해주는 코드입니다.
