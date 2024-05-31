@@ -41,7 +41,7 @@ export function create(
     `deploy`는 스마트계약이 이미 배포 되있는지 확인하고 배포 되어 있다면 다시 배포하지 않습니다. 과제를 풀때 항상 새로
     배포하는게 편하기 때문에 스크립트가 실행될때마다 배포하는 `create` 메서드를 사용해주세요.
 
-    또한 디지털 마켓플레이스에 create 메서드를 따로 구현하지 않았기 때문에 기본적으로 제공되늗 bare create 메서드를 사용하세요.
+    또한 디지털 마켓플레이스에 create 메서드를 따로 구현하지 않았기 때문에 기본적으로 제공되는 bare create 메서드를 사용하세요.
 
     힌트: https://github.com/algorandfoundation/algokit-client-generator-ts/blob/main/docs/usage.md#create-calls
     */

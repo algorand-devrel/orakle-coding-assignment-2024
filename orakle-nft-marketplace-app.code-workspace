@@ -5,6 +5,9 @@
       "name": "ROOT"
     },
     {
+      "path": "./projects/code-demo"
+    },
+    {
       "path": "./projects/orakle-nft-marketplace-app-contracts"
     },
     {

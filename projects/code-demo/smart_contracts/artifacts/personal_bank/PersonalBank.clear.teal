@@ -1,0 +1,7 @@
+#pragma version 10
+
+smart_contracts.personal_bank.contract.PersonalBank.clear_state_program:
+    // smart_contracts/personal_bank/contract.py:4
+    // class PersonalBank(ARC4Contract):
+    int 1
+    return
