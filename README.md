@@ -39,7 +39,9 @@
   - `ROOT`
   - `orakle-nft-marketplace-app-contracts`
   - `orakle-nft-marketplace-app-frontend`
+
   이 중 `ROOT` VSCode 터미널에서 `algokit project bootstrap all` 커맨드를 실행시켜 dependencies들을 설치해주세요. 이러면 모든 프로젝트 폴더의 dependencies들이 설치됩니다.
+
 > 만약 3개의 터미널이 자동으로 열리지 않으면 새로운 터미널을 + 버튼을 눌러 만들고 `ROOT`를 선택하시면 됩니다.
 
 ```bash
