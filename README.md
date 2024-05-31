@@ -35,8 +35,12 @@
 2. Fork한 리포를 git clone 해주세요.
 3. VSCode에서 이 폴더를 열람해주세요.
 4. 열람 후 `orakle-nft-marketplace-app.code-workspace` 파일을 열고 후 `open workspace` 버튼을 눌러 workspace 모드를 실행시켜주세요.
-5. 이제 VSCode 터미널이 3개가 자동 생성될 것 입니다: `ROOT` `orakle-nft-marketplace-app-contracts` `orakle-nft-marketplace-app-frontend`. 이 중 `ROOT` VSCode 터미널에서 `algokit project bootstrap all` 커맨드를 실행시켜 dependencies들을 설치해주세요. 이러면 모든 프로젝트 폴더의 dependencies들이 설치됩니다.
-> 만약 3개의 터미널의 자동으로 열리지 않으면 새로운 터미널을 + 버튼을 눌러 만들고 `ROOT`를 선택하시면 됩니다.
+5. 이제 VSCode 터미널이 3개가 자동 생성될 것 입니다:
+  - `ROOT`
+  - `orakle-nft-marketplace-app-contracts`
+  - `orakle-nft-marketplace-app-frontend`
+  이 중 `ROOT` VSCode 터미널에서 `algokit project bootstrap all` 커맨드를 실행시켜 dependencies들을 설치해주세요. 이러면 모든 프로젝트 폴더의 dependencies들이 설치됩니다.
+> 만약 3개의 터미널이 자동으로 열리지 않으면 새로운 터미널을 + 버튼을 눌러 만들고 `ROOT`를 선택하시면 됩니다.
 
 ```bash
 algokit project bootstrap all
@@ -44,7 +48,7 @@ algokit project bootstrap all
 
 > 만약 `Unhandled PermissionError: [Errno 13] Permission denied: '/Users/$name/.config/algokit'` 에러가 뜬다면 앞에 sudo를 붙여서 `sudo algokit project bootstrap all` 커맨드를 실행하세요!
 
-6. 이제 `orakle-nft-marketplace-app-contracts` 터미널을 선택한 뒤 `poetry shell` 커맨드를 실행해 파이썬 virtual environment를 활성화 시켜주세요.
+1. 이제 `orakle-nft-marketplace-app-contracts` 터미널을 선택한 뒤 `poetry shell` 커맨드를 실행해 파이썬 virtual environment를 활성화 시켜주세요.
    1. 파이썬 virtual environment를 비활성화 시킬때는 `exit` 커맨드를 실행하시면 됩니다.
    2. venv를 활성화 한 뒤 `pip list`를 실행해서 `algorand-python` 및 여러 dependencies들이 나오면 성공적으로 가상환경을 활성화 시킨겁니다.
 
