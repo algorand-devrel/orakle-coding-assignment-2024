@@ -153,7 +153,7 @@ class NftMarketplace(arc4.ARC4Contract):
     - 메서드 호출자(Txn.sender)가 앱의 생성자(Global.creator_address)인지 체크해야합니다.
 
     # 2단계: withdraw_and_delete 메서드는 아래 기능들을 수행합니다.
-    1. 앱 계정에 있는 에셋(ASA)을 앱 계정으로 전송합니다. (AssetTransfer Transaction)
+    1. 앱 계정에 있는 에셋(ASA)을 앱 호출자 계정으로 전송합니다. (AssetTransfer Transaction)
        이때 asset_close_to 패러미터를 앱 생성자(판매자)로 설정하여
        앱 계정에 남아있는 에셋 전부를 앱 생성자(판매자)에게 보냅니다.
        에셋의 수량과 무관하게 전 수량 송금되기 때문에 에셋 수량(asset_amount)은 설정하지 않으셔도 됩니다.
