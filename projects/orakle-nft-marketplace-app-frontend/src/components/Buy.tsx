@@ -93,7 +93,7 @@ const Buy = ({ openModal, setModalState, currentAppId, unitaryPrice }: BuyInterf
           <button className="btn" onClick={() => setModalState(false)}>
             Close
           </button>
-          <button data-test-id="buy-nft" className={'btn btn-accent'} onClick={handleBuyNft}>
+          <button data-test-id="buy-nft" className={'btn btn-accent'} onClick={handleBuyNft} disabled={quantity == '' || quantity == '0'}>
             {loading ? <span className="loading loading-spinner" /> : 'Buy NFT!'}
           </button>
         </div>
