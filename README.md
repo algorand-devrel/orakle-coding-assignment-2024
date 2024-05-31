@@ -79,7 +79,7 @@ algokit project deploy localnet
 
 > 🚧 주목!! `algokit project deploy localnet` 작동 도중 에러가 나서 스마트계약을 고치셨다면 다시 `algokit project run build`를 해서 스마트계약을 재 compile 한 후 deploy 커멘드를 실행해주셔야 합니다!
 
-실행 후 다음과 같은 콘솔 값이 출력되면 성공적으로 모든 문제를 해결하신겁니다! 👏👏 이제 문제 5-9로 넘어가세요.
+실행 후 다음과 같은 콘솔 값이 출력되면 성공적으로 모든 문제를 해결하신겁니다! 👏👏 과제 제출을 위해 스크린샷 찍어주세요. 이제 문제 5-9로 넘어가세요.
 <img width="1033" alt="image" src="https://github.com/algorand-devrel/orakle-coding-assignment-2024/assets/52557585/7c6b578d-fd59-42e6-a11d-184ed7552cef">
 
 ### 5-9문제: 프론트앤드 연동 문제 진행 설명
