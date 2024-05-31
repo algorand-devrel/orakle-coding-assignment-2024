@@ -133,7 +133,7 @@ export function buy(
     여기서 buyerTxn은 buy 메서드의 인수로 들어가기 때문에 자동으로 어토믹 그룹에 포함됩니다. 따라서 assetOptInTxn만 어토믹 그룹에 추가해주시면 됩니다.
     어토믹그룹을 형성하고 execute하는것을 까먹지 마세요!
 
-    힌트1: app client로 어토믹 그룹을 형성, 트랜잭션 추가, 제출하는법: https://github.com/algorandfoundation/algokit-client-generator-ts/blob/main/docs/usage.md#using-the-fluent-composer
+    힌트1: fluent Atomic Composer로 어토믹 그룹을 형성, 트랜잭션 추가, 제출하는법: https://github.com/algorandfoundation/algokit-client-generator-ts/blob/main/docs/usage.md#using-the-fluent-composer:~:text=Using%20the%20fluent%20composer
     */
 
     const buyerTxn = await algorand.transactions.payment({
