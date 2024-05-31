@@ -13,15 +13,6 @@
     {
       "path": "."
     },
-    {
-      "path": "projects/orakle-nft-marketplace-app-frontend"
-    },
-    {
-      "path": "projects/orakle-nft-marketplace-app-contracts"
-    },
-    {
-      "path": "."
-    }
   ],
   "settings": {
     "files.exclude": {
