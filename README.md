@@ -91,15 +91,16 @@ algokit project deploy localnet
 <img width="1033" alt="image" src="https://github.com/algorand-devrel/orakle-coding-assignment-2024/assets/52557585/7c6b578d-fd59-42e6-a11d-184ed7552cef">
 
 ### 5-9문제: 프론트앤드 연동 문제 진행 설명
-1. `orakle-nft-marketplace-app-contracts` 터미널에서 `algokit project deploy localnet`를 실행하시면 "=== Deploying NftMarketplaceList ===" 밑에
-   "Created app ****..." 라는 메시지가 뜹니다. 여기서 나오는 app ID 번호를 복사해서 `src/utils/marketplaceListAppId.ts`에 `marketplaceListAppId` 변수값으로 넣어주세요.
+1. `orakle-nft-marketplace-app-contracts` 터미널에서 `algokit project deploy localnet`를 실행해 나온 콘솔값에서 아래 그림에 빨간 박스 안에 있는 NftMarketplaceList의 app ID 번호를 복사해서 `src/utils/marketplaceListAppId.ts`에 `marketplaceListAppId` 변수값으로 넣어주세요.
+> 🚧 주목!! 여기서 nftMarketplaceList앱은 여러분이 문제 1-4에서 만든 NftMarketplace 앱과 다른 앱입니다. 프론트앤드 작동을 위해 추가적으로 만들어진 앱이니 이 단계 외 사용하실 일은 없습니다.
+
 <img width="871" alt="Screenshot 2024-05-28 at 9 08 36 PM" src="https://github.com/algorand-devrel/orakle-coding-assignment-2024/assets/52557585/dbad5218-5673-42c4-8f3e-ce93757b557f">
 
-2. `orakle-nft-marketplace-app-frontend` 터미널로 가서 `npm run dev`를 실행해 로컬 서버를 실행하고, 브라우저에 페이지를 열고 진행해주세요! `npm run dev` 실행시 프론트에서 사용할 앱 클라이언트 파일이 `src/contracts`에 자동 생성되니 꼭 먼저 실행한 한 후 진행해주세요!
+1. `orakle-nft-marketplace-app-frontend` 터미널로 가서 `npm run dev`를 실행해 로컬 서버를 실행하고, 브라우저에 페이지를 열고 진행해주세요! `npm run dev` 실행시 프론트에서 사용할 앱 클라이언트 파일이 `src/contracts`에 자동 생성되니 꼭 먼저 실행한 한 후 진행해주세요!
 
-3. 문제 5은 `src/utils/getCurrentNftmClient.ts` 파일에 있습니다! 파일에 문제가 적혀있습니다.
-4. 문제 6-9는 `src/methods.ts` 파일에 있습니다! 파일에 문제들이 적혀있습니다.
-5. 문제들를 다 해결한 뒤 아래 설명대로 직접 웹사이트에 가서 실행해보세요:
+2. 문제 5은 `src/utils/getCurrentNftmClient.ts` 파일에 있습니다! 파일에 문제가 적혀있습니다.
+3. 문제 6-9는 `src/methods.ts` 파일에 있습니다! 파일에 문제들이 적혀있습니다.
+4. 문제들를 다 해결한 뒤 아래 설명대로 직접 웹사이트에 가서 실행해보세요:
 
 > 🚧 주목!! 아래 단계를 실행 도중 에러가 발생할 시 위에 단계1를 다시 실행해 Nft Marketplace List 스마트계약을 로컬 네트워크에 재배포 한 후 app id 값을 교체한 뒤 진행해주세요!
 
