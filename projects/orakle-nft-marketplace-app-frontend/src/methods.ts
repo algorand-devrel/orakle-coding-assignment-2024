@@ -46,7 +46,7 @@ export function createAndListNft(
     힌트: https://github.com/algorandfoundation/algokit-client-generator-ts/blob/main/docs/usage.md#create-calls
     */
     // 문제 6 시작
-    const createResult = '여기에 코드 작성'
+    const createResult = await nftmClient.create.bare()
     // 문제 6 끝
 
     /*
@@ -78,10 +78,14 @@ export function createAndListNft(
       sender,
       receiver: createResult.appAddress,
       amount: algokit.algos(0.1 + 0.1),
-      extraFee: '여기에 코드 작성',
+      extraFee: algokit.transactionFees(1),
     })
 
-    ;('여기에 코드 작성')
+    await nftmClient.bootstrap({
+      asset: assetBeingSold,
+      unitaryPrice,
+      mbrPay: mbrTxn,
+    })
     // 문제 7 끝
 
     const sendAssetToSell = {
@@ -161,7 +165,7 @@ export function buyNft(
         assetId,
       })
       // 문제 8 시작
-      ;('여기에 코드 작성')
+      await nftmClient.compose().addTransaction(assetOptInTxn).buy({ buyerTxn: buyerTxn, quantity }).execute()
       // 문제 8 끝
 
       console.log(`${sender}가 에셋에 옵트인하고 구매했어요!`)
@@ -209,7 +213,7 @@ export function deleteAppAndWithdraw(nftmClient: NftMarketplaceClient, listClien
     */
 
     // 문제 9 시작
-    ;('여기에 코드 작성')
+    await nftmClient.delete.withdrawAndDelete({}, { sendParams: { fee: algokit.algos(0.003) } })
     // 문제 9 끝
 
     await listClient.removeMarketplaceFromList({ appId: BigInt(appId) })
