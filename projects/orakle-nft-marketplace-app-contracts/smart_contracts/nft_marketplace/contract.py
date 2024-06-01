@@ -47,9 +47,9 @@ class NftMarketplace(arc4.ARC4Contract):
 
     def __init__(self) -> None:
         "문제 1 시작"
-        self.asset_id = "여기에 코드 작성"
-        self.unitary_price = "여기에 코드 작성"
-        self.bootstrapped = "여기에 코드 작성"
+        self.asset_id = UInt64(0)
+        self.unitary_price = UInt64(0)
+        self.bootstrapped = False
         "문제 1 끝"
 
     """
@@ -97,7 +97,20 @@ class NftMarketplace(arc4.ARC4Contract):
     def bootstrap(
         self, asset: Asset, unitary_price: UInt64, mbr_pay: gtxn.PaymentTransaction
     ) -> None:
-        "여기에 코드 작성"
+        assert Txn.sender == Global.creator_address, "Not Creator"
+        assert self.bootstrapped == False, "Already Bootstrapped"
+        assert mbr_pay.receiver == Global.current_application_address, "Receiver Not Match"
+        assert mbr_pay.amount == Global.min_balance + Global.asset_opt_in_min_balance, "Wrong Amount"
+
+        self.asset_id = asset.id
+        self.unitary_price = unitary_price
+        self.bootstrapped = True
+
+        itxn.AssetTransfer(
+            xfer_asset=asset.id,
+            asset_amount=0,
+            asset_receiver=Global.current_application_address,
+        ).submit()
 
     "문제 2 끝"
 
@@ -137,7 +150,16 @@ class NftMarketplace(arc4.ARC4Contract):
         buyer_txn: gtxn.PaymentTransaction,
         quantity: UInt64,
     ) -> None:
-        "여기에 코드 작성"
+        assert self.bootstrapped == True, "Not Bootstrapped"
+        assert buyer_txn.sender == Txn.sender, "Sender not match"
+        assert buyer_txn.receiver == Global.current_application_address, "Receiver not match"
+        assert buyer_txn.amount == self.unitary_price * quantity, "Price not match"
+
+        itxn.AssetTransfer(
+            xfer_asset=self.asset_id,
+            asset_amount=quantity,
+            asset_receiver=Txn.sender,
+        ).submit()
 
     "문제 3 끝"
 
@@ -187,6 +209,17 @@ class NftMarketplace(arc4.ARC4Contract):
 
     @arc4.abimethod(allow_actions=["DeleteApplication"])
     def withdraw_and_delete(self) -> None:
-        "여기에 코드 작성"
+        assert Txn.sender == Global.creator_address, "Not Creator"
+
+        itxn.AssetTransfer(
+            xfer_asset=self.asset_id,
+            asset_close_to=Txn.sender,
+            asset_receiver=Txn.sender,
+        ).submit()
+
+        itxn.Payment(
+            receiver=Txn.sender,
+            close_remainder_to=Txn.sender,
+        ).submit()
 
     "문제 4 끝"
