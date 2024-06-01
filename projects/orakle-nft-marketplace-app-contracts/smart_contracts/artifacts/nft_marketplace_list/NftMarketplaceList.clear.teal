@@ -1,0 +1,7 @@
+#pragma version 10
+
+smart_contracts.nft_marketplace_list.contract.NftMarketplaceList.clear_state_program:
+    // smart_contracts/nft_marketplace_list/contract.py:9
+    // class NftMarketplaceList(ARC4Contract):
+    int 1
+    return
